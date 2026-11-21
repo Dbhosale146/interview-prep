@@ -10,16 +10,1547 @@
       "questions": [
         {
           "id": "python-basics-001",
-          "q": "Placeholder question one for Basics & Data Types?",
-          "a": "Placeholder answer with `inline code`.",
+          "q": "What are Python's main built-in data types?",
+          "a": "Numeric (`int`, `float`, `complex`), text (`str`), binary (`bytes`, `bytearray`), boolean (`bool`), sequences (`list`, `tuple`, `range`), sets (`set`, `frozenset`), mapping (`dict`) and `NoneType`.",
           "difficulty": "easy",
           "known": false
         },
         {
           "id": "python-basics-002",
-          "q": "Placeholder question two for Basics & Data Types?",
-          "a": "Placeholder answer.\n\n```python\nprint(1)\n```",
+          "q": "What is the difference between mutable and immutable objects?",
+          "a": "Mutable objects can be changed in place (`list`, `dict`, `set`); immutable ones cannot (`int`, `str`, `tuple`, `frozenset`). Only immutable objects are hashable, so only they can be dict keys or set members.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-basics-003",
+          "q": "Is Python statically or dynamically typed?",
+          "a": "Dynamically typed: a name is bound to an object at runtime and can be rebound to another type. Type hints are optional annotations that the interpreter does not enforce.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-basics-004",
+          "q": "What is `None` and how should you test for it?",
+          "a": "`None` is the single instance of `NoneType`, used for \"no value\". Test with `is None`, not `== None`, because `==` can be overridden by a custom `__eq__`.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-basics-005",
+          "q": "Is `bool` a subclass of `int`?",
+          "a": "Yes. `True` equals `1` and `False` equals `0`, so booleans work in arithmetic.\n\n```python\nprint(True + True)   # 2\nprint(sum([True, False, True]))  # 2\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-basics-006",
+          "q": "How do you convert between types in Python?",
+          "a": "Call the target type as a function: `int('42')`, `float('3.5')`, `str(7)`, `list('abc')`, `set([1,1,2])`. Invalid conversions raise `ValueError`, not a silent default.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-basics-007",
+          "q": "Why does `0.1 + 0.2 == 0.3` evaluate to False?",
+          "a": "Floats are binary IEEE-754 approximations, so `0.1 + 0.2` is `0.30000000000000004`. Compare with a tolerance instead.\n\n```python\nimport math\nmath.isclose(0.1 + 0.2, 0.3)  # True\n```",
           "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-basics-008",
+          "q": "What does this code print?\n\n```python\na = [1, 2, 3]\nb = a\nb.append(4)\nprint(a)\n```",
+          "a": "`[1, 2, 3, 4]`. Assignment binds another name to the same list object, so mutating through `b` is visible through `a`. Use `a.copy()` or `list(a)` for an independent list.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-basics-009",
+          "q": "What is the difference between `type()` and `isinstance()`?",
+          "a": "`type(x) is C` demands the exact class; `isinstance(x, C)` also accepts subclasses and tuples of classes. Prefer `isinstance` so subclasses keep working.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-basics-010",
+          "q": "What does `id()` return and how does it relate to `is`?",
+          "a": "`id(x)` returns the object's unique identity (its address in CPython). `a is b` is equivalent to `id(a) == id(b)`, so `is` compares identity, not value.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-basics-011",
+          "q": "Why is `a is b` True for 256 but False for 257?",
+          "a": "CPython pre-allocates and caches small integers from -5 to 256, so those literals share one object. 257 is created fresh each time. This is an implementation detail; never rely on it.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-basics-012",
+          "q": "What is the difference between a shallow copy and a deep copy?",
+          "a": "A shallow copy copies the outer container but shares the nested objects; a deep copy recursively copies everything.\n\n```python\nimport copy\nshallow = copy.copy(data)\ndeep = copy.deepcopy(data)\n```",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "operators-control-flow",
+      "name": "Operators & Control Flow",
+      "questions": [
+        {
+          "id": "python-operators-control-flow-001",
+          "q": "What is the difference between `is` and `==`?",
+          "a": "`==` compares values via `__eq__`; `is` compares object identity. Two equal lists are `==` but not `is`. Use `is` only for singletons like `None`.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-002",
+          "q": "What is the difference between `/` and `//`?",
+          "a": "`/` is true division and always returns a float; `//` is floor division and returns the largest integer less than or equal to the result.\n\n```python\nprint(7 / 2, 7 // 2)  # 3.5 3\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-003",
+          "q": "What is the walrus operator `:=`?",
+          "a": "An assignment expression (Python 3.8+) that binds a name and returns the value, so you can assign inside a condition.\n\n```python\nwhile (line := f.readline()):\n    process(line)\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-004",
+          "q": "Does Python have a ternary conditional expression?",
+          "a": "Yes, written value-first: `a if condition else b`. It is an expression, so it can be used inline anywhere a value is expected.\n\n```python\nlabel = 'even' if n % 2 == 0 else 'odd'\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-005",
+          "q": "What is the difference between `break`, `continue` and `pass`?",
+          "a": "`break` exits the innermost loop, `continue` skips to the next iteration, and `pass` does nothing at all - it is a placeholder where a statement is syntactically required.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-006",
+          "q": "What is short-circuit evaluation in `and` and `or`?",
+          "a": "Python stops as soon as the result is known and returns the deciding operand, not a bool. `x and y` returns `x` if `x` is falsy; `x or y` returns `x` if `x` is truthy.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-007",
+          "q": "What does an `else` block on a `for` or `while` loop do?",
+          "a": "It runs only if the loop finished without hitting `break`. Handy for search loops where you need a \"not found\" branch.\n\n```python\nfor x in items:\n    if x == target:\n        break\nelse:\n    print('not found')\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-008",
+          "q": "What does this code print?\n\n```python\nprint(2 ** 3 ** 2)\n```",
+          "a": "`512`. Exponentiation is right-associative, so it evaluates as `2 ** (3 ** 2)` = `2 ** 9`. Almost every other binary operator is left-associative.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-009",
+          "q": "How does a chained comparison like `1 < x < 10` work?",
+          "a": "Python expands it to `1 < x and x < 10`, evaluating `x` only once and short-circuiting. Other languages would compare the boolean result instead.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-010",
+          "q": "Does Python have a switch statement?",
+          "a": "Python 3.10 added structural pattern matching with `match`/`case`, which also destructures values. Before that, people used dict dispatch or `if`/`elif`.\n\n```python\nmatch status:\n    case 200: print('ok')\n    case _: print('other')\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-011",
+          "q": "What does this code print?\n\n```python\nprint([] or {} or 'fallback')\n```",
+          "a": "`fallback`. Empty containers are falsy, so `or` keeps moving right and returns the first truthy operand. If all are falsy it returns the last one.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-operators-control-flow-012",
+          "q": "What do `-7 // 2` and `-7 % 2` return, and why?",
+          "a": "`-4` and `1`. Python floors the division toward negative infinity and gives the modulo the sign of the divisor, so the identity `a == (a // b) * b + a % b` holds.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "strings",
+      "name": "Strings",
+      "questions": [
+        {
+          "id": "python-strings-001",
+          "q": "Are Python strings mutable?",
+          "a": "No. `str` is immutable, so every \"change\" builds a new string. That is why they are hashable and safe as dict keys.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-strings-002",
+          "q": "What is an f-string?",
+          "a": "A literal prefixed with `f` that interpolates expressions at runtime. It is the fastest and most readable formatting option.\n\n```python\nname, n = 'Ada', 3\nprint(f'{name} has {n * 2} items')\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-strings-003",
+          "q": "What do `strip()`, `lstrip()` and `rstrip()` do?",
+          "a": "They remove leading and/or trailing characters (whitespace by default). The argument is a set of characters to strip, not a prefix.\n\n```python\n'xxhixx'.strip('x')  # 'hi'\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-strings-004",
+          "q": "How do you write a multiline string?",
+          "a": "Use triple quotes `'''` or `\"\"\"`, which keep newlines. Wrapping adjacent literals in parentheses concatenates them without adding newlines.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-strings-005",
+          "q": "How do you check whether a string contains a substring?",
+          "a": "Use the `in` operator, which is clearest and fastest. `str.startswith()` and `str.endswith()` cover prefix and suffix checks.\n\n```python\nif 'err' in line:\n    ...\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-strings-006",
+          "q": "Why is `''.join(parts)` preferred over `+=` in a loop?",
+          "a": "Strings are immutable, so `+=` allocates a new string each iteration, giving O(n^2) work. `join` sizes the result once and copies in a single pass.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-strings-007",
+          "q": "What does this code print?\n\n```python\nprint('hello'[::-1])\n```",
+          "a": "`olleh`. A slice of `[start:stop:step]` with step `-1` walks the string backwards, producing a reversed copy.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-strings-008",
+          "q": "What is the difference between `str.find()` and `str.index()`?",
+          "a": "Both return the position of the first match, but `find()` returns `-1` when absent while `index()` raises `ValueError`. Use `find` when a miss is normal.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-strings-009",
+          "q": "What is the difference between `str` and `bytes`?",
+          "a": "`str` is a sequence of Unicode code points; `bytes` is raw 8-bit data. Convert explicitly with an encoding - Python never does it implicitly.\n\n```python\n'café'.encode('utf-8').decode('utf-8')\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-strings-010",
+          "q": "What is the difference between `isdigit()`, `isnumeric()` and `isdecimal()`?",
+          "a": "`isdecimal()` is strictest (0-9 decimal digits only), `isdigit()` also accepts superscripts like `'²'`, and `isnumeric()` additionally accepts numerals such as `'½'` or Roman-numeral characters.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-strings-011",
+          "q": "What is the difference between `str.format()` and f-strings?",
+          "a": "Both use the same format spec, but f-strings are evaluated inline at compile time, so they are faster and more readable. `format()` still wins when the template is stored or reused.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-strings-012",
+          "q": "What is a raw string and when do you need one?",
+          "a": "An `r'...'` literal treats backslashes literally, so no escape processing happens. Essential for regex patterns and Windows paths.\n\n```python\nimport re\nre.findall(r'\\d+', 'a1b22')  # ['1', '22']\n```",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "collections",
+      "name": "List, Tuple, Set, Dict",
+      "questions": [
+        {
+          "id": "python-collections-001",
+          "q": "What is the difference between a list and a tuple?",
+          "a": "Lists are mutable and use `[]`; tuples are immutable and use `()`. Tuples are hashable (if their contents are), slightly faster, and signal a fixed record.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-collections-002",
+          "q": "What is a set and when would you use one?",
+          "a": "An unordered collection of unique, hashable items with O(1) membership tests. Use it to deduplicate and for union, intersection and difference operations.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-collections-003",
+          "q": "How do you read a dict key without risking a `KeyError`?",
+          "a": "Use `d.get(key, default)`, or `d.setdefault(key, default)` when you also want to store the default.\n\n```python\ncount = d.get('hits', 0)\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-collections-004",
+          "q": "How do you merge two dictionaries?",
+          "a": "Use the `|` operator (3.9+) for a new dict or `|=` to update in place. `{**a, **b}` works on older versions. Keys from the right side win.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-collections-005",
+          "q": "Are Python dictionaries ordered?",
+          "a": "Yes. Since 3.7 insertion order is a language guarantee for `dict`. `collections.OrderedDict` is now only useful for order-sensitive equality and `move_to_end`.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-collections-006",
+          "q": "What is the difference between `append()` and `extend()`?",
+          "a": "`append(x)` adds `x` as one element; `extend(iterable)` adds each item of the iterable.\n\n```python\na = [1]; a.append([2, 3])  # [1, [2, 3]]\nb = [1]; b.extend([2, 3])  # [1, 2, 3]\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-collections-007",
+          "q": "Can a tuple be used as a dictionary key?",
+          "a": "Only if every element is hashable. A tuple containing a list is unhashable, so `{(1, [2]): 'x'}` raises `TypeError`.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-collections-008",
+          "q": "What does this code print?\n\n```python\nd = {}\nd[1] = 'a'\nd[1.0] = 'b'\nprint(d)\n```",
+          "a": "`{1: 'b'}`. `1 == 1.0` and both hash the same, so the second assignment overwrites the value but keeps the original key object.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-collections-009",
+          "q": "What is the difference between `remove()`, `pop()` and `del` on a list?",
+          "a": "`remove(value)` deletes the first matching value, `pop(index)` removes and returns the item at an index (last by default), and `del lst[i]` or `del lst[i:j]` deletes by position or slice.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-collections-010",
+          "q": "What is the difference between `set` and `frozenset`?",
+          "a": "`set` is mutable and unhashable; `frozenset` is immutable and hashable, so it can be a dict key or an element of another set.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-collections-011",
+          "q": "What do `defaultdict` and `Counter` from `collections` give you?",
+          "a": "`defaultdict(factory)` creates a missing key on first access; `Counter` counts hashable items and offers `most_common()`.\n\n```python\nfrom collections import Counter\nCounter('aab').most_common(1)  # [('a', 2)]\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-collections-012",
+          "q": "What is the time complexity of `in` on a list versus a set?",
+          "a": "O(n) for a list because it scans linearly, and O(1) on average for a set or dict because it hashes the key. Convert to a set before repeated membership checks.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-collections-013",
+          "q": "How is a Python dictionary implemented internally?",
+          "a": "As a hash table: CPython 3.6+ keeps a compact array of insertion-ordered entries plus a sparse index array. Average lookup is O(1), worst case O(n) under heavy collisions.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "comprehensions",
+      "name": "Comprehensions",
+      "questions": [
+        {
+          "id": "python-comprehensions-001",
+          "q": "What is a list comprehension?",
+          "a": "A single expression that builds a list from an iterable, optionally filtered. It is shorter and usually faster than an append loop.\n\n```python\nsquares = [n * n for n in range(5) if n % 2]\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-002",
+          "q": "What is a dict comprehension?",
+          "a": "The same syntax with a `key: value` expression, producing a dict.\n\n```python\nlengths = {w: len(w) for w in ['a', 'bb']}\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-003",
+          "q": "What is a set comprehension?",
+          "a": "Braces with a single expression build a set, so duplicates disappear automatically.\n\n```python\ninitials = {name[0] for name in names}\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-004",
+          "q": "Is there a tuple comprehension?",
+          "a": "No. Parentheses produce a generator expression instead. Wrap it in `tuple()` if you need a tuple.\n\n```python\nsquares = tuple(n * n for n in range(4))\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-005",
+          "q": "What is the difference between a list comprehension and a generator expression?",
+          "a": "A list comprehension builds the whole list in memory immediately; a generator expression is lazy and yields items one at a time. Use the generator for large or streaming data.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-006",
+          "q": "How do you use a conditional expression inside a comprehension?",
+          "a": "A trailing `if` filters items; an `if`/`else` before the `for` transforms them.\n\n```python\n[x if x > 0 else 0 for x in nums]   # transform\n[x for x in nums if x > 0]          # filter\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-007",
+          "q": "In what order do the loops of a nested comprehension run?",
+          "a": "Left to right, exactly like nested `for` statements: the leftmost clause is the outer loop.\n\n```python\nflat = [x for row in matrix for x in row]\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-008",
+          "q": "Why can a comprehension be faster than an equivalent `for` loop with `append`?",
+          "a": "The list is built by a specialised bytecode path, so there is no repeated attribute lookup and method call for `append` on every iteration.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-009",
+          "q": "When should you avoid a comprehension?",
+          "a": "When it needs more than about two clauses, has side effects, or would be unreadable. A plain loop is better than a comprehension nobody can parse.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-010",
+          "q": "Does a comprehension leak its loop variable into the enclosing scope?",
+          "a": "Not in Python 3: a comprehension has its own scope, so the loop name is not visible afterwards. In Python 2 list comprehensions did leak.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-011",
+          "q": "What does this code print?\n\n```python\nfuncs = [lambda: i for i in range(3)]\nprint([f() for f in funcs])\n```",
+          "a": "`[2, 2, 2]`. The lambdas close over the variable `i`, not its value, and read it after the loop ends. Bind it with a default: `lambda i=i: i`.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-comprehensions-012",
+          "q": "How do you use the walrus operator inside a comprehension?",
+          "a": "It lets you compute a value once and reuse it in both the filter and the output expression.\n\n```python\n[y for x in data if (y := f(x)) > 0]\n```",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "functions",
+      "name": "Functions",
+      "questions": [
+        {
+          "id": "python-functions-001",
+          "q": "What are `*args` and `**kwargs`?",
+          "a": "`*args` collects extra positional arguments into a tuple; `**kwargs` collects extra keyword arguments into a dict.\n\n```python\ndef f(*args, **kwargs):\n    print(args, kwargs)\nf(1, 2, mode='fast')  # (1, 2) {'mode': 'fast'}\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-functions-002",
+          "q": "What is a lambda function?",
+          "a": "A single-expression anonymous function. It has no statements and no name, so it suits small callbacks like a `key=` function.\n\n```python\nsorted(words, key=lambda w: len(w))\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-functions-003",
+          "q": "What is the difference between a positional and a keyword argument?",
+          "a": "A positional argument is matched by its place in the call; a keyword argument is matched by name. Keyword arguments may appear in any order but must follow all positional ones.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-functions-004",
+          "q": "What does a function return if it has no `return` statement?",
+          "a": "`None`. A bare `return` does the same. Only an explicit `return value` sends something else back.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-functions-005",
+          "q": "What does it mean that functions are first-class objects in Python?",
+          "a": "Functions are ordinary objects: you can assign them to names, pass them as arguments, return them, store them in containers and attach attributes to them.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-functions-006",
+          "q": "What is the LEGB rule?",
+          "a": "The name lookup order: Local, Enclosing (outer function), Global (module), then Built-in. The first scope that defines the name wins.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-functions-007",
+          "q": "What is a closure?",
+          "a": "A nested function that remembers variables from its enclosing scope even after that scope has returned.\n\n```python\ndef adder(n):\n    def add(x):\n        return x + n\n    return add\nadd5 = adder(5)  # remembers n = 5\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-functions-008",
+          "q": "Why is a mutable default argument dangerous?",
+          "a": "Defaults are evaluated once at definition time, so one list is shared across all calls. Use `None` as the default instead.\n\n```python\ndef f(items=None):\n    items = [] if items is None else items\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-functions-009",
+          "q": "What is the difference between `global` and `nonlocal`?",
+          "a": "`global` rebinds a name in the module scope; `nonlocal` rebinds a name in the nearest enclosing function scope. Without them, assignment creates a new local.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-functions-010",
+          "q": "Does Python pass arguments by value or by reference?",
+          "a": "Neither exactly - it passes object references by value. Rebinding a parameter does not affect the caller, but mutating a mutable argument does.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-functions-011",
+          "q": "What do `/` and `*` mean in a function signature?",
+          "a": "Parameters before `/` are positional-only; parameters after `*` are keyword-only.\n\n```python\ndef f(a, /, b, *, c):\n    ...\nf(1, 2, c=3)  # a positional, c keyword\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-functions-012",
+          "q": "What is Python's recursion limit and why does it exist?",
+          "a": "About 1000 frames by default (`sys.getrecursionlimit()`), to turn runaway recursion into a `RecursionError` instead of a C stack overflow. CPython has no tail-call optimisation.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-functions-013",
+          "q": "What does `functools.partial` do?",
+          "a": "It returns a new callable with some arguments already supplied, which is cleaner than a wrapper lambda.\n\n```python\nfrom functools import partial\nint2 = partial(int, base=2)\nint2('1011')  # 11\n```",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-functions-014",
+          "q": "Why do closures created in a loop all see the final loop value?",
+          "a": "They capture the variable, not its value, and the loop variable is shared. Bind it per iteration with a default argument or `functools.partial`.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "decorators-generators",
+      "name": "Decorators, Generators & Iterators",
+      "questions": [
+        {
+          "id": "python-decorators-generators-001",
+          "q": "What is a decorator?",
+          "a": "A callable that takes a function and returns a replacement, applied with `@`. It adds behaviour such as logging or caching without editing the original body.\n\n```python\n@lru_cache\ndef fib(n): ...\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-002",
+          "q": "What is a generator?",
+          "a": "A function containing `yield`. Calling it returns a lazy iterator that produces values one at a time and keeps its local state between resumes.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-003",
+          "q": "What does `yield` do?",
+          "a": "It emits a value and suspends the function, keeping its frame alive. Execution resumes right after the `yield` on the next `next()` call.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-004",
+          "q": "How do you implement the iterator protocol on a class?",
+          "a": "Define `__iter__` returning `self` and `__next__` returning the next value, raising `StopIteration` when done.\n\n```python\ndef __next__(self):\n    if self.i >= self.n:\n        raise StopIteration\n    self.i += 1\n    return self.i\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-005",
+          "q": "What is the difference between an iterable and an iterator?",
+          "a": "An iterable can produce an iterator via `__iter__` and can be looped many times; an iterator has `__next__`, is consumed once, and is exhausted afterwards.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-006",
+          "q": "Why should a decorator use `functools.wraps`?",
+          "a": "Without it the wrapper replaces the original `__name__`, `__doc__` and signature metadata, which breaks introspection, documentation tools and debugging.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-007",
+          "q": "How do you write a decorator that takes arguments?",
+          "a": "Add one more layer: a factory that takes the arguments and returns the real decorator.\n\n```python\ndef retry(times):\n    def deco(fn):\n        def wrap(*a, **k): ...\n        return wrap\n    return deco\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-008",
+          "q": "What is a class-based decorator?",
+          "a": "A class whose `__init__` stores the wrapped function and whose `__call__` runs the extra behaviour. Useful when the decorator needs mutable state such as a call count.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-009",
+          "q": "What is the difference between `yield` and `return` inside a generator?",
+          "a": "`yield` produces a value and pauses; `return` ends the generator and raises `StopIteration`, whose `value` carries the returned object.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-010",
+          "q": "What does `yield from` do?",
+          "a": "It delegates to a sub-iterator, yielding all of its values and forwarding `send` and exceptions, which avoids a manual re-yield loop.\n\n```python\ndef chain(a, b):\n    yield from a\n    yield from b\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-011",
+          "q": "Why are generators memory efficient?",
+          "a": "They hold only the current item and their local state instead of the whole sequence, so memory stays constant no matter how many items pass through.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-012",
+          "q": "What happens if you iterate an already exhausted generator?",
+          "a": "You get nothing - it raises `StopIteration` immediately and a `for` loop simply ends. Generators cannot be rewound; call the generator function again.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-decorators-generators-013",
+          "q": "What does a generator's `send()` method do?",
+          "a": "It resumes the generator and makes the paused `yield` expression evaluate to the sent value, turning the generator into a coroutine you can push data into.\n\n```python\nvalue = yield  # receives what send() passes\n```",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "files-context",
+      "name": "File Handling & Context Managers",
+      "questions": [
+        {
+          "id": "python-files-context-001",
+          "q": "Why should you use `with open(...)` instead of `open()` plus `close()`?",
+          "a": "`with` closes the file on the way out even if an exception is raised, so no handle leaks and buffered writes are flushed.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-files-context-002",
+          "q": "What are the main file modes in `open()`?",
+          "a": "`r` read, `w` write (truncates), `a` append, `x` create-and-fail-if-exists, plus `b` for binary and `+` for read-write. Text mode is the default.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-files-context-003",
+          "q": "How do you read a very large file without loading it into memory?",
+          "a": "Iterate the file object, which yields one line at a time.\n\n```python\nwith open('big.log') as f:\n    for line in f:\n        process(line)\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-files-context-004",
+          "q": "How do you check whether a file exists?",
+          "a": "`pathlib.Path('f.txt').exists()`, or just try to open it and catch `FileNotFoundError` - which avoids a race between the check and the open.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-files-context-005",
+          "q": "What is the difference between `read()`, `readline()` and `readlines()`?",
+          "a": "`read()` returns the whole file as one string, `readline()` returns the next single line, and `readlines()` returns a list of all lines. Only `readline` keeps memory low.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-files-context-006",
+          "q": "What is a context manager?",
+          "a": "An object implementing `__enter__` and `__exit__` so it can be used with `with`. It guarantees setup and teardown around a block - files, locks, transactions.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-files-context-007",
+          "q": "How do you write a context manager with `contextlib`?",
+          "a": "Decorate a generator with `@contextmanager`: everything before `yield` is setup, everything after is teardown.\n\n```python\n@contextmanager\ndef timer():\n    t = time(); yield; print(time() - t)\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-files-context-008",
+          "q": "What do `__enter__` and `__exit__` receive and return?",
+          "a": "`__enter__` returns the value bound by `as`. `__exit__(exc_type, exc_value, traceback)` runs on the way out; the three arguments are `None` when the block succeeded.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-files-context-009",
+          "q": "What is the difference between text mode and binary mode?",
+          "a": "Text mode decodes bytes to `str` using an encoding and translates newlines; binary mode gives raw `bytes` untouched. Use binary for images, archives and anything non-textual.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-files-context-010",
+          "q": "What is the difference between `os.path` and `pathlib`?",
+          "a": "`os.path` is string-based functions; `pathlib.Path` is an object-oriented API with operator joining and methods like `read_text()`. `pathlib` is the modern default.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-files-context-011",
+          "q": "What happens if an exception is raised inside a `with` block?",
+          "a": "`__exit__` is called with the exception details, so cleanup still runs, and the exception then propagates - unless `__exit__` returns a truthy value.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-files-context-012",
+          "q": "How can a context manager suppress an exception?",
+          "a": "Return `True` from `__exit__`, which tells Python to swallow it. `contextlib.suppress` does exactly this.\n\n```python\nwith suppress(FileNotFoundError):\n    os.remove(path)\n```",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "exceptions",
+      "name": "Exception Handling",
+      "questions": [
+        {
+          "id": "python-exceptions-001",
+          "q": "What does a `try`/`except` block do?",
+          "a": "It runs risky code and transfers control to a matching `except` handler if an exception is raised, instead of crashing the program.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-002",
+          "q": "What is the purpose of `finally`?",
+          "a": "It always runs on the way out - after success, after a handled exception, and even on `return` or `break` - so it is where cleanup belongs.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-003",
+          "q": "What does the `else` clause of a `try` statement do?",
+          "a": "It runs only when the `try` body raised nothing. Putting the success path there keeps it out of the `try`, so you do not accidentally catch its exceptions.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-004",
+          "q": "What is the difference between `ValueError` and `TypeError`?",
+          "a": "`TypeError` means the argument is the wrong type; `ValueError` means the type is right but the value is unacceptable. `int('abc')` raises `ValueError`, `int([])` raises `TypeError`.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-005",
+          "q": "How do you catch several exception types in one handler?",
+          "a": "Pass a tuple of classes.\n\n```python\ntry:\n    load()\nexcept (OSError, ValueError) as err:\n    log(err)\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-006",
+          "q": "Why is a bare `except:` a bad idea?",
+          "a": "It also swallows `KeyboardInterrupt` and `SystemExit`, so you cannot stop the program. Catch `Exception` at the widest, and preferably something specific.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-007",
+          "q": "How do you define a custom exception?",
+          "a": "Subclass `Exception` (never `BaseException`) and give it a clear name.\n\n```python\nclass RetryLimitError(Exception):\n    pass\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-008",
+          "q": "What is the difference between `raise X` and `raise X from err`?",
+          "a": "`from err` sets `__cause__`, so the traceback shows the original as the explicit cause. A plain `raise` inside a handler still chains implicitly via `__context__`.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-009",
+          "q": "What sits at the root of Python's exception hierarchy?",
+          "a": "`BaseException`. `Exception` is its subclass and the base for ordinary errors, while `KeyboardInterrupt`, `SystemExit` and `GeneratorExit` sit beside it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-010",
+          "q": "What does a bare `raise` inside an `except` block do?",
+          "a": "It re-raises the exception being handled with its original traceback intact, which is the right way to log and then let the error propagate.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-011",
+          "q": "What happens if a `finally` block contains a `return`?",
+          "a": "It overrides any pending return value and silently discards an in-flight exception, so the error disappears. Never `return` or `break` from `finally`.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-exceptions-012",
+          "q": "What are exception groups and `except*`?",
+          "a": "Python 3.11 added `ExceptionGroup` to raise several unrelated exceptions at once, and `except*` to handle them selectively. Mainly used by `asyncio.TaskGroup`.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "modules-packages",
+      "name": "Modules & Packages",
+      "questions": [
+        {
+          "id": "python-modules-packages-001",
+          "q": "What is a module in Python?",
+          "a": "Any `.py` file that can be imported. Importing it executes the file once and binds a module object holding its top-level names.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-002",
+          "q": "What is a package?",
+          "a": "A directory of modules that can be imported as a dotted path. A regular package has an `__init__.py`; subdirectories give you subpackages.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-003",
+          "q": "What does `if __name__ == '__main__':` do?",
+          "a": "`__name__` is `'__main__'` only when the file is run directly, so the guarded block is skipped on import. It separates script behaviour from library behaviour.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-004",
+          "q": "What is a virtual environment and why use one?",
+          "a": "An isolated directory with its own interpreter and site-packages, created with `python -m venv .venv`. It keeps each project's dependency versions from colliding.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-005",
+          "q": "What is the difference between `import x` and `from x import y`?",
+          "a": "`import x` binds the module, so you write `x.y` and keep the namespace visible. `from x import y` binds the object directly, which is shorter but hides where it came from.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-006",
+          "q": "What is `__init__.py` for?",
+          "a": "It marks a directory as a regular package and runs on import, so it is where you re-export the public API or set `__all__`. It may be empty.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-007",
+          "q": "What is the difference between an absolute and a relative import?",
+          "a": "An absolute import names the full path from the project root (`from myapp.db import conn`); a relative one uses leading dots (`from .db import conn`). Absolute is clearer and preferred.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-008",
+          "q": "How does Python decide where to find a module?",
+          "a": "It walks `sys.path`: the script's directory (or the current directory), then `PYTHONPATH`, then the standard library and site-packages. The first match wins, so a local file can shadow a library.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-009",
+          "q": "What is a circular import and how do you fix it?",
+          "a": "Two modules importing each other, so one sees a half-initialised module. Fix it by extracting the shared code, importing inside the function, or restructuring the dependency.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-010",
+          "q": "What does `__all__` control?",
+          "a": "It lists the names exported by `from module import *` and documents the public API. It does not stop anyone importing other names explicitly.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-011",
+          "q": "What happens if the same module is imported twice?",
+          "a": "The second import is a cache hit: Python stores modules in `sys.modules` and executes the file only once per interpreter. Use `importlib.reload` to force a re-run.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-modules-packages-012",
+          "q": "What is a namespace package?",
+          "a": "A package without `__init__.py` whose contents can be spread across several directories on `sys.path`, letting separate distributions contribute to one import name.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "oop-classes",
+      "name": "OOP: Classes & Objects",
+      "questions": [
+        {
+          "id": "python-oop-classes-001",
+          "q": "What is the difference between a class and an object?",
+          "a": "A class is the blueprint describing state and behaviour; an object is one concrete instance of it with its own attribute values.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-002",
+          "q": "What is `self` in a Python class?",
+          "a": "The first parameter of an instance method, bound automatically to the instance being used. It is a naming convention, not a keyword.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-003",
+          "q": "What is `__init__` and is it a constructor?",
+          "a": "It is the initialiser: it runs after the object exists to set up attributes. `__new__` is the actual constructor that allocates the instance.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-004",
+          "q": "What is the difference between a method and a function?",
+          "a": "A method is a function defined inside a class and accessed through an instance or class, so it receives that object automatically as its first argument.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-005",
+          "q": "What is the difference between a class attribute and an instance attribute?",
+          "a": "A class attribute lives on the class and is shared by all instances; an instance attribute lives in the object's own `__dict__`. Assigning via `self` always creates an instance attribute.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-006",
+          "q": "Why is a mutable class attribute a common bug?",
+          "a": "Every instance shares the same object, so one append is visible everywhere.\n\n```python\nclass A:\n    items = []   # shared!\n# fix: set self.items = [] in __init__\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-007",
+          "q": "What does an instance's `__dict__` contain?",
+          "a": "A dict of that object's own attributes. Attribute lookup checks the instance `__dict__` first, then the class and its bases along the MRO.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-008",
+          "q": "What does `@dataclass` give you?",
+          "a": "Generated `__init__`, `__repr__` and `__eq__` from annotated fields, plus options like `frozen=True` and `order=True`.\n\n```python\n@dataclass\nclass Point:\n    x: float\n    y: float = 0.0\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-009",
+          "q": "What is the difference between a bound and an unbound method?",
+          "a": "Accessing a method on an instance gives a bound method that already carries `self`; accessing it on the class gives a plain function, so you must pass the instance yourself.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-010",
+          "q": "How do you count how many instances of a class have been created?",
+          "a": "Increment a class attribute from `__init__`, referring to it through the class so you do not shadow it.\n\n```python\nclass A:\n    count = 0\n    def __init__(self):\n        A.count += 1\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-011",
+          "q": "What is the difference between `__new__` and `__init__`?",
+          "a": "`__new__` is a static method that creates and returns the instance; `__init__` then initialises it. Override `__new__` only for immutable types, singletons or metaclass work.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-oop-classes-012",
+          "q": "What does `__slots__` do?",
+          "a": "It declares a fixed set of attributes, so instances get descriptors instead of a `__dict__` - less memory and slightly faster access, but no dynamic attributes.\n\n```python\nclass P:\n    __slots__ = ('x', 'y')\n```",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "oop-inheritance",
+      "name": "OOP: Inheritance, Polymorphism & MRO",
+      "questions": [
+        {
+          "id": "python-oop-inheritance-001",
+          "q": "What is inheritance?",
+          "a": "A class reusing another class's attributes and methods by deriving from it, which models an \"is-a\" relationship and avoids duplicating behaviour.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-002",
+          "q": "What is polymorphism?",
+          "a": "The same call working on different types, each supplying its own implementation. `len(x)` on a list, string or custom class all dispatch to that type's `__len__`.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-003",
+          "q": "Does Python support method overloading?",
+          "a": "Not by signature - a later definition replaces the earlier one. Emulate it with default arguments, `*args`, or `functools.singledispatch` for type-based dispatch.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-004",
+          "q": "What is the MRO?",
+          "a": "The Method Resolution Order: the linear sequence of classes Python searches for an attribute. Inspect it with `Cls.__mro__` or `Cls.mro()`.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-005",
+          "q": "What does `super()` do?",
+          "a": "It returns a proxy that dispatches to the next class in the MRO, not necessarily the direct parent. That is what makes cooperative multiple inheritance work.\n\n```python\nsuper().__init__(*args, **kwargs)\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-006",
+          "q": "What is the diamond problem and how does Python handle it?",
+          "a": "When two parents share a grandparent, a naive search would visit it twice. Python's C3 linearisation produces one consistent order so each class runs once.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-007",
+          "q": "What is method overriding?",
+          "a": "A subclass redefining a method it inherited, so instances of the subclass use the new version. Call `super()` inside it to extend rather than replace the parent behaviour.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-008",
+          "q": "What is duck typing?",
+          "a": "Relying on the methods an object actually has rather than its class - \"if it quacks, it is a duck\". It is why Python code accepts any file-like or iterable object.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-009",
+          "q": "What is the difference between `isinstance()` and `issubclass()`?",
+          "a": "`isinstance(obj, C)` tests an object against a class; `issubclass(D, C)` tests one class against another. Passing a class to `isinstance` almost always indicates a bug.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-010",
+          "q": "When should you prefer composition over inheritance?",
+          "a": "When the relationship is \"has-a\" rather than \"is-a\", or when you only want to reuse behaviour. Composition keeps classes loosely coupled and avoids deep fragile hierarchies.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-011",
+          "q": "How does C3 linearisation build the MRO?",
+          "a": "It merges the parents' MROs so that every class appears before its own parents and the order of base classes is preserved. If no such order exists, the class definition raises `TypeError`.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-oop-inheritance-012",
+          "q": "What is a mixin?",
+          "a": "A small class that adds one capability and is never instantiated alone. It is combined through multiple inheritance, for example a `JSONSerializableMixin` giving a `to_json()` method.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "oop-encapsulation",
+      "name": "OOP: Encapsulation & Abstraction",
+      "questions": [
+        {
+          "id": "python-oop-encapsulation-001",
+          "q": "What is encapsulation?",
+          "a": "Bundling data with the methods that operate on it and exposing only a controlled interface, so internal representation can change without breaking callers.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-oop-encapsulation-002",
+          "q": "What is abstraction?",
+          "a": "Exposing what an object does while hiding how it does it. In Python it usually means a small public API, abstract base classes or protocols.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-oop-encapsulation-003",
+          "q": "Does Python have truly private attributes?",
+          "a": "No. Privacy is by convention: `_name` signals internal, `__name` triggers name mangling. Determined code can always reach the attribute.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-oop-encapsulation-004",
+          "q": "What does a single leading underscore mean?",
+          "a": "\"Internal, do not rely on this.\" The only mechanical effect is that `from module import *` skips such module-level names.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-encapsulation-005",
+          "q": "What does a double leading underscore do?",
+          "a": "It triggers name mangling: inside class `A`, `__x` becomes `_A__x`. The point is to avoid accidental clashes in subclasses, not to enforce privacy.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-encapsulation-006",
+          "q": "What is an abstract base class?",
+          "a": "A class that defines an interface and cannot be instantiated directly. Build one with `abc.ABC` and mark required methods with `@abstractmethod`.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-encapsulation-007",
+          "q": "How do you declare an abstract method?",
+          "a": "Decorate it inside an `ABC` subclass.\n\n```python\nfrom abc import ABC, abstractmethod\n\nclass Store(ABC):\n    @abstractmethod\n    def save(self, item): ...\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-encapsulation-008",
+          "q": "What is the difference between an ABC and a `Protocol`?",
+          "a": "An ABC needs explicit inheritance (nominal typing); a `typing.Protocol` matches any class with the right methods (structural typing), which fits duck typing better.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-encapsulation-009",
+          "q": "How do you expose an attribute as read-only?",
+          "a": "Store it privately and expose a getter-only property.\n\n```python\n@property\ndef size(self):\n    return self._size   # no setter defined\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-oop-encapsulation-010",
+          "q": "What happens if you instantiate an ABC with unimplemented abstract methods?",
+          "a": "`TypeError` at instantiation, listing the missing names. The check happens when the object is created, not when the subclass is defined.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-oop-encapsulation-011",
+          "q": "How does name mangling behave in a subclass?",
+          "a": "Mangling uses the class where the code is written, so `A.__x` and `B.__x` become `_A__x` and `_B__x` - separate attributes that never collide, even if `B` subclasses `A`.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "dunder-methods",
+      "name": "Dunder / Magic Methods",
+      "questions": [
+        {
+          "id": "python-dunder-methods-001",
+          "q": "What are dunder methods?",
+          "a": "Special methods named with double underscores that Python calls for built-in operations - `__len__` for `len()`, `__add__` for `+`. They are how you hook into the language's protocols.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-002",
+          "q": "What is the difference between `__str__` and `__repr__`?",
+          "a": "`__str__` is the friendly form used by `print()`; `__repr__` is the unambiguous developer form shown in the REPL and in containers. If only one is defined, define `__repr__`.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-003",
+          "q": "Which dunder method decides whether your object is truthy?",
+          "a": "`__bool__`. If it is absent Python falls back to `__len__`, and if both are missing every instance is truthy.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-004",
+          "q": "What does implementing `__len__` enable?",
+          "a": "`len(obj)` works, and the object becomes falsy when the length is zero. It must return a non-negative `int`.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-005",
+          "q": "What contract do `__eq__` and `__hash__` share?",
+          "a": "Equal objects must have equal hashes. Defining `__eq__` sets `__hash__` to `None`, making instances unhashable unless you define `__hash__` too.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-006",
+          "q": "What does `__call__` do?",
+          "a": "It makes an instance callable like a function, which is how stateful callbacks and class-based decorators work.\n\n```python\nclass Adder:\n    def __call__(self, x):\n        return x + 1\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-007",
+          "q": "How do you make the `+` operator work on your own class?",
+          "a": "Implement `__add__`, returning a new object rather than mutating in place.\n\n```python\ndef __add__(self, other):\n    return Vec(self.x + other.x, self.y + other.y)\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-008",
+          "q": "What does `__contains__` do?",
+          "a": "It backs the `in` operator. Without it, Python falls back to iterating the object, which is slower and only works if the object is iterable.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-009",
+          "q": "What do `__getitem__` and `__setitem__` provide?",
+          "a": "Square-bracket access and assignment, `obj[key]` and `obj[key] = value`. They receive the key, which may be an index, a slice object or any hashable.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-010",
+          "q": "Can an object be iterable without `__iter__`?",
+          "a": "Yes. If only `__getitem__` exists, Python's legacy protocol calls it with 0, 1, 2 ... until `IndexError`. Defining `__iter__` is clearer and preferred.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-011",
+          "q": "What is the difference between `__getattr__` and `__getattribute__`?",
+          "a": "`__getattribute__` intercepts every attribute access; `__getattr__` runs only when normal lookup fails. Override `__getattr__` for fallbacks - `__getattribute__` easily causes infinite recursion.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-dunder-methods-012",
+          "q": "What is the difference between `__add__` and `__radd__`?",
+          "a": "Python tries the left operand's `__add__` first; if it returns `NotImplemented`, it calls the right operand's `__radd__`. That is how `2 * vec` works when `int` knows nothing about `Vec`.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "method-types",
+      "name": "classmethod vs staticmethod vs property",
+      "questions": [
+        {
+          "id": "python-method-types-001",
+          "q": "What is an instance method?",
+          "a": "The default kind: it takes `self` and can read and modify both instance state and class state.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-method-types-002",
+          "q": "What is a `@staticmethod`?",
+          "a": "A method that receives neither `self` nor `cls` - a plain function living in the class namespace for grouping. It cannot touch instance or class state.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-method-types-003",
+          "q": "What is a `@classmethod`?",
+          "a": "A method whose first argument is the class itself, so it can read class attributes and construct instances. Called on either the class or an instance.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-method-types-004",
+          "q": "What is the difference between a classmethod and a staticmethod?",
+          "a": "A classmethod gets `cls` and respects subclassing, so it is the right choice for alternative constructors. A staticmethod gets nothing and is just a namespaced helper.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-method-types-005",
+          "q": "What does `@property` do?",
+          "a": "It turns a method into a computed, read-only attribute, so callers write `obj.area` instead of `obj.area()`.\n\n```python\n@property\ndef area(self):\n    return self.w * self.h\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-method-types-006",
+          "q": "How do you add a setter to a property?",
+          "a": "Use the matching `@<name>.setter` decorator, which is the natural place for validation.\n\n```python\n@area.setter\ndef area(self, value):\n    if value < 0: raise ValueError\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-method-types-007",
+          "q": "Why use a property instead of a plain attribute?",
+          "a": "It lets you add validation, laziness or a computed value later without changing the public attribute access that callers already wrote.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-method-types-008",
+          "q": "Why is a classmethod the right tool for an alternative constructor?",
+          "a": "Because `cls` is the actual class being called, so subclasses get instances of themselves.\n\n```python\n@classmethod\ndef from_json(cls, text):\n    return cls(**json.loads(text))\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-method-types-009",
+          "q": "Can a subclass override a staticmethod?",
+          "a": "Yes - it is a normal class attribute, so redefining the name in the subclass replaces it. But because no `cls` is passed, code inside the parent that calls it by class name will not pick up the override.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-method-types-010",
+          "q": "What is `functools.cached_property`?",
+          "a": "A property computed once and then stored in the instance `__dict__`, so later reads are free. It needs a `__dict__`, so it does not work with `__slots__`.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-method-types-011",
+          "q": "What is a descriptor, and how does `property` use one?",
+          "a": "A descriptor is an object defining `__get__`, `__set__` or `__delete__`, which Python calls on attribute access. `property`, `classmethod` and `staticmethod` are all built on this protocol.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "memory-gil-concurrency",
+      "name": "Memory Management, GIL & Concurrency",
+      "questions": [
+        {
+          "id": "python-memory-gil-concurrency-001",
+          "q": "What is the GIL?",
+          "a": "The Global Interpreter Lock: a CPython mutex letting only one thread execute Python bytecode at a time. It makes reference counting safe but blocks CPU-bound thread parallelism.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-002",
+          "q": "What is the difference between a thread and a process?",
+          "a": "Threads share one memory space and are cheap to start; processes have separate memory and need serialisation to communicate but can truly run in parallel.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-003",
+          "q": "What does `del x` actually do?",
+          "a": "It unbinds the name `x`, decrementing the object's reference count. The object is freed only when no references remain.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-004",
+          "q": "If the GIL exists, when does threading still help?",
+          "a": "For I/O-bound work. The GIL is released during blocking calls like network, disk and many C extensions, so threads overlap waiting time.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-005",
+          "q": "When should you use `multiprocessing`?",
+          "a": "For CPU-bound work, because each process has its own interpreter and GIL. The cost is process startup and pickling data between processes.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-006",
+          "q": "What is `asyncio` and what problem does it solve?",
+          "a": "A single-threaded cooperative scheduler: `await` yields control at I/O points so one thread can juggle thousands of connections. It does nothing for CPU-bound code.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-007",
+          "q": "What is the difference between concurrency and parallelism?",
+          "a": "Concurrency is structuring work so tasks can make progress by interleaving; parallelism is literally running them at the same time on multiple cores.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-008",
+          "q": "How does Python manage memory?",
+          "a": "Reference counting frees objects as soon as the last reference goes, backed by a generational cycle collector for reference cycles. Small objects come from CPython's own pool allocator.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-009",
+          "q": "What is the main limitation of reference counting?",
+          "a": "It cannot free reference cycles, because every object in the cycle keeps the next one's count above zero. That is exactly what the cyclic garbage collector handles.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-010",
+          "q": "What does Python's cyclic garbage collector do?",
+          "a": "It tracks container objects in three generations and periodically looks for groups that reference only each other, then frees them. Inspect or tune it with the `gc` module.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-011",
+          "q": "How do you choose between threads, processes and asyncio?",
+          "a": "I/O-bound with blocking libraries: threads. I/O-bound at high concurrency with async libraries: asyncio. CPU-bound: processes, or a native library that releases the GIL.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-012",
+          "q": "What is a race condition and how do you avoid one in Python?",
+          "a": "Two threads interleaving on shared mutable state, so the result depends on timing. Guard the critical section with `threading.Lock`, or pass data through a `queue.Queue`.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-memory-gil-concurrency-013",
+          "q": "Is the GIL being removed from Python?",
+          "a": "Python 3.13 shipped an optional free-threaded build (PEP 703) where the GIL can be disabled; 3.14 made it an officially supported build. The default build still has the GIL.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "numpy-pandas",
+      "name": "Python for Data (NumPy & Pandas)",
+      "questions": [
+        {
+          "id": "python-numpy-pandas-001",
+          "q": "What is a NumPy `ndarray`?",
+          "a": "A fixed-size, homogeneous N-dimensional array stored in one contiguous buffer with a single dtype, which is what makes vectorised maths and slicing cheap.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-002",
+          "q": "Why is NumPy faster than a Python list for numeric work?",
+          "a": "Contiguous typed memory plus loops running in compiled C, so there is no per-element Python object or interpreter overhead.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-003",
+          "q": "What is the difference between a pandas `Series` and a `DataFrame`?",
+          "a": "A `Series` is a single labelled 1-D column; a `DataFrame` is a 2-D table of `Series` sharing one index. Selecting one column of a DataFrame gives a Series.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-004",
+          "q": "What is broadcasting in NumPy?",
+          "a": "Rules that stretch smaller arrays across larger ones without copying, by matching dimensions from the right where sizes are equal or 1.\n\n```python\nnp.ones((3, 4)) + np.arange(4)   # (3, 4)\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-005",
+          "q": "What is the difference between `.loc` and `.iloc`?",
+          "a": "`.loc` selects by label and includes the end of a slice; `.iloc` selects by integer position and excludes it, like normal Python slicing.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-006",
+          "q": "What is vectorisation?",
+          "a": "Expressing an operation over a whole array so it runs in one compiled call instead of a Python loop. It is usually 10-100x faster and reads more clearly.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-007",
+          "q": "What is the difference between a view and a copy in NumPy?",
+          "a": "Basic slicing returns a view sharing the same buffer, so writes propagate; fancy or boolean indexing returns a copy. Check with `arr.base is not None`.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-008",
+          "q": "How do you handle missing values in pandas?",
+          "a": "`isna()` to detect, `dropna()` to remove rows or columns, `fillna()` to impute with a constant, mean or forward fill. Which one is right depends on why the data is missing.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-009",
+          "q": "What does `groupby` do in pandas?",
+          "a": "Split-apply-combine: split rows by key, apply an aggregation to each group, then combine into a result indexed by the keys.\n\n```python\ndf.groupby('city')['price'].mean()\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-010",
+          "q": "What is the difference between `apply`, `map` and `applymap`?",
+          "a": "`map` works element-wise on a Series, `apply` works on a whole row or column (or a Series element-wise), and `applymap` (now `DataFrame.map`) works element-wise across a DataFrame.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-011",
+          "q": "Why is `df.iterrows()` slow and what should you use instead?",
+          "a": "It builds a Series object per row in Python. Prefer vectorised column expressions, `np.where`, or `itertuples()` when you truly must loop.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "python-numpy-pandas-012",
+          "q": "What causes a `SettingWithCopyWarning`?",
+          "a": "Assigning through chained indexing, where pandas cannot tell whether you hold a view or a copy, so the write may be lost. Use a single `.loc[rows, cols] = value`.",
+          "difficulty": "hard",
           "known": false
         }
       ]
