@@ -10,16 +10,1526 @@
       "questions": [
         {
           "id": "dl-nn-basics-001",
-          "q": "Placeholder question one for Neural Network Basics?",
-          "a": "Placeholder answer with `inline code`.",
+          "q": "What is a perceptron?",
+          "a": "The simplest neural unit: a weighted sum of inputs plus a bias, passed through a step function. It can only learn linearly separable problems.",
           "difficulty": "easy",
           "known": false
         },
         {
           "id": "dl-nn-basics-002",
-          "q": "Placeholder question two for Neural Network Basics?",
-          "a": "Placeholder answer.\n\n```python\nprint(1)\n```",
+          "q": "What is a multilayer perceptron?",
+          "a": "A feedforward network with one or more hidden layers of non-linear units between input and output. Stacking non-linear layers is what lets it model complex functions.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-003",
+          "q": "What are weights and biases?",
+          "a": "Weights scale each input to a unit and are what the network learns; the bias shifts the activation so a unit can fire even when all inputs are zero.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-004",
+          "q": "What is a hidden layer?",
+          "a": "Any layer between input and output. Its activations are learned intermediate representations - no target is supplied for them directly.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-005",
+          "q": "What is a fully connected (dense) layer?",
+          "a": "A layer where every input connects to every output, computing `y = Wx + b`. With `n` inputs and `m` outputs it holds `n*m + m` parameters.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-006",
+          "q": "Why does a neural network need non-linear activations?",
+          "a": "Without them, a stack of linear layers collapses into a single linear map, so depth buys nothing. Non-linearity is what makes a deep network more expressive than a linear model.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-007",
+          "q": "What is forward propagation?",
+          "a": "Passing an input through each layer in order - linear transform then activation - to produce the prediction and the loss. The activations are cached for the backward pass.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-008",
+          "q": "How do you decide how many layers and units to use?",
+          "a": "Start from a known architecture for the task, then grow capacity until you can overfit the training set and add regularisation. Validation performance, not theory, decides.",
           "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-009",
+          "q": "What does the universal approximation theorem say?",
+          "a": "A feedforward network with one hidden layer and a non-polynomial activation can approximate any continuous function on a compact set arbitrarily well - given enough units. It says nothing about how to find those weights.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-010",
+          "q": "How many parameters does a dense layer with 128 inputs and 64 outputs have?",
+          "a": "`128 * 64 + 64 = 8256` - the weight matrix plus one bias per output unit.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-011",
+          "q": "Why can't a single-layer perceptron learn XOR?",
+          "a": "XOR is not linearly separable - no single hyperplane splits its two classes. One hidden layer with two units can carve the space into regions that do.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-012",
+          "q": "What is the practical difference between making a network deeper versus wider?",
+          "a": "Depth composes features hierarchically, so it reaches the same expressiveness with far fewer parameters, but is harder to optimise. Width is easier to train and parallelise but scales badly.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "activations",
+      "name": "Activation Functions",
+      "questions": [
+        {
+          "id": "dl-activations-001",
+          "q": "What is an activation function?",
+          "a": "The non-linear function applied to a unit's weighted sum. It decides how the unit responds and is what gives a deep network its expressive power.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-activations-002",
+          "q": "What is ReLU?",
+          "a": "`max(0, x)` - the default hidden activation. It is cheap, does not saturate for positive inputs, and induces sparsity because negatives output exactly zero.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-activations-003",
+          "q": "What does sigmoid output and where is it used?",
+          "a": "It squashes to (0, 1), so it is used for the output unit of binary classification and for gates inside LSTMs - not for hidden layers in deep networks.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-activations-004",
+          "q": "What is tanh?",
+          "a": "A sigmoid-shaped function with range (-1, 1) and a steeper gradient around zero. Being zero-centred makes it better behaved than sigmoid in hidden layers.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-activations-005",
+          "q": "What is softmax?",
+          "a": "It turns a vector of scores into a probability distribution.\n\n```\nsoftmax(z_i) = e^(z_i) / sum_j e^(z_j)\n```\n\nUsed on the output layer for mutually exclusive multiclass problems.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-activations-006",
+          "q": "Which activation should the output layer use for each task type?",
+          "a": "None (linear) for regression, sigmoid for binary or multi-label classification, softmax for single-label multiclass. The loss function must match that choice.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-activations-007",
+          "q": "Why is ReLU preferred over sigmoid in hidden layers?",
+          "a": "Sigmoid's gradient is at most 0.25 and vanishes when saturated, so deep stacks stop learning. ReLU's gradient is exactly 1 for positive inputs, which keeps signal flowing.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-activations-008",
+          "q": "What is the dying ReLU problem?",
+          "a": "A unit whose pre-activation stays negative for all inputs outputs zero and receives zero gradient forever, so it is permanently dead. Causes are a too-high learning rate or a large negative bias.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-activations-009",
+          "q": "What do LeakyReLU, PReLU and ELU change about ReLU?",
+          "a": "They all allow a non-zero response for negatives so the unit cannot die: LeakyReLU uses a fixed small slope, PReLU learns that slope, and ELU uses a smooth exponential curve.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-activations-010",
+          "q": "What is GELU and why do transformers use it?",
+          "a": "The Gaussian Error Linear Unit, `x * Phi(x)`, which gates the input by its own probability under a normal distribution. Its smooth, non-monotone shape trains transformers slightly better than ReLU.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-activations-011",
+          "q": "Why should you not use softmax on a hidden layer?",
+          "a": "It forces the activations to compete and sum to 1, destroying independent feature magnitudes and creating coupled gradients across units. It is a normalisation for outputs, not a feature non-linearity.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-activations-012",
+          "q": "What is Swish (SiLU)?",
+          "a": "`x * sigmoid(x)` - smooth, non-monotone and self-gating, like GELU. It slightly outperforms ReLU on deep networks and is used in EfficientNet and several LLM feedforward blocks.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "loss-functions",
+      "name": "Loss Functions",
+      "questions": [
+        {
+          "id": "dl-loss-functions-001",
+          "q": "What is a loss function?",
+          "a": "The scalar objective that measures how wrong a prediction is. Training minimises its average over the data, so the loss defines what \"better\" means.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-002",
+          "q": "What is the difference between a loss and a metric?",
+          "a": "The loss is optimised, so it must be differentiable; a metric is only reported and can be anything, including non-differentiable ones like accuracy or F1.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-003",
+          "q": "Which loss do you use for regression in a neural network?",
+          "a": "MSE by default, MAE when outliers should not dominate, and Huber as a compromise. The output layer stays linear.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-004",
+          "q": "What is cross-entropy loss?",
+          "a": "The negative log probability the model assigned to the true class, `-log p_true`. It goes to zero for a confident correct prediction and grows without bound for a confident wrong one.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-005",
+          "q": "What is the difference between binary and categorical cross-entropy?",
+          "a": "Binary pairs with sigmoid and treats each output independently, so it suits multi-label problems. Categorical pairs with softmax over mutually exclusive classes.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-006",
+          "q": "What is sparse categorical cross-entropy?",
+          "a": "The same loss but taking integer class indices instead of one-hot vectors, so it avoids materialising a huge one-hot matrix. Essential when there are tens of thousands of classes.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-007",
+          "q": "What is Huber loss?",
+          "a": "Quadratic for small errors and linear beyond a threshold `delta`, so it is differentiable at zero like MSE but robust to outliers like MAE. Widely used in regression and RL.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-008",
+          "q": "What is hinge loss?",
+          "a": "`max(0, 1 - y*f(x))` with labels in {-1, +1}. It is zero once a point is correctly classified beyond the margin, which is the max-margin objective behind SVMs.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-009",
+          "q": "What is KL divergence and where is it used as a loss?",
+          "a": "It measures how far one distribution is from another, `sum p * log(p/q)`. It appears in VAEs, knowledge distillation and in PPO-style policy constraints. It is not symmetric.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-010",
+          "q": "What is label smoothing?",
+          "a": "Replacing a hard 1.0 target with something like 0.9 and spreading the rest across other classes. It curbs overconfidence, improves calibration and acts as a mild regulariser.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-011",
+          "q": "Why is the gradient of softmax with cross-entropy so simple?",
+          "a": "The Jacobian of softmax cancels against the log, leaving `p - y` per logit. That clean linear gradient is numerically stable and never saturates, which is why the two are always paired.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-loss-functions-012",
+          "q": "What are contrastive and triplet losses?",
+          "a": "Metric-learning losses that shape an embedding space: contrastive pulls positive pairs together and pushes negatives apart, while triplet loss enforces a margin between an anchor's positive and negative.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "backpropagation",
+      "name": "Backpropagation & Gradients",
+      "questions": [
+        {
+          "id": "dl-backpropagation-001",
+          "q": "What is backpropagation?",
+          "a": "Applying the chain rule backwards through the network to get the loss gradient with respect to every parameter in one sweep, reusing each layer's cached activations.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-002",
+          "q": "What is the difference between the forward pass and the backward pass?",
+          "a": "The forward pass computes activations and the loss; the backward pass propagates gradients from the loss back to the parameters. The optimiser then applies them.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-003",
+          "q": "What is a computational graph?",
+          "a": "A directed graph whose nodes are operations and edges are tensors. Frameworks record it during the forward pass so gradients can be derived automatically by traversing it in reverse.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-004",
+          "q": "What is automatic differentiation?",
+          "a": "Computing exact derivatives by composing the known derivative of each primitive operation. It is neither symbolic algebra nor a finite-difference approximation.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-005",
+          "q": "What is the vanishing gradient problem?",
+          "a": "Gradients shrink multiplicatively layer by layer, so early layers get almost no signal and stop learning. Saturating activations and deep stacks without skip connections cause it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-006",
+          "q": "What is the exploding gradient problem?",
+          "a": "Gradients grow multiplicatively until updates overshoot and the loss becomes NaN. It is most common in RNNs over long sequences and with poor initialisation.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-007",
+          "q": "What is gradient clipping?",
+          "a": "Rescaling the gradient when its norm exceeds a threshold, so the direction is kept but the step size is bounded. It is the standard fix for exploding gradients.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-008",
+          "q": "Why does a deep sigmoid network suffer vanishing gradients?",
+          "a": "Sigmoid's derivative peaks at 0.25, so each layer multiplies the gradient by at most a quarter. Ten layers shrink it by roughly a factor of a million.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-009",
+          "q": "How does weight initialisation affect gradient flow?",
+          "a": "It sets the variance of activations and gradients at every layer. Xavier/Glorot suits tanh and sigmoid; He initialisation suits ReLU. All-zero weights make every unit identical and unlearnable.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-010",
+          "q": "How do residual connections help gradient flow?",
+          "a": "`y = x + f(x)` gives the gradient an identity path straight to earlier layers, so it is added to rather than repeatedly multiplied. That is what made 100+ layer networks trainable.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-011",
+          "q": "What is the difference between forward-mode and reverse-mode autodiff?",
+          "a": "Forward mode costs one pass per input and suits few inputs, many outputs. Reverse mode costs one pass per output, so for a scalar loss with millions of parameters it is vastly cheaper - that is backprop.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-backpropagation-012",
+          "q": "What is gradient checkpointing?",
+          "a": "Discarding intermediate activations during the forward pass and recomputing them in the backward pass. It trades roughly 30% extra compute for a large memory saving, enabling bigger models or batches.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "optimizers",
+      "name": "Optimizers & Learning Rates",
+      "questions": [
+        {
+          "id": "dl-optimizers-001",
+          "q": "What does an optimizer do?",
+          "a": "It turns gradients into parameter updates, deciding step size and direction. The gradient says which way is downhill; the optimizer decides how to move.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-002",
+          "q": "What is momentum in optimisation?",
+          "a": "Accumulating an exponentially weighted average of past gradients and stepping along it, so progress builds in consistent directions and oscillation across ravines is damped.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-003",
+          "q": "What is a learning rate schedule?",
+          "a": "A rule that changes the learning rate over training - step decay, exponential decay, cosine annealing. Large early steps explore; small later steps settle into a minimum.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-004",
+          "q": "Which optimizer should you reach for first?",
+          "a": "Adam or AdamW with a small learning rate (around 1e-3, or 1e-4 to 5e-5 when fine-tuning a transformer). SGD with momentum is the alternative when you can tune carefully.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-005",
+          "q": "What is RMSprop?",
+          "a": "It divides each gradient by the running root-mean-square of its recent magnitudes, giving every parameter its own effective step size. Good for non-stationary objectives like RNNs.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-006",
+          "q": "What is Adam?",
+          "a": "It combines momentum (first moment) with RMSprop's per-parameter scaling (second moment), plus bias correction for the early steps. It is robust across tasks with little tuning.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-007",
+          "q": "What is the difference between Adam and AdamW?",
+          "a": "Adam folds L2 into the gradient, so the adaptive scaling weakens it unevenly. AdamW decouples weight decay and applies it directly to the weights, which regularises correctly and is now the default for transformers.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-008",
+          "q": "What do Adam's `beta1` and `beta2` control?",
+          "a": "The decay rates of the gradient average and the squared-gradient average, typically 0.9 and 0.999. Lowering `beta2` makes the step size react faster but noisier.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-009",
+          "q": "What is learning rate warmup and why do transformers need it?",
+          "a": "Ramping the learning rate up from near zero over the first few thousand steps. Early Adam second-moment estimates are unreliable, so a full-size step can destabilise a deep residual stack.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-010",
+          "q": "What is cosine annealing?",
+          "a": "Decaying the learning rate along a cosine curve from its peak to near zero over training. It spends longer at useful mid-range values than step decay and needs no tuned milestones.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-011",
+          "q": "What is Nesterov momentum?",
+          "a": "It evaluates the gradient at the point momentum is about to carry you to, rather than where you are. That look-ahead correction reduces overshoot and converges a little faster.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-012",
+          "q": "Why does Adam sometimes generalise worse than SGD with momentum?",
+          "a": "Its per-parameter scaling tends to converge to sharper minima, which are more sensitive to distribution shift. Tuned SGD with momentum still wins some vision benchmarks for this reason.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-optimizers-013",
+          "q": "Why does Adam need bias correction?",
+          "a": "The moment estimates start at zero, so early averages are biased toward zero and the first steps would be far too small. Dividing by `1 - beta^t` removes that bias.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "regularization",
+      "name": "Regularization & Normalization",
+      "questions": [
+        {
+          "id": "dl-regularization-001",
+          "q": "What is dropout?",
+          "a": "Randomly zeroing a fraction `p` of activations each training step, so no unit can rely on a specific partner. It approximates averaging a huge ensemble of thinned networks.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-002",
+          "q": "What is early stopping?",
+          "a": "Halting training when validation loss stops improving for a set patience, and keeping the best checkpoint. It is the cheapest regulariser and needs no extra hyperparameter tuning.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-003",
+          "q": "What is data augmentation?",
+          "a": "Generating new training examples by label-preserving transforms - flips, crops, colour jitter for images; synonym or back-translation for text. It enlarges the effective dataset and reduces overfitting.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-004",
+          "q": "What is weight decay in a neural network?",
+          "a": "Shrinking weights toward zero each step, equivalent to an L2 penalty on their magnitude. It keeps the function smoother and is one of the few hyperparameters worth tuning on every model.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-005",
+          "q": "How does dropout behave differently at training and inference time?",
+          "a": "It only drops units during training. At inference every unit is active, and activations are rescaled (frameworks divide by `1-p` during training) so the expected magnitude matches.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-006",
+          "q": "What is batch normalisation?",
+          "a": "Normalising each feature across the batch to zero mean and unit variance, then applying learned scale and shift. It stabilises the distribution each layer sees, so training is faster and less init-sensitive.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-007",
+          "q": "What is layer normalisation?",
+          "a": "Normalising across the features of each individual sample rather than across the batch, so it is independent of batch size and identical at training and inference.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-008",
+          "q": "What is the difference between batch norm and layer norm?",
+          "a": "Batch norm normalises per feature over the batch and needs running statistics at inference; layer norm normalises per sample over features and needs none. Batch norm suits CNNs, layer norm suits sequences.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-009",
+          "q": "Why does batch normalisation also act as a regulariser?",
+          "a": "Each sample's normalisation depends on the other samples in its batch, which injects noise into the activations. That noise behaves like a mild dropout, so heavy dropout is often unnecessary alongside it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-010",
+          "q": "Where should batch norm sit relative to the activation?",
+          "a": "The original paper puts it before the activation (conv, BN, ReLU), and that remains the common convention. Since BN has its own bias, the preceding layer's bias can be dropped.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-011",
+          "q": "What is stochastic depth (DropPath)?",
+          "a": "Randomly dropping whole residual branches during training so the block becomes the identity. It shortens the effective depth, regularises hard, and is standard in deep vision transformers.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-012",
+          "q": "Why does batch norm degrade with very small batch sizes?",
+          "a": "The batch mean and variance become noisy estimates, so the normalisation itself is unstable and the running statistics drift from the training behaviour. Use group norm or layer norm instead.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-regularization-013",
+          "q": "What is the difference between pre-norm and post-norm residual blocks?",
+          "a": "Post-norm applies normalisation after the residual add (original transformer) and needs careful warmup. Pre-norm normalises the branch input, leaving a clean identity path, so deep stacks train far more stably.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "cnn",
+      "name": "CNN & Famous Architectures",
+      "questions": [
+        {
+          "id": "dl-cnn-001",
+          "q": "What is a convolutional layer?",
+          "a": "A layer that slides small learned kernels over the input, computing a dot product at each position. It exploits locality and reuses the same weights everywhere.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-002",
+          "q": "What is a kernel (filter) in a CNN?",
+          "a": "The small learned weight tensor convolved with the input, typically 3x3 across all input channels. Each kernel produces one output channel and detects one pattern.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-003",
+          "q": "What is pooling and why use it?",
+          "a": "Downsampling a feature map by taking the max or average over small windows. It shrinks spatial size, cuts compute, and gives small translation invariance.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-004",
+          "q": "What is a feature map?",
+          "a": "The output of one kernel across the whole input - a 2-D map of where that pattern was detected. A conv layer produces one feature map per output channel.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-005",
+          "q": "Why are CNNs better suited to images than dense networks?",
+          "a": "Weight sharing and local connectivity cut parameters by orders of magnitude, and they encode the right priors: nearby pixels are related and a pattern means the same thing anywhere.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-006",
+          "q": "What do stride and padding control?",
+          "a": "Stride is how far the kernel moves per step, so stride 2 halves the output size. Padding adds a border; `same` padding keeps the spatial size, `valid` shrinks it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-007",
+          "q": "How do you compute a convolution layer's output size?",
+          "a": "```\nout = floor((in + 2*pad - kernel) / stride) + 1\n```\n\nFor a 32x32 input with a 3x3 kernel, pad 1 and stride 1, the output stays 32x32.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-008",
+          "q": "What is the receptive field?",
+          "a": "The region of the original input that influences one activation. It grows with depth, kernel size, stride and dilation - deep units see context, shallow units see texture.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-009",
+          "q": "What does a 1x1 convolution do?",
+          "a": "It mixes channels at each pixel without touching spatial structure, so it is used to cut or expand channel count cheaply. Inception and ResNet bottlenecks rely on it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-010",
+          "q": "What is global average pooling and why replace the flatten layer with it?",
+          "a": "Averaging each feature map to a single number, giving one value per channel. It removes the huge dense layer after flattening, so there are far fewer parameters and less overfitting.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-011",
+          "q": "What did LeNet and VGG establish?",
+          "a": "LeNet (1998) set the conv-pool-dense template for digit recognition. VGG showed that stacking small 3x3 convolutions uniformly and going deeper beats large kernels - at the cost of ~138M parameters.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-012",
+          "q": "What are the key ideas behind Inception and EfficientNet?",
+          "a": "Inception runs several kernel sizes in parallel per block with 1x1 bottlenecks, so the network picks its own scale. EfficientNet scales depth, width and resolution together by a single compound coefficient.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-013",
+          "q": "What problem did ResNet solve that deeper plain networks could not?",
+          "a": "Degradation: beyond about 20 layers, plain stacks got worse on training data too, so it was optimisation, not overfitting. Learning a residual `f(x)` makes the identity easy to represent, so extra depth never hurts.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-cnn-014",
+          "q": "What is a depthwise separable convolution?",
+          "a": "A per-channel spatial convolution followed by a 1x1 pointwise convolution. It costs roughly 1/k^2 of a full convolution's parameters, which is what makes MobileNet small enough for phones.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "rnn",
+      "name": "Recurrent Neural Networks",
+      "questions": [
+        {
+          "id": "dl-rnn-001",
+          "q": "What is a recurrent neural network?",
+          "a": "A network that processes a sequence one step at a time, feeding its own hidden state forward. The same weights apply at every timestep, so it handles variable-length input.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-rnn-002",
+          "q": "What is the hidden state in an RNN?",
+          "a": "A vector summarising everything seen so far, updated as `h_t = f(W*x_t + U*h_(t-1) + b)`. It is the network's memory of the sequence.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-rnn-003",
+          "q": "What are the one-to-many, many-to-one and many-to-many RNN setups?",
+          "a": "One-to-many generates a sequence from one input (image captioning), many-to-one classifies a sequence (sentiment), and many-to-many maps sequence to sequence (translation, tagging).",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-rnn-004",
+          "q": "What is backpropagation through time?",
+          "a": "Unrolling the recurrence into a deep feedforward graph - one layer per timestep sharing weights - and running ordinary backprop over it, summing each weight's gradient across all steps.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-rnn-005",
+          "q": "Why do plain RNNs struggle with long sequences?",
+          "a": "The same weight matrix multiplies the gradient at every step, so it shrinks or explodes geometrically with sequence length. In practice dependencies beyond a few dozen steps are not learned.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-rnn-006",
+          "q": "What is a bidirectional RNN?",
+          "a": "Two RNNs reading the sequence forward and backward, with their states concatenated, so every position sees both past and future. It needs the full sequence up front, so it cannot stream.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-rnn-007",
+          "q": "What is teacher forcing?",
+          "a": "During training, feeding the decoder the ground-truth previous token instead of its own prediction. It speeds convergence but creates exposure bias, since inference has no ground truth.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-rnn-008",
+          "q": "How do you handle variable-length sequences in a batch?",
+          "a": "Pad to the longest sequence and pass an attention or loss mask so padding contributes nothing. PyTorch also offers packed sequences, which skip the padded steps entirely.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-rnn-009",
+          "q": "What is exposure bias in sequence generation?",
+          "a": "The model is trained on ground-truth prefixes but must consume its own outputs at inference, so one early mistake compounds. Scheduled sampling and sequence-level training reduce it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-rnn-010",
+          "q": "What is truncated backpropagation through time?",
+          "a": "Backpropagating only `k` steps instead of the full sequence, so memory and compute stay bounded. The trade-off is that dependencies longer than `k` get no gradient at all.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-rnn-011",
+          "q": "Why can't an RNN be parallelised over the time dimension?",
+          "a": "Step `t` needs `h_(t-1)`, so the computation is inherently sequential - training time scales with sequence length. Removing that dependency is exactly what made transformers fast.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "lstm-gru",
+      "name": "LSTM & GRU",
+      "questions": [
+        {
+          "id": "dl-lstm-gru-001",
+          "q": "What is an LSTM?",
+          "a": "A recurrent cell with a separate cell state and three gates controlling what to forget, what to add and what to output. The gating is what lets it carry information over hundreds of steps.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-002",
+          "q": "What is a GRU?",
+          "a": "A simpler gated cell with just a reset and an update gate and no separate cell state. It has about 25% fewer parameters than an LSTM and often performs comparably.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-003",
+          "q": "What problem were LSTMs and GRUs designed to solve?",
+          "a": "The vanishing gradient over long sequences. Gates let the cell keep a value unchanged for many steps instead of re-multiplying it through a weight matrix each time.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-004",
+          "q": "What are the three gates of an LSTM?",
+          "a": "The forget gate decides what to drop from the cell state, the input gate what new information to write, and the output gate how much of the cell state to expose as the hidden state.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-005",
+          "q": "What is the difference between the cell state and the hidden state?",
+          "a": "The cell state is the long-term memory carried along a mostly linear path; the hidden state is the filtered, gated view of it passed to the next layer and used for prediction.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-006",
+          "q": "What are the main structural differences between an LSTM and a GRU?",
+          "a": "A GRU merges forget and input into one update gate, drops the output gate, and keeps only a hidden state. Fewer parameters, faster per step, slightly less expressive.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-007",
+          "q": "When would you pick a GRU over an LSTM?",
+          "a": "On smaller datasets or tighter latency budgets, where fewer parameters train faster and overfit less. With abundant data and very long dependencies, LSTMs retain a small edge.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-008",
+          "q": "Why is initialising the forget gate bias to 1 a common trick?",
+          "a": "A positive bias starts the gate near \"remember everything\", so the cell state persists from the first steps and gradients flow. With a zero bias the cell forgets by default and learns slowly.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-009",
+          "q": "Do LSTMs eliminate exploding gradients too?",
+          "a": "No. The gating fixes vanishing gradients, but the recurrent weights can still blow up, so gradient clipping is still standard practice when training LSTMs.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-010",
+          "q": "How many parameters does an LSTM layer have?",
+          "a": "`4 * (n*h + h*h + h)` for input size `n` and hidden size `h` - four gate-sized weight sets. A GRU has three, so roughly 3/4 as many.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-011",
+          "q": "Why does the additive cell state update preserve gradients?",
+          "a": "`c_t = f_t * c_(t-1) + i_t * g_t` means the gradient flows back through a multiplication by the forget gate rather than a weight matrix. With `f_t` near 1 it passes almost unchanged - a \"constant error carousel\".",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-lstm-gru-012",
+          "q": "Are LSTMs still worth using now that transformers exist?",
+          "a": "Yes for streaming, on-device and small-data settings: inference is O(1) memory per step with no growing KV cache. For large-scale language modelling transformers dominate.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "seq2seq-attention",
+      "name": "Seq2Seq & Attention",
+      "questions": [
+        {
+          "id": "dl-seq2seq-attention-001",
+          "q": "What is a seq2seq model?",
+          "a": "An architecture mapping an input sequence to an output sequence of a different length - translation, summarisation, speech to text - built from an encoder and a decoder.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-002",
+          "q": "What does the encoder-decoder split do?",
+          "a": "The encoder compresses the input into representations; the decoder generates the output token by token, conditioned on those representations and on what it has produced so far.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-003",
+          "q": "What is attention, intuitively?",
+          "a": "A learned soft lookup: for each output step the decoder scores every input position and reads a weighted average of them, so it can focus on the relevant source words.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-004",
+          "q": "What bottleneck problem did attention fix?",
+          "a": "The original seq2seq squeezed the whole source into one fixed-length vector, so quality collapsed on long inputs. Attention gives the decoder direct access to every encoder state.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-005",
+          "q": "How is an attention output computed?",
+          "a": "Score each key against the query, softmax the scores into weights, then take the weighted sum of the values.\n\n```\nscores = q . k\nweights = softmax(scores)\nout = sum(weights * v)\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-006",
+          "q": "What is the difference between Bahdanau and Luong attention?",
+          "a": "Bahdanau (additive) scores with a small feedforward network and computes attention before the decoder step; Luong (multiplicative) uses a dot product and applies it after, which is cheaper.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-007",
+          "q": "What is the context vector?",
+          "a": "The attention-weighted sum of encoder states for the current decoder step. It is recomputed every step and concatenated with the decoder state before predicting the next token.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-008",
+          "q": "What is the difference between cross-attention and self-attention?",
+          "a": "Cross-attention has queries from the decoder and keys/values from the encoder, linking two sequences. Self-attention draws all three from the same sequence, relating its positions to each other.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-009",
+          "q": "What is beam search?",
+          "a": "Decoding that keeps the `k` highest-scoring partial sequences at each step instead of only the best token. It finds better overall sequences than greedy decoding at `k` times the cost.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-010",
+          "q": "Why does beam search need length normalisation?",
+          "a": "Sequence score is a sum of log probabilities, which is always more negative for longer sequences, so raw beam search prefers short outputs. Dividing by length (or a length penalty) corrects the bias.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-011",
+          "q": "Why does attention improve gradient flow to distant tokens?",
+          "a": "It creates a direct weighted connection between any output and any input position, so the gradient path length is O(1) instead of O(sequence length) through the recurrence.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-seq2seq-attention-012",
+          "q": "What is the coverage problem in attention-based seq2seq?",
+          "a": "Nothing stops the decoder attending to the same source words repeatedly, which causes repetition and dropped content. A coverage vector accumulating past attention, penalised in the loss, fixes it.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "transformers",
+      "name": "Transformers",
+      "questions": [
+        {
+          "id": "dl-transformers-001",
+          "q": "What is a transformer?",
+          "a": "A sequence architecture built entirely from attention and feedforward layers, with no recurrence or convolution. Because every position is processed in parallel, it trains far faster than an RNN.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-002",
+          "q": "What is self-attention?",
+          "a": "Each token attends to every token in its own sequence, including itself, and builds its new representation as a weighted mix of them. That is how context gets mixed in one layer.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-003",
+          "q": "What are queries, keys and values?",
+          "a": "Three learned linear projections of the input. The query asks what a token is looking for, keys advertise what each token offers, and values carry the content that gets mixed.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-004",
+          "q": "What are the sublayers of a transformer encoder block?",
+          "a": "Multi-head self-attention then a position-wise feedforward network, each wrapped in a residual connection and layer normalisation.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-005",
+          "q": "What is scaled dot-product attention and why divide by the square root of d_k?",
+          "a": "```\nAttention(Q,K,V) = softmax(Q K^T / sqrt(d_k)) V\n```\n\nDot products grow with dimension, which would saturate the softmax into a near one-hot with tiny gradients. The scaling keeps the variance around 1.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-006",
+          "q": "What is multi-head attention?",
+          "a": "Splitting the model dimension into `h` heads that attend independently, then concatenating and projecting. Different heads can track syntax, coreference or position at the same time.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-007",
+          "q": "Why does a transformer need positional information?",
+          "a": "Attention is permutation-invariant - it sees a set, not a sequence. Order must be injected, originally by adding fixed sinusoidal vectors to the embeddings.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-008",
+          "q": "What does the position-wise feedforward block do?",
+          "a": "Two linear layers with a non-linearity, applied identically to every position, usually expanding to 4x the model dimension. Attention mixes across tokens; this transforms each token.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-009",
+          "q": "What is masked (causal) attention?",
+          "a": "Setting the attention scores for future positions to negative infinity before the softmax, so each token can only attend to itself and earlier tokens. It is what makes autoregressive decoding valid.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-010",
+          "q": "What is the time and memory complexity of self-attention?",
+          "a": "O(n^2 * d) time and O(n^2) attention memory for sequence length `n`, because every pair of positions is scored. That quadratic term is the limit on context length.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-011",
+          "q": "What is a Vision Transformer?",
+          "a": "It splits an image into fixed patches, linearly embeds each as a token, adds positional embeddings and runs a standard transformer encoder. It beats CNNs given large-scale pretraining.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-012",
+          "q": "What approaches reduce attention's quadratic cost?",
+          "a": "Sparse or windowed attention (Longformer, BigBird), linear-attention approximations (Performer), and exact IO-aware kernels like FlashAttention that tile the computation so the n-by-n matrix is never written to memory.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-transformers-013",
+          "q": "Why are residual connections and normalisation essential in a transformer?",
+          "a": "Dozens of attention and feedforward blocks would otherwise lose the original signal and destabilise gradients. Residuals give an identity path, and normalisation keeps activation scale constant across depth.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "autoencoders-vae",
+      "name": "Autoencoders & VAE",
+      "questions": [
+        {
+          "id": "dl-autoencoders-vae-001",
+          "q": "What is an autoencoder?",
+          "a": "A network trained to reconstruct its own input through a narrow bottleneck. The encoder compresses, the decoder rebuilds, and the loss is reconstruction error - no labels needed.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-autoencoders-vae-002",
+          "q": "What is the bottleneck (latent code) of an autoencoder?",
+          "a": "The low-dimensional layer between encoder and decoder. Forcing the data through it is what makes the network learn a compressed representation instead of the identity function.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-autoencoders-vae-003",
+          "q": "What are autoencoders used for?",
+          "a": "Non-linear dimensionality reduction, denoising, anomaly detection by reconstruction error, and pretraining representations. Plain autoencoders are poor generative models.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-autoencoders-vae-004",
+          "q": "What is a denoising autoencoder?",
+          "a": "One trained to reconstruct a clean input from a corrupted copy. The corruption stops it memorising the identity and forces it to learn the data's structure.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-autoencoders-vae-005",
+          "q": "What is a sparse autoencoder?",
+          "a": "An autoencoder with an L1 or KL penalty on activations so only a few units fire per input. The bottleneck can then be wide while the code stays interpretable - the basis of today's LLM feature-extraction work.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-autoencoders-vae-006",
+          "q": "What is a variational autoencoder?",
+          "a": "An autoencoder whose encoder outputs a distribution (mean and variance) rather than a point, and whose latent space is pushed toward a standard normal prior. That makes it a proper generative model.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-autoencoders-vae-007",
+          "q": "What are the two terms of the VAE loss?",
+          "a": "Reconstruction error, which keeps outputs faithful, and a KL divergence pulling the approximate posterior toward the prior, which keeps the latent space smooth. Together they form the ELBO.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-autoencoders-vae-008",
+          "q": "What is the reparameterisation trick?",
+          "a": "Writing a sample as `z = mu + sigma * epsilon` with `epsilon ~ N(0, 1)`, so randomness sits in a constant and gradients flow through `mu` and `sigma`. Sampling directly would block backprop.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-autoencoders-vae-009",
+          "q": "What is the difference between a VAE and a plain autoencoder?",
+          "a": "A plain autoencoder learns an arbitrary code with holes between training points; a VAE learns a continuous, regularised distribution you can sample and interpolate in. The price is blurrier reconstructions.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-autoencoders-vae-010",
+          "q": "What is posterior collapse in a VAE?",
+          "a": "The KL term drives the posterior to exactly match the prior, so the latent carries no information and a strong decoder ignores it. Fixes include KL annealing, free bits and a weaker decoder.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-autoencoders-vae-011",
+          "q": "Why can't you sample new data from a plain autoencoder's latent space?",
+          "a": "Nothing constrains the code distribution, so most of the latent space was never visited during training and decoding a random point yields noise. The VAE's prior term is what fixes this.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "gans",
+      "name": "GANs",
+      "questions": [
+        {
+          "id": "dl-gans-001",
+          "q": "What is a GAN?",
+          "a": "A generative adversarial network: two networks trained against each other, one producing fake samples and one trying to spot them. The generator improves because the discriminator keeps getting harder to fool.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-gans-002",
+          "q": "What do the generator and discriminator each do?",
+          "a": "The generator maps a random noise vector to a sample; the discriminator takes a sample and outputs the probability that it is real. Only the generator is kept after training.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-gans-003",
+          "q": "What is the latent vector `z` in a GAN?",
+          "a": "A random vector, usually standard normal, that seeds generation. Moving through it smoothly changes the output, which is why GAN latent spaces support interpolation and attribute editing.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-gans-004",
+          "q": "What is the GAN minimax objective?",
+          "a": "The discriminator maximises `log D(x) + log(1 - D(G(z)))` while the generator minimises it. At the optimum the discriminator cannot do better than chance.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-gans-005",
+          "q": "What is mode collapse?",
+          "a": "The generator finds a few outputs that reliably fool the discriminator and produces only those, so diversity dies. Minibatch discrimination, unrolled steps and WGAN-GP all mitigate it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-gans-006",
+          "q": "Why is GAN training unstable?",
+          "a": "It is a two-player game, not a loss being minimised, so the equilibrium can oscillate or diverge. If either player gets too strong the other's gradients vanish.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-gans-007",
+          "q": "What is a conditional GAN?",
+          "a": "A GAN where both networks also receive a condition - a class label, a text embedding, an input image - so generation is controllable. Pix2pix and CycleGAN are image-to-image versions.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-gans-008",
+          "q": "What does a Wasserstein GAN change?",
+          "a": "It replaces the Jensen-Shannon objective with the Wasserstein distance estimated by a critic, which gives usable gradients even when the distributions barely overlap. WGAN-GP enforces that with a gradient penalty.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-gans-009",
+          "q": "How do you evaluate a GAN?",
+          "a": "Fréchet Inception Distance compares the mean and covariance of Inception features for real and generated sets - lower is better and it captures both quality and diversity. Inception Score is older and weaker.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-gans-010",
+          "q": "Why is the non-saturating generator loss used in practice?",
+          "a": "Minimising `log(1 - D(G(z)))` has almost no gradient while the discriminator is confident. Maximising `log D(G(z))` instead gives the generator strong gradients exactly when it is doing badly.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-gans-011",
+          "q": "Why have diffusion models largely displaced GANs for image generation?",
+          "a": "Diffusion trains on a stable regression objective instead of an adversarial game, so it does not mode-collapse and covers the distribution better. GANs still win on single-step inference latency.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "diffusion",
+      "name": "Diffusion Models",
+      "questions": [
+        {
+          "id": "dl-diffusion-001",
+          "q": "What is a diffusion model?",
+          "a": "A generative model that learns to reverse a gradual noising process: start from pure noise and denoise step by step until a clean sample appears.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-diffusion-002",
+          "q": "What is the forward process in diffusion?",
+          "a": "A fixed, untrained schedule that adds Gaussian noise over `T` steps until the data is indistinguishable from noise. It has a closed form, so any step can be sampled directly.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-diffusion-003",
+          "q": "What does the network in a diffusion model actually predict?",
+          "a": "Usually the noise added at a given timestep (an `epsilon`-prediction), from which the slightly cleaner image is derived. Some variants predict the clean sample or a velocity instead.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-diffusion-004",
+          "q": "What is the reverse (denoising) process?",
+          "a": "The learned part: at each step the model estimates the noise, subtracts a scaled portion of it and adds a little fresh noise, walking from `x_T` back to `x_0`.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-diffusion-005",
+          "q": "What is the noise schedule?",
+          "a": "How much noise is added per step - linear or cosine. It controls how information is destroyed over time, and a cosine schedule keeps more signal in early steps, which improves sample quality.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-diffusion-006",
+          "q": "What is the difference between DDPM and DDIM sampling?",
+          "a": "DDPM sampling is stochastic and needs hundreds of steps. DDIM is a deterministic non-Markovian sampler that skips steps, giving good samples in 20-50 - with reproducible, invertible latents.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-diffusion-007",
+          "q": "What is classifier-free guidance?",
+          "a": "Train one model both with and without the condition, then at sampling extrapolate: `eps = eps_uncond + w * (eps_cond - eps_uncond)`. Higher `w` means stronger prompt adherence and less diversity.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-diffusion-008",
+          "q": "What is latent diffusion?",
+          "a": "Running diffusion in the compressed latent space of a pretrained autoencoder instead of pixel space. That cuts compute by roughly an order of magnitude and is what makes Stable Diffusion practical.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-diffusion-009",
+          "q": "How does a text prompt condition a diffusion model?",
+          "a": "A text encoder such as CLIP or T5 produces token embeddings, which the denoising U-Net or transformer reads through cross-attention at every resolution level.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-diffusion-010",
+          "q": "Why is predicting the noise easier than predicting the clean image directly?",
+          "a": "The noise target has roughly constant scale at every timestep, so one network handles all noise levels with a well-conditioned regression objective. Predicting `x_0` from near-pure noise is a far harder, higher-variance task.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-diffusion-011",
+          "q": "What is the score-matching view of diffusion?",
+          "a": "Predicting the noise is equivalent, up to scaling, to estimating the gradient of the log density - the score. Sampling is then Langevin-style ascent on that score, which links diffusion to energy-based models.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "transfer-learning",
+      "name": "Transfer Learning & Fine-tuning",
+      "questions": [
+        {
+          "id": "dl-transfer-learning-001",
+          "q": "What is transfer learning?",
+          "a": "Reusing a model trained on a large source task as the starting point for a related target task, so you inherit its learned features instead of learning them from scratch.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-002",
+          "q": "What is a pretrained model?",
+          "a": "A network whose weights already come from training on a large corpus - ImageNet for vision, web text for language. It is a feature extractor you adapt rather than a finished product.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-003",
+          "q": "What is fine-tuning?",
+          "a": "Continuing to train some or all of a pretrained model's weights on your own data, usually with a fresh task head and a much smaller learning rate.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-004",
+          "q": "Why does transfer learning work at all?",
+          "a": "Early layers learn generic structure - edges and textures in images, syntax and word meaning in text - that most tasks in the same modality share. Only the later, task-specific layers must change.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-005",
+          "q": "What is the difference between feature extraction and fine-tuning?",
+          "a": "Feature extraction freezes the backbone and trains only a new head - fast and safe on small data. Fine-tuning unfreezes some backbone layers too, giving more accuracy but needing more data and care.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-006",
+          "q": "Which layers should you freeze?",
+          "a": "Freeze the early generic layers and unfreeze the later task-specific ones. The less data you have and the closer your task is to the source, the more you freeze.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-007",
+          "q": "What learning rate should you use when fine-tuning?",
+          "a": "Roughly 10-100x smaller than for training from scratch - about 1e-4 to 2e-5 for a transformer. A large rate destroys the pretrained features in the first few steps.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-008",
+          "q": "What is catastrophic forgetting?",
+          "a": "The model loses its general pretrained ability while specialising on the new task. Low learning rates, fewer epochs, freezing layers and mixing in replay data all reduce it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-009",
+          "q": "When does transfer learning fail or hurt?",
+          "a": "When the source and target domains differ sharply - natural images to medical scans, English to a very low-resource language. Negative transfer means a smaller model trained from scratch can win.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-010",
+          "q": "What is domain adaptation?",
+          "a": "Transferring to a target with the same task but a shifted input distribution, often with no target labels. Techniques align the feature distributions, for example by adversarial domain confusion.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-011",
+          "q": "What is discriminative (layer-wise) learning rate decay?",
+          "a": "Giving each layer a smaller learning rate the deeper it sits in the backbone, so general features barely move while the head adapts fast. Standard practice in ULMFiT and modern transformer fine-tuning.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-transfer-learning-012",
+          "q": "How much data do you need to fine-tune versus train from scratch?",
+          "a": "Fine-tuning can work with hundreds to a few thousand labelled examples; training a comparable model from scratch typically needs orders of magnitude more. That gap is the whole value of pretraining.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "detection-segmentation",
+      "name": "Object Detection & Segmentation",
+      "questions": [
+        {
+          "id": "dl-detection-segmentation-001",
+          "q": "What is object detection?",
+          "a": "Locating and classifying every object in an image, outputting a bounding box, a class and a confidence per object - unlike classification, which labels the whole image.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-detection-segmentation-002",
+          "q": "What is image segmentation?",
+          "a": "Assigning a label to every pixel rather than drawing boxes, producing an exact mask. It is what medical imaging and autonomous driving need.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-detection-segmentation-003",
+          "q": "What is a bounding box and how is it represented?",
+          "a": "The smallest rectangle enclosing an object, stored either as corners `(x1, y1, x2, y2)` or as centre, width and height. YOLO uses the normalised centre form.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-detection-segmentation-004",
+          "q": "What is the difference between semantic, instance and panoptic segmentation?",
+          "a": "Semantic labels each pixel by class but merges touching objects; instance separates individual objects but usually ignores background; panoptic does both - every pixel gets a class and, where relevant, an instance id.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-detection-segmentation-005",
+          "q": "What is Intersection over Union?",
+          "a": "The overlap area of two boxes divided by their union area. It is the standard match criterion - a prediction usually counts as correct above an IoU of 0.5.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-detection-segmentation-006",
+          "q": "What is mean Average Precision?",
+          "a": "Average Precision is the area under a class's precision-recall curve over confidence thresholds; mAP averages it over classes. COCO reports it averaged over IoU thresholds from 0.5 to 0.95.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-detection-segmentation-007",
+          "q": "What is non-maximum suppression?",
+          "a": "A post-processing step that keeps the highest-confidence box and discards any box overlapping it above an IoU threshold, repeating per class. Without it each object gets many duplicate detections.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-detection-segmentation-008",
+          "q": "How does YOLO work?",
+          "a": "One forward pass over a grid predicts boxes, objectness and class probabilities for every cell simultaneously, then NMS cleans up. Treating detection as a single regression is what makes it real-time.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-detection-segmentation-009",
+          "q": "What is U-Net's architecture?",
+          "a": "A symmetric encoder-decoder: the contracting path downsamples to capture context, the expanding path upsamples to restore resolution, and skip connections copy encoder features across at each level.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-detection-segmentation-010",
+          "q": "What is the difference between one-stage and two-stage detectors?",
+          "a": "Two-stage (R-CNN, Faster R-CNN) proposes regions then classifies them - more accurate, slower. One-stage (YOLO, SSD, RetinaNet) predicts directly on a dense grid - faster, and focal loss closed most of the accuracy gap.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-detection-segmentation-011",
+          "q": "Why are U-Net's skip connections essential?",
+          "a": "Downsampling destroys the fine spatial detail a pixel-accurate mask needs. The skips hand high-resolution encoder features straight to the decoder, so boundaries stay sharp and gradients reach the encoder.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "frameworks",
+      "name": "PyTorch & TensorFlow Basics",
+      "questions": [
+        {
+          "id": "dl-frameworks-001",
+          "q": "What is a tensor?",
+          "a": "A multi-dimensional array with a dtype and a device, plus the gradient machinery deep learning needs. It is a NumPy array that can live on a GPU and track operations.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-002",
+          "q": "What does `requires_grad` do in PyTorch?",
+          "a": "It tells autograd to record operations on that tensor so gradients can be computed for it. Model parameters have it set by default; input data normally does not.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-003",
+          "q": "What is the difference between PyTorch and TensorFlow today?",
+          "a": "PyTorch is eager-first with a Pythonic API and dominates research; TensorFlow pairs with Keras and has a stronger deployment story (TF Lite, TF Serving). Both now support eager and compiled graphs.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-004",
+          "q": "How do you move a model and data to the GPU?",
+          "a": "```python\ndevice = 'cuda' if torch.cuda.is_available() else 'cpu'\nmodel.to(device)\nx = x.to(device)\n```\n\nModel and inputs must be on the same device or the call raises an error.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-005",
+          "q": "What does `model.train()` versus `model.eval()` change?",
+          "a": "They flip the mode of layers that behave differently: dropout is active in train and off in eval, and batch norm uses batch statistics in train but running statistics in eval. Forgetting `eval()` corrupts validation numbers.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-006",
+          "q": "Why must you call `optimizer.zero_grad()`?",
+          "a": "PyTorch accumulates gradients into `.grad` instead of overwriting them, which is useful for gradient accumulation but means a missing reset silently sums gradients across batches.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-007",
+          "q": "What are the steps of a PyTorch training loop?",
+          "a": "```python\nfor x, y in loader:\n    optimizer.zero_grad()\n    loss = criterion(model(x), y)\n    loss.backward()\n    optimizer.step()\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-008",
+          "q": "What does a `DataLoader` give you?",
+          "a": "Batching, shuffling, parallel loading with `num_workers`, and custom collation. It turns a `Dataset` into an iterator that overlaps data preparation with GPU compute.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-009",
+          "q": "What is the difference between eager and graph execution?",
+          "a": "Eager runs operations immediately, so you can print and debug normally. Graph execution traces the computation first, enabling whole-graph optimisation and export at the cost of debuggability.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-010",
+          "q": "What is mixed precision training?",
+          "a": "Running most operations in float16 or bfloat16 while keeping master weights and reductions in float32, with loss scaling for fp16. It roughly halves memory and doubles throughput on modern GPUs.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-011",
+          "q": "What is the difference between `torch.no_grad()` and `.detach()`?",
+          "a": "`no_grad()` is a context manager that stops graph recording for everything inside, which is what you want for inference. `.detach()` cuts one tensor out of the existing graph.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "dl-frameworks-012",
+          "q": "What does `torch.compile` do?",
+          "a": "It traces the model, captures an intermediate graph, and generates fused kernels ahead of execution. Typical speedups are 1.3-2x with no code change, though dynamic shapes trigger recompilation.",
+          "difficulty": "hard",
           "known": false
         }
       ]
