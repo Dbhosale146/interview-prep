@@ -10,16 +10,1879 @@
       "questions": [
         {
           "id": "ml-fundamentals-001",
-          "q": "Placeholder question one for ML Fundamentals?",
-          "a": "Placeholder answer with `inline code`.",
+          "q": "What is machine learning?",
+          "a": "Building models that learn patterns from data to make predictions or decisions, instead of following rules written by hand. The model's parameters are fitted by optimising an objective on examples.",
           "difficulty": "easy",
           "known": false
         },
         {
           "id": "ml-fundamentals-002",
-          "q": "Placeholder question two for ML Fundamentals?",
-          "a": "Placeholder answer.\n\n```python\nprint(1)\n```",
+          "q": "What is the difference between supervised and unsupervised learning?",
+          "a": "Supervised learning trains on labelled examples to predict a target; unsupervised learning finds structure in unlabelled data, such as clusters or a lower-dimensional representation.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-003",
+          "q": "What is reinforcement learning?",
+          "a": "An agent learns a policy by acting in an environment and receiving rewards. There are no labelled examples - the signal is delayed reward, so exploration versus exploitation matters.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-004",
+          "q": "What is the difference between classification and regression?",
+          "a": "Classification predicts a discrete class label; regression predicts a continuous number. The split drives the loss function and the metrics you report.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-005",
+          "q": "What is overfitting?",
+          "a": "The model fits noise and quirks of the training set, so training error is low but validation error is high. It means too much capacity for the amount of signal available.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-006",
+          "q": "What is underfitting?",
+          "a": "The model is too simple or under-trained to capture the real pattern, so both training and validation error stay high. Add capacity, better features, or train longer.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-007",
+          "q": "What is the difference between a semi-supervised and a self-supervised approach?",
+          "a": "Semi-supervised learning mixes a few labelled examples with many unlabelled ones. Self-supervised learning invents labels from the data itself, such as predicting a masked token.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-008",
+          "q": "What is the bias-variance tradeoff?",
+          "a": "Expected error splits into bias (systematic error from a too-simple model), variance (sensitivity to the training sample) and irreducible noise. Reducing one usually raises the other.",
           "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-009",
+          "q": "How do you detect and reduce overfitting?",
+          "a": "Detect it from a widening train-validation gap. Reduce it with more data, regularisation, fewer features, a simpler model, early stopping or ensembling.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-010",
+          "q": "Why split data into train, validation and test sets?",
+          "a": "Train fits parameters, validation selects hyperparameters and model choices, and test gives one unbiased final estimate. Tuning on the test set leaks it and inflates your reported score.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-011",
+          "q": "What is the curse of dimensionality?",
+          "a": "As dimensions grow, data becomes sparse and distances concentrate, so neighbourhood-based methods lose meaning and the data needed for the same coverage grows exponentially.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-012",
+          "q": "What is the difference between a parametric and a non-parametric model?",
+          "a": "A parametric model has a fixed number of parameters regardless of data size (linear regression); a non-parametric model's complexity grows with the data (KNN, decision trees, kernel SVM).",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-013",
+          "q": "What is the no-free-lunch theorem?",
+          "a": "Averaged over all possible problems, every learning algorithm performs the same. Practical performance comes from assumptions that happen to match the real problem, so there is no universally best model.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-014",
+          "q": "What is inductive bias?",
+          "a": "The assumptions a model uses to generalise beyond the training data - linearity, smoothness, locality, translation invariance in a CNN. Without it, generalisation is impossible.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "preprocessing",
+      "name": "Data Preprocessing & Feature Engineering",
+      "questions": [
+        {
+          "id": "ml-preprocessing-001",
+          "q": "What is feature scaling and why is it needed?",
+          "a": "Putting features on a comparable range. Distance-based methods (KNN, SVM, K-Means) and gradient descent converge badly when one feature spans a far larger range than others.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-002",
+          "q": "What is the difference between normalisation and standardisation?",
+          "a": "Normalisation (min-max) rescales to a fixed range such as [0, 1]; standardisation subtracts the mean and divides by the standard deviation. Standardisation handles outliers better and does not bound the range.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-003",
+          "q": "What is one-hot encoding?",
+          "a": "Turning a categorical column into one binary column per category, so no false ordering is implied. It explodes dimensionality for high-cardinality features.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-004",
+          "q": "What is feature engineering?",
+          "a": "Creating inputs that expose the signal a model cannot learn on its own - ratios, date parts, aggregates, interactions, domain flags. It often beats swapping in a fancier model.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-005",
+          "q": "What is label encoding and when is it the wrong choice?",
+          "a": "Mapping categories to integers. It is wrong for linear and distance-based models, which read the integers as an order, but fine for tree models that only split on thresholds.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-006",
+          "q": "What is target encoding and what is its main risk?",
+          "a": "Replacing a category with the mean target for that category. It leaks the label, so it must be computed inside cross-validation folds with smoothing for rare categories.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-007",
+          "q": "What are your options for imputing missing values?",
+          "a": "Drop rows or columns, fill with mean/median/mode, use a model-based imputer such as KNN or iterative imputation, or add a \"was missing\" indicator so the pattern itself stays usable.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-008",
+          "q": "What is data leakage?",
+          "a": "Information from outside the training fold - or from the future - reaching the model, giving great validation scores and poor production results. Scaling on the full dataset is the classic case.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-009",
+          "q": "Why must a scaler be fitted on the training set only?",
+          "a": "Fitting on all the data lets test statistics influence the transform, which is leakage. Fit on train, then `transform` validation and test with those same parameters.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-010",
+          "q": "How do you detect and handle outliers?",
+          "a": "Detect with the IQR rule, z-scores, or an isolation forest. Then cap (winsorise), transform (log), model them separately, or keep them if they are genuine rare events.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-011",
+          "q": "What is the difference between feature selection and feature extraction?",
+          "a": "Selection keeps a subset of the original interpretable features; extraction builds new combined features such as PCA components, which usually perform better but lose interpretability.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-preprocessing-012",
+          "q": "In what order should preprocessing steps run, and why use a pipeline?",
+          "a": "Split first, then impute, encode, scale, and only then fit. A `Pipeline` binds those steps to the model so cross-validation re-fits them per fold and no leakage slips in.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "linear-regression",
+      "name": "Linear Regression",
+      "questions": [
+        {
+          "id": "ml-linear-regression-001",
+          "q": "What is linear regression?",
+          "a": "A model predicting a continuous target as a weighted sum of the features plus an intercept, `y = Xw + b`, with weights fitted to minimise squared error.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-002",
+          "q": "What is the cost function of linear regression?",
+          "a": "Mean squared error, the average of squared residuals.\n\n```\nMSE = (1/n) * sum (y_i - y_hat_i)^2\n```\n\nIt is convex, so there is a single global optimum.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-003",
+          "q": "How do you interpret a linear regression coefficient?",
+          "a": "The expected change in the target for a one-unit increase in that feature, holding the others fixed. Comparing magnitudes only makes sense if the features are scaled.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-004",
+          "q": "What are the assumptions of linear regression?",
+          "a": "Linearity in the parameters, independent errors, constant error variance (homoscedasticity), approximately normal errors for inference, and little multicollinearity.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-005",
+          "q": "What is multicollinearity and how do you detect it?",
+          "a": "Highly correlated predictors, which makes coefficients unstable and hard to interpret while predictions stay fine. Detect it with a correlation matrix or a variance inflation factor above about 5-10.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-006",
+          "q": "What is R-squared and what are its limits?",
+          "a": "The share of target variance the model explains. It never decreases when you add features, says nothing about causality, and can look high for a badly misspecified model.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-007",
+          "q": "What is adjusted R-squared?",
+          "a": "R-squared penalised by the number of predictors, so it only rises when a new feature helps more than chance. Use it to compare models with different feature counts.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-008",
+          "q": "What is the normal equation?",
+          "a": "The closed-form least-squares solution.\n\n```\nw = (X^T X)^-1 X^T y\n```\n\nIt is exact and needs no learning rate, but inverting the matrix costs about O(d^3).",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-009",
+          "q": "What is heteroscedasticity and why does it matter?",
+          "a": "Error variance that changes with the fitted value, often a funnel shape in a residual plot. Coefficients stay unbiased but standard errors and confidence intervals become wrong.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-010",
+          "q": "What is polynomial regression?",
+          "a": "Linear regression on polynomial features of the inputs, so it fits curves while staying linear in the parameters. High degrees overfit quickly, so pair it with regularisation.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-011",
+          "q": "When does the normal equation fail, and what do you use instead?",
+          "a": "When `X^T X` is singular - perfectly collinear features or more features than samples. Use the pseudo-inverse via SVD, add ridge regularisation, or fit with gradient descent.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-linear-regression-012",
+          "q": "What does the Gauss-Markov theorem say?",
+          "a": "Under linearity, zero-mean uncorrelated errors and constant variance, ordinary least squares is the best linear unbiased estimator - lowest variance among unbiased linear estimators. Normality is not required.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "logistic-regression",
+      "name": "Logistic Regression",
+      "questions": [
+        {
+          "id": "ml-logistic-regression-001",
+          "q": "What is logistic regression?",
+          "a": "A linear classifier that passes `Xw + b` through a sigmoid to produce a probability, then thresholds it. Fitted by maximising likelihood, equivalently minimising log loss.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-002",
+          "q": "Why is logistic regression called regression if it classifies?",
+          "a": "Because it regresses the log-odds of the positive class on the features - that relationship is linear. The classification step is just thresholding the resulting probability.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-003",
+          "q": "What is the sigmoid function?",
+          "a": "A squashing function mapping any real number to (0, 1).\n\n```\nsigma(z) = 1 / (1 + e^-z)\n```\n\nIt is 0.5 at `z = 0` and saturates at both extremes.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-004",
+          "q": "Why not use MSE as the loss for logistic regression?",
+          "a": "MSE combined with a sigmoid is non-convex in the weights and its gradients vanish when the sigmoid saturates. Log loss is convex and keeps gradients informative on confident mistakes.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-005",
+          "q": "What is binary cross-entropy (log loss)?",
+          "a": "The negative log-likelihood of the observed labels.\n\n```\nL = -(1/n) * sum [ y*log(p) + (1-y)*log(1-p) ]\n```\n\nIt punishes confident wrong predictions very heavily.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-006",
+          "q": "How do you interpret a logistic regression coefficient?",
+          "a": "It is the change in log-odds per unit of the feature; `exp(coefficient)` is the odds ratio. A coefficient of 0.7 means the odds multiply by about 2 per unit.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-007",
+          "q": "How do you extend logistic regression to more than two classes?",
+          "a": "Either multinomial (softmax) regression, which models all classes jointly with one normalised distribution, or one-vs-rest, which trains one binary model per class.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-008",
+          "q": "What are the assumptions of logistic regression?",
+          "a": "A linear relationship between features and log-odds, independent observations, little multicollinearity, and enough events per feature. It does not assume normally distributed features.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-009",
+          "q": "How do you choose the classification threshold?",
+          "a": "Not by defaulting to 0.5 - pick it from the cost of each error type, using a precision-recall curve or by maximising the metric you actually care about on validation data.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-010",
+          "q": "Is logistic regression a linear model?",
+          "a": "Yes: its decision boundary is a hyperplane in feature space. The sigmoid is a monotone transform of the linear score, so it changes the output scale, not the boundary's shape.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-011",
+          "q": "What is the difference between softmax regression and one-vs-rest?",
+          "a": "Softmax outputs one calibrated distribution over all classes and trains jointly; one-vs-rest trains independent binary models whose scores need rescaling and can disagree. Softmax is preferred for mutually exclusive classes.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-logistic-regression-012",
+          "q": "What happens when the classes are perfectly separable?",
+          "a": "Complete separation: the likelihood keeps improving as weights grow, so coefficients diverge and standard errors blow up. L2 regularisation bounds them and restores a stable fit.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "regularization",
+      "name": "Regularization (L1, L2, ElasticNet)",
+      "questions": [
+        {
+          "id": "ml-regularization-001",
+          "q": "What is regularization?",
+          "a": "Adding a penalty on model complexity to the loss so the fit cannot chase noise. It trades a little extra bias for a large drop in variance.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-regularization-002",
+          "q": "What is L2 (Ridge) regularization?",
+          "a": "A penalty on the sum of squared weights.\n\n```\nloss = MSE + lambda * sum(w_j^2)\n```\n\nIt shrinks weights smoothly toward zero without ever removing a feature.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-regularization-003",
+          "q": "What is L1 (Lasso) regularization?",
+          "a": "A penalty on the sum of absolute weights.\n\n```\nloss = MSE + lambda * sum(|w_j|)\n```\n\nIt drives some weights exactly to zero, so it performs feature selection.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-regularization-004",
+          "q": "What is the difference between L1 and L2 regularization?",
+          "a": "L1 produces sparse models and selects features; L2 shrinks all weights and handles correlated features more gracefully by sharing weight between them.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-regularization-005",
+          "q": "Why does L1 produce exact zeros?",
+          "a": "Its gradient has constant magnitude near zero, so a small coefficient is pushed all the way to zero instead of only shrinking. L2's gradient vanishes as the weight shrinks.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-regularization-006",
+          "q": "What is ElasticNet?",
+          "a": "A weighted mix of L1 and L2 penalties. It keeps L1's sparsity while handling groups of correlated features better, selecting them together rather than arbitrarily picking one.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-regularization-007",
+          "q": "What does the regularization strength `lambda` control?",
+          "a": "How much complexity costs. Large `lambda` shrinks weights hard toward underfitting; `lambda` near zero recovers the unregularised fit. Choose it by cross-validation.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-regularization-008",
+          "q": "Must features be scaled before regularization?",
+          "a": "Yes. The penalty applies equally to every weight, so an unscaled large-range feature gets an artificially small coefficient and is penalised less than it should be.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-regularization-009",
+          "q": "Does regularization increase bias or variance?",
+          "a": "It increases bias and reduces variance. The gain is worthwhile whenever the variance reduction outweighs the added bias on held-out data.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-regularization-010",
+          "q": "What is the geometric intuition for L1 sparsity?",
+          "a": "The L1 constraint region is a diamond with corners on the axes, while L2's is a circle. The loss contours usually touch the diamond at a corner, where some coefficients are exactly zero.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-regularization-011",
+          "q": "What is the Bayesian interpretation of L1 and L2 penalties?",
+          "a": "They are maximum a posteriori estimates with a prior on the weights: L2 corresponds to a Gaussian prior, L1 to a Laplace prior whose sharp peak at zero favours sparsity.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "gradient-descent",
+      "name": "Gradient Descent",
+      "questions": [
+        {
+          "id": "ml-gradient-descent-001",
+          "q": "What is gradient descent?",
+          "a": "An iterative optimiser that steps parameters against the gradient of the loss.\n\n```\nw := w - eta * dL/dw\n```\n\nIt converges to the global optimum for convex losses and to a local one otherwise.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-002",
+          "q": "What is the learning rate?",
+          "a": "The step size multiplying the gradient. It is usually the single most important hyperparameter: it controls both how fast you converge and whether you converge at all.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-003",
+          "q": "What is the difference between an epoch and an iteration?",
+          "a": "An epoch is one full pass over the training set; an iteration is one parameter update on one batch. With `n` samples and batch size `b` there are `n/b` iterations per epoch.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-004",
+          "q": "What does the gradient of the loss tell you?",
+          "a": "The direction of steepest increase and how sensitive the loss is to each parameter. Moving the opposite way reduces the loss fastest locally.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-005",
+          "q": "What is the difference between batch, mini-batch and stochastic gradient descent?",
+          "a": "Batch uses the whole dataset per update (stable, slow), stochastic uses one sample (noisy, fast), mini-batch uses 32-512 samples and is the practical default - stable enough and GPU-friendly.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-006",
+          "q": "What happens if the learning rate is too high or too low?",
+          "a": "Too high: the loss oscillates or diverges to NaN. Too low: training is slow and can stall in a flat region. A schedule or a short LR sweep fixes both.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-007",
+          "q": "Why does feature scaling speed up gradient descent?",
+          "a": "Unscaled features make the loss surface a long narrow valley, so the usable learning rate is set by the steepest direction and progress along the others is slow. Scaling makes the contours round.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-008",
+          "q": "How do you decide when gradient descent has converged?",
+          "a": "When the validation loss stops improving for a set patience, or when the gradient norm or parameter change falls below a tolerance. Training loss alone is not a stopping signal.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-009",
+          "q": "When are local minima not a practical concern?",
+          "a": "For convex losses - linear and logistic regression, SVMs - where any local minimum is global. In deep non-convex models most local minima turn out to have similar loss.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-010",
+          "q": "What is the trade-off in choosing the mini-batch size?",
+          "a": "Larger batches give less gradient noise and better hardware utilisation but fewer updates per epoch and often worse generalisation. Smaller batches are noisier but regularise.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-011",
+          "q": "Why does stochastic gradient descent often generalise better than full-batch?",
+          "a": "Gradient noise acts as implicit regularisation, pushing the solution out of sharp minima toward flatter ones that are less sensitive to small shifts in the data distribution.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-gradient-descent-012",
+          "q": "Why are saddle points a bigger problem than local minima in high dimensions?",
+          "a": "A critical point is a minimum only if every curvature direction is positive, which gets exponentially unlikely as dimensions grow. Most critical points are saddles, where gradients are tiny and progress stalls.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "knn",
+      "name": "K-Nearest Neighbours",
+      "questions": [
+        {
+          "id": "ml-knn-001",
+          "q": "What is the K-nearest neighbours algorithm?",
+          "a": "For a new point, find its `k` closest training points and predict by majority vote (classification) or mean (regression). There is no fitted model beyond the stored data.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-knn-002",
+          "q": "Why is KNN called a lazy learner?",
+          "a": "Training only stores the data - all the work happens at prediction time. That makes fitting instant but inference expensive, the opposite of most models.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-knn-003",
+          "q": "Which distance metrics are used with KNN?",
+          "a": "Euclidean by default, Manhattan for high dimensions or grid-like data, cosine for text embeddings, and Hamming for categorical vectors. The metric choice changes the neighbourhood.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-knn-004",
+          "q": "How do you choose `k` in KNN?",
+          "a": "By cross-validation. Small `k` means low bias and high variance (noisy boundary); large `k` smooths the boundary and raises bias. Odd `k` avoids ties in binary problems.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-knn-005",
+          "q": "Why is feature scaling essential for KNN?",
+          "a": "Distance is dominated by whichever feature has the largest numeric range, so an unscaled salary column drowns out an age column entirely.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-knn-006",
+          "q": "What is KNN's prediction cost?",
+          "a": "O(n*d) time and O(n*d) memory per query with a brute-force scan, since it compares against every stored point. That is why it does not scale to large datasets.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-knn-007",
+          "q": "Can KNN be used for regression?",
+          "a": "Yes - predict the mean or median of the `k` neighbours' targets, optionally weighted by inverse distance. It produces a piecewise-constant surface.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-knn-008",
+          "q": "How does class imbalance hurt KNN?",
+          "a": "The majority class dominates most neighbourhoods, so rare classes are rarely predicted. Use distance weighting, resampling, or class-prior correction on the vote.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-knn-009",
+          "q": "How does `k` affect the bias-variance balance in KNN?",
+          "a": "`k = 1` fits the training data perfectly with a jagged, high-variance boundary. Increasing `k` averages more neighbours, lowering variance and raising bias toward the global class prior.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-knn-010",
+          "q": "How do KD-trees and ball trees speed up KNN?",
+          "a": "They index the space so whole regions can be pruned, cutting queries to roughly O(log n) in low dimensions. Above about 20 features they degrade to brute force, so approximate methods like HNSW take over.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-knn-011",
+          "q": "Why does KNN degrade badly in high dimensions?",
+          "a": "Distances between all pairs of points concentrate around the same value, so \"nearest\" stops being meaningful and the vote becomes close to random. Reduce dimensions first.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "naive-bayes",
+      "name": "Naive Bayes",
+      "questions": [
+        {
+          "id": "ml-naive-bayes-001",
+          "q": "What is Naive Bayes?",
+          "a": "A generative classifier that applies Bayes' theorem while assuming features are conditionally independent given the class, then picks the class with the highest posterior.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-naive-bayes-002",
+          "q": "What is Bayes' theorem?",
+          "a": "It inverts a conditional probability.\n\n```\nP(y|x) = P(x|y) * P(y) / P(x)\n```\n\nFor classification the denominator is constant across classes, so it can be ignored when comparing.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-naive-bayes-003",
+          "q": "What exactly is \"naive\" about Naive Bayes?",
+          "a": "The assumption that every feature is independent of every other given the class, so the joint likelihood is a simple product. Real features are usually correlated.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-naive-bayes-004",
+          "q": "What are the main Naive Bayes variants?",
+          "a": "Gaussian for continuous features, Multinomial for counts such as word frequencies, Bernoulli for binary presence/absence, and Complement for imbalanced text.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-naive-bayes-005",
+          "q": "Why does Naive Bayes work well for text classification?",
+          "a": "Text gives many weakly informative features, and the independence assumption is a mild error there. It trains in one pass, handles huge sparse vocabularies and needs little data.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-naive-bayes-006",
+          "q": "What is Laplace (add-one) smoothing?",
+          "a": "Adding a small count `alpha` to every feature-class tally so unseen combinations do not get probability zero.\n\n```\nP(w|c) = (count + alpha) / (total + alpha * V)\n```",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-naive-bayes-007",
+          "q": "What is the zero-frequency problem?",
+          "a": "If a feature value never appears with a class in training, its likelihood is zero and the whole product collapses to zero, overruling all other evidence. Smoothing prevents it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-naive-bayes-008",
+          "q": "Why is Naive Bayes so fast to train?",
+          "a": "Fitting is just counting: one pass over the data to estimate class priors and per-feature conditional statistics. There is no iterative optimisation at all.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-naive-bayes-009",
+          "q": "Are Naive Bayes probability estimates well calibrated?",
+          "a": "No - multiplying correlated likelihoods pushes outputs toward 0 or 1, so it is overconfident. Rankings are often fine; recalibrate with isotonic regression or Platt scaling if you need the numbers.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-naive-bayes-010",
+          "q": "Why does Naive Bayes work even though its independence assumption is false?",
+          "a": "Classification only needs the correct class to score highest, not accurate probabilities. The dependence errors often distort all classes similarly, leaving the argmax unchanged.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-naive-bayes-011",
+          "q": "What is the difference between a generative and a discriminative model?",
+          "a": "A generative model learns `P(x|y)` and `P(y)` and can sample data (Naive Bayes); a discriminative model learns `P(y|x)` or the boundary directly (logistic regression, SVM) and usually wins with enough data.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "svm",
+      "name": "Support Vector Machines",
+      "questions": [
+        {
+          "id": "ml-svm-001",
+          "q": "What is a support vector machine?",
+          "a": "A classifier that finds the hyperplane separating classes with the largest margin. Only the closest points influence it, which makes the solution sparse and robust.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-svm-002",
+          "q": "What is a support vector?",
+          "a": "A training point lying on or inside the margin that constrains the decision boundary. Removing any other point leaves the boundary unchanged.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-svm-003",
+          "q": "What is the margin in an SVM?",
+          "a": "The distance between the decision boundary and the nearest points of either class. Maximising it is a structural-risk argument: a wider margin generalises better.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-svm-004",
+          "q": "What is the difference between a hard-margin and a soft-margin SVM?",
+          "a": "Hard margin allows no violations and only works on perfectly separable, noise-free data. Soft margin adds slack variables so some points may sit inside the margin or be misclassified.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-svm-005",
+          "q": "What does the `C` parameter control in an SVM?",
+          "a": "The penalty for margin violations. Large `C` fits the training data tightly with a narrow margin (overfit risk); small `C` allows more violations for a wider, smoother margin.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-svm-006",
+          "q": "What is the kernel trick?",
+          "a": "Replacing inner products with a kernel function that equals a dot product in a higher-dimensional space, so you get non-linear boundaries without ever computing that mapping.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-svm-007",
+          "q": "What are the common SVM kernels?",
+          "a": "Linear for high-dimensional sparse data like text, polynomial for interaction effects, and RBF (Gaussian) as the general-purpose default. Sigmoid exists but is rarely competitive.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-svm-008",
+          "q": "What does `gamma` control in an RBF kernel?",
+          "a": "How far one training point's influence reaches. High `gamma` gives tight, wiggly boundaries around individual points (overfitting); low `gamma` makes the model nearly linear.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-svm-009",
+          "q": "Why must features be scaled for an SVM?",
+          "a": "Both the margin and the RBF kernel depend on distances, so a large-range feature dominates the geometry. Unscaled data also makes the optimiser converge slowly.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-svm-010",
+          "q": "Can an SVM do regression?",
+          "a": "Yes - support vector regression fits a tube of width `epsilon` around the data and penalises only points outside it, so predictions depend on a sparse set of support vectors.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-svm-011",
+          "q": "Why is the SVM solved in its dual form?",
+          "a": "The dual is a convex quadratic program expressed purely in inner products, which is what allows kernels, and its cost depends on the sample count rather than the feature count.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-svm-012",
+          "q": "How does an SVM handle more than two classes?",
+          "a": "It does not natively - libraries combine binary SVMs, usually one-vs-one (k(k-1)/2 models, the libsvm default) or one-vs-rest (k models, cheaper but with less balanced training sets).",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "decision-trees",
+      "name": "Decision Trees",
+      "questions": [
+        {
+          "id": "ml-decision-trees-001",
+          "q": "What is a decision tree?",
+          "a": "A model that recursively splits the data on feature thresholds, choosing each split to reduce impurity most, and predicts the majority class or mean value in each leaf.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-002",
+          "q": "Do decision trees need feature scaling?",
+          "a": "No. Splits compare a feature against a threshold, so any monotone rescaling gives the same tree. That is a practical advantage over distance-based models.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-003",
+          "q": "What are the root, internal nodes and leaves of a tree?",
+          "a": "The root holds all samples, internal nodes each apply one split test, and leaves hold the final prediction. Depth is the longest root-to-leaf path.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-004",
+          "q": "What is Gini impurity?",
+          "a": "The probability of mislabelling a random sample if you label it by the node's class distribution.\n\n```\nGini = 1 - sum(p_i^2)\n```\n\nZero means a pure node.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-005",
+          "q": "What are entropy and information gain?",
+          "a": "Entropy `-sum(p_i * log2 p_i)` measures node impurity in bits. Information gain is the parent's entropy minus the weighted average entropy of the children - the split that gains most is chosen.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-006",
+          "q": "What is the practical difference between Gini and entropy?",
+          "a": "Almost none in accuracy; they pick the same split most of the time. Gini is cheaper because it avoids logarithms, which is why it is the common default.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-007",
+          "q": "What is pruning, and what is the difference between pre- and post-pruning?",
+          "a": "Removing branches that do not generalise. Pre-pruning stops growth early via `max_depth` or `min_samples_leaf`; post-pruning grows fully then cuts back, e.g. cost-complexity pruning with `ccp_alpha`.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-008",
+          "q": "Why do unconstrained decision trees overfit?",
+          "a": "They keep splitting until leaves are pure, so a deep tree can memorise individual samples - including noise. Depth, leaf size or pruning limits must be set.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-009",
+          "q": "How do decision trees handle categorical features and missing values?",
+          "a": "Categories need encoding in scikit-learn, while LightGBM and CatBoost split on them natively. For missing values, some implementations learn a default branch; others require imputation first.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-010",
+          "q": "How is feature importance computed in a decision tree?",
+          "a": "By summing each feature's impurity decrease across the splits it appears in, weighted by the samples reaching those nodes. It is biased toward high-cardinality features, so prefer permutation importance.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-011",
+          "q": "What is the difference between CART and ID3/C4.5?",
+          "a": "CART builds binary splits using Gini (or MSE for regression) and supports regression; ID3 makes multiway splits on information gain, and C4.5 adds gain ratio, continuous features and pruning.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-decision-trees-012",
+          "q": "Why are decision trees described as high-variance models?",
+          "a": "Splits are chosen greedily, so a small change in the data can flip an early split and reshape the whole tree. That instability is exactly what bagging and random forests average away.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "random-forest",
+      "name": "Random Forest & Bagging",
+      "questions": [
+        {
+          "id": "ml-random-forest-001",
+          "q": "What is a random forest?",
+          "a": "An ensemble of decision trees, each trained on a bootstrap sample and considering a random subset of features at every split. Predictions are averaged or majority-voted.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-002",
+          "q": "What is bagging?",
+          "a": "Bootstrap aggregating: train the same model on many random samples drawn with replacement, then average their predictions. It cuts variance without raising bias much.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-003",
+          "q": "Is a random forest less prone to overfitting than a single tree?",
+          "a": "Yes. Averaging many decorrelated high-variance trees cancels much of their individual noise, so the forest generalises far better even with fully grown trees.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-004",
+          "q": "What does a random forest add on top of plain bagging?",
+          "a": "Random feature subsampling at each split (`max_features`). Bagged trees would all pick the same dominant feature first; restricting the candidates decorrelates them further.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-005",
+          "q": "What is out-of-bag error?",
+          "a": "Each bootstrap sample leaves out about 37% of rows, so every tree can be scored on its unused rows. Averaging those gives a validation estimate for free, without a separate split.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-006",
+          "q": "Does adding more trees to a random forest cause overfitting?",
+          "a": "No - the averaged prediction converges and the test error plateaus. More trees only cost time and memory, so tune `n_estimators` for the accuracy/latency trade-off.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-007",
+          "q": "What is the difference between bagging and boosting?",
+          "a": "Bagging trains independent models in parallel on resampled data to cut variance; boosting trains models sequentially, each correcting the previous one's errors, to cut bias.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-008",
+          "q": "What is permutation importance?",
+          "a": "Shuffle one feature's values in the validation set and measure the drop in score. It reflects what the model actually relies on and avoids impurity importance's cardinality bias.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-009",
+          "q": "Can a random forest extrapolate beyond the training range?",
+          "a": "No. Every prediction is an average of training leaf values, so it is bounded by what it saw. For trending data, use a linear model or model the trend separately.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-010",
+          "q": "Which hyperparameters matter most in a random forest?",
+          "a": "`max_features` (the decorrelation knob), `n_estimators`, and the leaf-size limits `min_samples_leaf` / `max_depth`. Defaults are usually strong, so tuning gains are modest.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-011",
+          "q": "Why does decorrelating the trees reduce variance so much?",
+          "a": "The variance of an average of `n` models with variance `v` and pairwise correlation `rho` is `rho*v + (1-rho)*v/n`. Averaging only shrinks the second term, so lowering `rho` is what really helps.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-random-forest-012",
+          "q": "What are Extremely Randomised Trees (ExtraTrees)?",
+          "a": "Like a random forest but split thresholds are drawn at random instead of optimised, and the full dataset is used by default. That adds bias, cuts variance further and trains faster.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "boosting",
+      "name": "Boosting (AdaBoost, GBM, XGBoost, LightGBM, CatBoost)",
+      "questions": [
+        {
+          "id": "ml-boosting-001",
+          "q": "What is boosting?",
+          "a": "Training weak learners in sequence, each one focused on what the current ensemble gets wrong, and summing their weighted predictions. It mainly reduces bias.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-002",
+          "q": "What is AdaBoost?",
+          "a": "The original boosting algorithm: after each weak learner, misclassified samples get higher weights, and each learner's vote is weighted by its accuracy.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-003",
+          "q": "What is gradient boosting?",
+          "a": "Boosting framed as gradient descent in function space: each new tree is fitted to the negative gradient (the residual for squared loss) of the current ensemble's loss.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-004",
+          "q": "What is a weak learner?",
+          "a": "A model only slightly better than chance - typically a decision stump or a depth-3 tree. Boosting theory shows many weak learners can combine into a strong one.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-005",
+          "q": "What is the difference between AdaBoost and gradient boosting?",
+          "a": "AdaBoost reweights samples and is tied to an exponential loss; gradient boosting fits each tree to the loss gradient, so it works with any differentiable loss and handles regression naturally.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-006",
+          "q": "What does the learning rate (shrinkage) do in gradient boosting?",
+          "a": "It scales each tree's contribution. Smaller values need more trees but generalise better, so the usual recipe is a low learning rate plus early stopping.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-007",
+          "q": "What does XGBoost add over plain gradient boosting?",
+          "a": "An explicit regularisation term on leaf count and weights, a second-order objective, sparsity-aware split finding with a default direction for missing values, column subsampling, and parallel histogram-based splits.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-008",
+          "q": "What is the difference between LightGBM and XGBoost?",
+          "a": "LightGBM grows leaf-wise with gradient-based one-side sampling and feature bundling, so it is faster on large data but overfits small data more. XGBoost grows level-wise by default.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-009",
+          "q": "What is CatBoost's main advantage?",
+          "a": "Native categorical handling via ordered target statistics plus ordered boosting, which avoids the target leakage that naive mean encoding causes. It is strong on categorical-heavy tabular data with little tuning.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-010",
+          "q": "How do you stop a gradient boosting model from overfitting?",
+          "a": "Low learning rate with early stopping on a validation set, shallow trees, `min_child_weight`, subsampling rows and columns, and L1/L2 penalties on leaf weights.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-011",
+          "q": "Why does boosting usually beat a random forest on tabular data?",
+          "a": "It fits the residual structure directly instead of averaging independent fits, so it reduces bias as well as variance. The cost is sensitivity to hyperparameters and noisy labels.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-012",
+          "q": "What is the second-order approximation XGBoost optimises?",
+          "a": "It Taylor-expands the loss to second order per sample, using the gradient `g` and Hessian `h`, so the optimal leaf weight is `-sum(g) / (sum(h) + lambda)`. That gives a closed-form split gain.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-013",
+          "q": "What is the difference between leaf-wise and level-wise tree growth?",
+          "a": "Level-wise expands every node of a depth before going deeper, giving balanced trees. Leaf-wise always splits the leaf with the highest loss reduction, giving deeper, more accurate but more overfit-prone trees.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-boosting-014",
+          "q": "What problem does CatBoost's ordered boosting solve?",
+          "a": "Standard boosting computes residuals with a model that already saw the sample, so gradients are biased. Ordered boosting scores each sample using a model trained only on earlier samples in a random permutation.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "kmeans",
+      "name": "K-Means",
+      "questions": [
+        {
+          "id": "ml-kmeans-001",
+          "q": "What is K-Means clustering?",
+          "a": "Partition data into `k` clusters by alternating two steps: assign each point to its nearest centroid, then move each centroid to the mean of its assigned points.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-kmeans-002",
+          "q": "What objective does K-Means minimise?",
+          "a": "Within-cluster sum of squares (inertia), the total squared distance from points to their centroid. Lower inertia means tighter clusters.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-kmeans-003",
+          "q": "Does K-Means require feature scaling?",
+          "a": "Yes. It is built on Euclidean distance, so an unscaled wide-range feature dominates the geometry and the clusters just reflect that one column.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-kmeans-004",
+          "q": "How do you choose the number of clusters `k`?",
+          "a": "The elbow of the inertia curve, the silhouette score, or the gap statistic - and above all domain knowledge. These are heuristics, not a definitive answer.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-kmeans-005",
+          "q": "What is K-Means++?",
+          "a": "A seeding strategy that picks initial centroids far apart, with probability proportional to squared distance from the nearest chosen one. It converges faster and to better optima than random init.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-kmeans-006",
+          "q": "Why can K-Means converge to a poor solution?",
+          "a": "The objective is non-convex, so it only reaches a local optimum determined by the initial centroids. Running it several times with different seeds (`n_init`) and keeping the best inertia mitigates this.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-kmeans-007",
+          "q": "What is the silhouette score?",
+          "a": "Per point, `(b - a) / max(a, b)` where `a` is the mean distance within its cluster and `b` to the nearest other cluster. It ranges from -1 to 1; near 1 means well separated.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-kmeans-008",
+          "q": "What are K-Means' main assumptions?",
+          "a": "Clusters are roughly spherical, similar in size and density, and separated by equal variance. It also needs `k` up front and is sensitive to outliers, which drag centroids.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-kmeans-009",
+          "q": "What is the difference between K-Means and KNN?",
+          "a": "K-Means is unsupervised clustering that learns `k` centroids; KNN is supervised prediction from labelled neighbours. They share only the letter `k` and a reliance on distance.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-kmeans-010",
+          "q": "Why does K-Means fail on non-spherical clusters?",
+          "a": "Assigning points to the nearest centroid carves space into straight-edged Voronoi cells, so elongated, nested or crescent shapes get cut apart. Use DBSCAN or spectral clustering instead.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-kmeans-011",
+          "q": "What is the computational complexity of K-Means?",
+          "a": "O(n * k * d) per iteration, linear in the number of samples, so it scales well. Finding the globally optimal partition is NP-hard, which is why it is solved heuristically.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "hierarchical-dbscan",
+      "name": "Hierarchical Clustering & DBSCAN",
+      "questions": [
+        {
+          "id": "ml-hierarchical-dbscan-001",
+          "q": "What is hierarchical clustering?",
+          "a": "Building a tree of nested clusters by repeatedly merging the closest pair (agglomerative) or splitting groups (divisive). You cut the tree at the level you want instead of fixing `k` first.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-hierarchical-dbscan-002",
+          "q": "What is a dendrogram?",
+          "a": "The tree diagram of merges, with merge distance on the vertical axis. Cutting it horizontally at a height gives a flat clustering; a long vertical gap suggests a natural number of clusters.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-hierarchical-dbscan-003",
+          "q": "What is DBSCAN?",
+          "a": "Density-based clustering: points with at least `min_samples` neighbours inside radius `eps` are core points, connected cores form clusters, and the rest is labelled noise.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-hierarchical-dbscan-004",
+          "q": "What is the difference between agglomerative and divisive clustering?",
+          "a": "Agglomerative is bottom-up, starting with one cluster per point and merging; divisive is top-down, splitting one big cluster. Agglomerative is far more common because divisive splits are expensive.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-hierarchical-dbscan-005",
+          "q": "What do the linkage criteria mean in hierarchical clustering?",
+          "a": "How cluster distance is measured: single (closest pair, chains easily), complete (farthest pair, compact clusters), average, and Ward (minimises within-cluster variance, the usual default).",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-hierarchical-dbscan-006",
+          "q": "What do `eps` and `min_samples` control in DBSCAN?",
+          "a": "`eps` is the neighbourhood radius and `min_samples` the density threshold. Too small an `eps` makes everything noise; too large merges distinct clusters into one.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-hierarchical-dbscan-007",
+          "q": "What are core, border and noise points in DBSCAN?",
+          "a": "A core point has at least `min_samples` neighbours within `eps`; a border point is within `eps` of a core but not dense itself; everything else is noise and gets no cluster.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-hierarchical-dbscan-008",
+          "q": "How do you choose `eps` for DBSCAN?",
+          "a": "Plot each point's distance to its `k`th nearest neighbour, sort it, and pick the value at the knee of the curve. Scale features first, since `eps` is an absolute distance.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-hierarchical-dbscan-009",
+          "q": "What are DBSCAN's advantages over K-Means?",
+          "a": "It finds arbitrarily shaped clusters, labels outliers as noise instead of forcing them in, and does not need the cluster count up front.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-hierarchical-dbscan-010",
+          "q": "Why does DBSCAN struggle when cluster densities vary?",
+          "a": "A single global `eps`/`min_samples` pair cannot suit both dense and sparse regions, so sparse clusters get labelled noise while dense neighbours merge together.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-hierarchical-dbscan-011",
+          "q": "What does HDBSCAN improve on DBSCAN?",
+          "a": "It builds a hierarchy over all density levels and extracts the most stable clusters, so no single `eps` is needed and clusters of differing density coexist. You mainly set `min_cluster_size`.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "dimensionality-reduction",
+      "name": "Dimensionality Reduction (PCA, t-SNE, UMAP, LDA)",
+      "questions": [
+        {
+          "id": "ml-dimensionality-reduction-001",
+          "q": "What is dimensionality reduction?",
+          "a": "Mapping data to fewer dimensions while keeping as much useful structure as possible, to fight the curse of dimensionality, cut cost and noise, and enable visualisation.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-002",
+          "q": "What is PCA?",
+          "a": "An unsupervised linear projection onto the orthogonal directions of greatest variance. The first component captures the most variance, the second the most of what remains, and so on.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-003",
+          "q": "What is t-SNE?",
+          "a": "A non-linear visualisation method that converts pairwise distances into probabilities and minimises the KL divergence between the high- and low-dimensional distributions, preserving local neighbourhoods.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-004",
+          "q": "How does PCA work mechanically?",
+          "a": "Centre the data, then take the eigenvectors of the covariance matrix (in practice the right singular vectors from an SVD) ordered by eigenvalue, and project onto the top `k`.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-005",
+          "q": "How do you choose the number of principal components?",
+          "a": "Keep enough to reach a target cumulative explained variance (often 90-95%), look for the elbow in the scree plot, or tune `k` against downstream model performance.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-006",
+          "q": "Must you standardise features before PCA?",
+          "a": "Yes, unless the features already share units. PCA maximises variance, so an unscaled large-range feature becomes the first component regardless of how informative it is.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-007",
+          "q": "What is the explained variance ratio?",
+          "a": "Each component's eigenvalue divided by the total, i.e. the fraction of overall variance it captures. The cumulative sum tells you how much you keep for a given number of components.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-008",
+          "q": "What is the difference between PCA and Linear Discriminant Analysis?",
+          "a": "PCA is unsupervised and maximises total variance; LDA uses labels and maximises between-class separation relative to within-class scatter, giving at most `classes - 1` components.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-009",
+          "q": "What is the difference between PCA and t-SNE?",
+          "a": "PCA is linear, deterministic, cheap and invertible, and preserves global variance. t-SNE is non-linear, stochastic, slow, and preserves local neighbourhoods - good for plots, not as a preprocessing step.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-010",
+          "q": "What is UMAP and how does it compare with t-SNE?",
+          "a": "A manifold method built on a fuzzy topological graph. It is faster, scales better, keeps more global structure, and can transform new points - which plain t-SNE cannot.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-011",
+          "q": "What does t-SNE's perplexity parameter do?",
+          "a": "It sets the effective number of neighbours each point considers, typically 5-50. Low values emphasise very local structure; high values blur small clusters together.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-012",
+          "q": "Why are principal components orthogonal and uncorrelated?",
+          "a": "They are eigenvectors of a symmetric covariance matrix, which always has an orthogonal eigenbasis. Projecting onto that basis diagonalises the covariance, so the new features are uncorrelated.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-dimensionality-reduction-013",
+          "q": "Why should you not read cluster sizes or distances off a t-SNE plot?",
+          "a": "t-SNE only preserves local neighbourhoods: between-cluster distances and apparent cluster sizes are artefacts of the optimisation and the perplexity, and change run to run.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "evaluation-metrics",
+      "name": "Evaluation Metrics",
+      "questions": [
+        {
+          "id": "ml-evaluation-metrics-001",
+          "q": "What is a confusion matrix?",
+          "a": "A table of predicted versus actual classes holding true positives, false positives, true negatives and false negatives. Every classification metric is derived from these four counts.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-002",
+          "q": "What is accuracy and when is it a poor metric?",
+          "a": "The fraction of correct predictions. It misleads whenever classes are imbalanced - predicting the majority class on a 99:1 split scores 99% while detecting nothing.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-003",
+          "q": "What is precision?",
+          "a": "Of everything predicted positive, how much really was.\n\n```\nprecision = TP / (TP + FP)\n```\n\nOptimise it when a false positive is expensive, such as flagging a good transaction as fraud.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-004",
+          "q": "What is recall?",
+          "a": "Of all actual positives, how many you caught.\n\n```\nrecall = TP / (TP + FN)\n```\n\nOptimise it when a miss is expensive, such as failing to detect a disease.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-005",
+          "q": "What is the F1 score and when should you use it?",
+          "a": "The harmonic mean of precision and recall, `2PR/(P+R)`. Use it when you need one number balancing both and the positive class is rare; the harmonic mean punishes a weak side.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-006",
+          "q": "Why is there a precision-recall trade-off?",
+          "a": "Both come from one threshold on the score. Lowering the threshold catches more positives (higher recall) but admits more false alarms (lower precision), and vice versa.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-007",
+          "q": "What is ROC-AUC?",
+          "a": "The area under the true-positive-rate versus false-positive-rate curve across all thresholds. It equals the probability that a random positive scores above a random negative; 0.5 is chance.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-008",
+          "q": "What is PR-AUC and when is it better than ROC-AUC?",
+          "a": "The area under the precision-recall curve. It ignores true negatives, so on heavily imbalanced data it reflects performance on the rare class far more honestly.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-009",
+          "q": "What is the difference between MAE, MSE and RMSE?",
+          "a": "MAE averages absolute errors, MSE averages squared errors (so it punishes large ones), and RMSE is the square root of MSE, bringing it back to the target's units.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-010",
+          "q": "When would you prefer MAE over RMSE?",
+          "a": "When outliers are present but not important. MAE weights every error equally, whereas RMSE lets a few extreme errors dominate the score and the fitted model.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-011",
+          "q": "What is specificity?",
+          "a": "The true negative rate, `TN / (TN + FP)` - the share of actual negatives correctly rejected. It is the complement of the false positive rate used on the ROC curve.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-012",
+          "q": "What is the difference between macro, micro and weighted averaging?",
+          "a": "Macro averages the per-class metric equally, so rare classes count as much as common ones. Micro pools all counts first, so it tracks the majority. Weighted averages by class support.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-013",
+          "q": "Why can ROC-AUC look good on heavily imbalanced data when the model is useless?",
+          "a": "The false positive rate divides by a huge negative count, so thousands of false alarms barely move it. Precision, which divides by the predicted positives, collapses - so report PR-AUC too.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-evaluation-metrics-014",
+          "q": "What is model calibration and why does log loss measure it?",
+          "a": "A calibrated model's 0.7 predictions are right about 70% of the time. Log loss is a proper scoring rule, so it is minimised only by honest probabilities - unlike accuracy or AUC, which only need correct ranking.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "cross-validation",
+      "name": "Cross-Validation & Hyperparameter Tuning",
+      "questions": [
+        {
+          "id": "ml-cross-validation-001",
+          "q": "What is cross-validation?",
+          "a": "Splitting the data into folds and training and scoring repeatedly so every row is validated once. It gives a lower-variance performance estimate than a single hold-out split.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-002",
+          "q": "What is k-fold cross-validation?",
+          "a": "Split into `k` equal parts, train on `k-1` and validate on the remaining one, rotating through all `k`, then average the scores. `k = 5` or `10` is standard.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-003",
+          "q": "What is the difference between a parameter and a hyperparameter?",
+          "a": "Parameters are learned from data during fitting (weights, split thresholds); hyperparameters are set before training and control the learning itself (learning rate, depth, `k`).",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-004",
+          "q": "What is stratified k-fold and when do you need it?",
+          "a": "Folds that keep each class's proportion intact. Use it for classification, especially with imbalance, so no fold ends up with too few positives to score meaningfully.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-005",
+          "q": "What is leave-one-out cross-validation?",
+          "a": "k-fold with `k = n`: each row is validated by a model trained on all the others. Nearly unbiased but very expensive and high-variance, so it suits only small datasets.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-006",
+          "q": "What is the difference between grid search and random search?",
+          "a": "Grid search tries every combination, which explodes with dimensions; random search samples combinations and usually finds a good one faster, because only a few hyperparameters really matter.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-007",
+          "q": "What is Bayesian hyperparameter optimisation?",
+          "a": "It fits a probabilistic surrogate of the score surface and picks the next trial by an acquisition function balancing exploration and exploitation. Far fewer trials than random search, used by Optuna and Hyperopt.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-008",
+          "q": "How do you cross-validate a time series model?",
+          "a": "Use forward-chaining splits where the validation fold always follows the training window, as in `TimeSeriesSplit`. Random folds would train on the future and leak.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-009",
+          "q": "What is group k-fold and when do you need it?",
+          "a": "Folds that keep all rows sharing a group id - a patient, a user, a session - on one side of the split. Without it, near-duplicate rows appear in train and validation and the score is inflated.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-010",
+          "q": "What is the trade-off in choosing `k`?",
+          "a": "Large `k` means more training data per fold, so lower bias but higher variance and more compute. Small `k` is cheap but each model sees less data, raising bias. Five or ten is the usual compromise.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-011",
+          "q": "Why do you need nested cross-validation?",
+          "a": "If you tune and report on the same folds, the reported score is optimistically biased. Nested CV tunes in an inner loop and scores in an outer loop that never saw the tuning.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-cross-validation-012",
+          "q": "Why is LOOCV higher-variance than 5-fold despite being nearly unbiased?",
+          "a": "Its `n` models are trained on almost identical data, so their errors are highly correlated and averaging barely reduces noise - while each single-sample test score is extremely noisy.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "imbalanced-data",
+      "name": "Imbalanced Data",
+      "questions": [
+        {
+          "id": "ml-imbalanced-data-001",
+          "q": "What is class imbalance?",
+          "a": "When one class vastly outnumbers another - fraud, disease, churn. The model can score well by ignoring the rare class entirely, which is usually the class you care about.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-imbalanced-data-002",
+          "q": "What is the difference between oversampling and undersampling?",
+          "a": "Oversampling duplicates or synthesises minority examples, risking overfitting to them. Undersampling drops majority examples, which is fast but throws away information.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-imbalanced-data-003",
+          "q": "Which metrics should you report for imbalanced classification?",
+          "a": "Precision, recall and F1 on the minority class, PR-AUC, and the full confusion matrix. Pick the operating point from the real cost of each error type.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-imbalanced-data-004",
+          "q": "What is SMOTE?",
+          "a": "Synthetic Minority Over-sampling: for a minority point, pick one of its `k` minority neighbours and create a new sample at a random position on the line between them.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-imbalanced-data-005",
+          "q": "What are class weights?",
+          "a": "A per-class multiplier on the loss, so minority mistakes cost more. `class_weight='balanced'` sets them inversely proportional to frequency - no resampling and no synthetic data.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-imbalanced-data-006",
+          "q": "When would you choose class weights over SMOTE?",
+          "a": "Almost always as the first attempt: weights are cheaper, invent no data, and cannot leak. Reach for SMOTE when the minority class is so small the model never sees enough variety.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-imbalanced-data-007",
+          "q": "Why must resampling happen inside the cross-validation loop?",
+          "a": "Resampling before splitting puts synthetic points derived from a row into the training fold while that row is in validation, so the score is leaked and far too optimistic.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-imbalanced-data-008",
+          "q": "What is threshold moving?",
+          "a": "Keeping the model and shifting the decision threshold away from 0.5 to trade precision for recall. It is the cheapest intervention and often as effective as resampling.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-imbalanced-data-009",
+          "q": "When should extreme imbalance be treated as anomaly detection instead?",
+          "a": "When positives are so rare or so varied that there is no learnable positive distribution - a handful of fraud cases among millions. Then model normality and flag deviations.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-imbalanced-data-010",
+          "q": "When can SMOTE make things worse?",
+          "a": "In high dimensions, where interpolating between sparse neighbours creates unrealistic points, and where classes overlap, where it synthesises samples right across the boundary and blurs it further.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-imbalanced-data-011",
+          "q": "What is focal loss?",
+          "a": "Cross-entropy scaled by `(1 - p_t)^gamma`, which shrinks the loss from easy, well-classified examples so training focuses on hard ones. It came from dense object detection (RetinaNet).",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "time-series",
+      "name": "Time Series Basics",
+      "questions": [
+        {
+          "id": "ml-time-series-001",
+          "q": "What makes time series data different from ordinary tabular data?",
+          "a": "Observations are ordered and autocorrelated, so rows are not independent. That breaks random splitting, random shuffling and most i.i.d. assumptions.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-002",
+          "q": "What is stationarity?",
+          "a": "A series whose mean, variance and autocorrelation do not change over time. Classical models like ARIMA assume it, so a trending series must be transformed first.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-003",
+          "q": "What is the difference between trend and seasonality?",
+          "a": "Trend is a long-run drift up or down; seasonality is a repeating pattern at a fixed period, such as weekly or yearly. Cycles are similar but without a fixed length.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-004",
+          "q": "How do you test whether a series is stationary?",
+          "a": "Plot it, then run a statistical test: the Augmented Dickey-Fuller test (null = non-stationary, so a small p-value is good) or KPSS, whose null is the opposite.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-005",
+          "q": "How do you make a series stationary?",
+          "a": "Difference it to remove trend, seasonally difference at the period, and log or Box-Cox transform to stabilise variance. Often differencing once is enough.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-006",
+          "q": "What are ACF and PACF used for?",
+          "a": "The autocorrelation function shows correlation with each lag; the partial version removes the effect of shorter lags. PACF suggests the AR order `p`, ACF the MA order `q`.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-007",
+          "q": "What do the `p`, `d` and `q` in ARIMA mean?",
+          "a": "`p` autoregressive lags of the series, `d` degree of differencing applied, `q` lags of past forecast errors in the moving-average part.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-008",
+          "q": "What does SARIMA add to ARIMA?",
+          "a": "A seasonal `(P, D, Q, m)` component that applies the same AR, differencing and MA structure at lag `m`, so yearly or weekly patterns are modelled explicitly.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-009",
+          "q": "What are lag and rolling features?",
+          "a": "Columns built from the past: the value `k` steps back, and rolling mean, std or min/max over a trailing window. They let a normal regressor or GBM handle forecasting.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-010",
+          "q": "What is a good baseline for a forecasting problem?",
+          "a": "The naive forecast - predict the last observed value, or the value from the same point last season. Plenty of complex models fail to beat it, so always report it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-011",
+          "q": "What is the difference between an AR and an MA process?",
+          "a": "An AR process regresses on its own past values, so shocks persist and decay geometrically. An MA process regresses on past error terms, so a shock affects only `q` steps.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-time-series-012",
+          "q": "What is over-differencing and how do you spot it?",
+          "a": "Differencing more than needed, which injects artificial negative autocorrelation and inflates variance. Signs are a lag-1 ACF near -0.5 and a higher standard deviation than the once-differenced series.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "recommendation-systems",
+      "name": "Recommendation Systems",
+      "questions": [
+        {
+          "id": "ml-recommendation-systems-001",
+          "q": "What is a recommender system?",
+          "a": "A model that ranks items for a user from past interactions, item attributes and context. It is a ranking problem, not a plain classification one.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-recommendation-systems-002",
+          "q": "What is collaborative filtering?",
+          "a": "Recommending from interaction patterns alone: users who behaved alike will like similar things. It needs no item features but cannot handle a brand-new item.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-recommendation-systems-003",
+          "q": "What is content-based filtering?",
+          "a": "Recommending items whose features resemble what the user already liked. It works for new items and is explainable, but tends to keep suggesting more of the same.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-recommendation-systems-004",
+          "q": "What is the difference between user-based and item-based collaborative filtering?",
+          "a": "User-based finds similar users and recommends what they liked; item-based finds items similar to ones the user liked. Item-based is usually preferred - item similarities are more stable and there are fewer items than users.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-recommendation-systems-005",
+          "q": "What is matrix factorisation in recommendation?",
+          "a": "Factor the sparse user-item matrix into low-rank user and item embeddings whose dot product predicts the rating. Latent factors capture taste dimensions nobody labelled.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-recommendation-systems-006",
+          "q": "What is the cold-start problem?",
+          "a": "A new user or item has no interactions, so collaborative filtering has nothing to work with. Fall back on content features, popularity, or a short onboarding questionnaire.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-recommendation-systems-007",
+          "q": "What is the difference between explicit and implicit feedback?",
+          "a": "Explicit is a deliberate rating; implicit is behaviour - clicks, watch time, purchases. Implicit is abundant but has no true negatives, since \"not clicked\" may just mean \"not seen\".",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-recommendation-systems-008",
+          "q": "How do you evaluate a recommender offline?",
+          "a": "With ranking metrics on held-out future interactions: Precision@k, Recall@k, MAP, NDCG, plus coverage and diversity. Offline gains still need an A/B test to confirm.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-recommendation-systems-009",
+          "q": "What is a hybrid recommender?",
+          "a": "A system combining collaborative and content signals - by blending scores, by feeding both into one model, or by using content to cover cold-start and collaborative filtering elsewhere.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-recommendation-systems-010",
+          "q": "What is popularity bias and why is it a problem?",
+          "a": "Popular items get recommended, so they gain more interactions and become more recommended - a feedback loop that buries the long tail and narrows what users ever see.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-recommendation-systems-011",
+          "q": "How do ALS and BPR handle implicit feedback?",
+          "a": "ALS treats all unobserved pairs as weak negatives with a confidence weight and alternates closed-form least-squares solves. BPR instead optimises a pairwise ranking loss so observed items outrank sampled unobserved ones.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "anomaly-detection",
+      "name": "Anomaly Detection",
+      "questions": [
+        {
+          "id": "ml-anomaly-detection-001",
+          "q": "What is anomaly detection?",
+          "a": "Identifying observations that deviate strongly from normal behaviour - fraud, intrusions, equipment faults. Anomalies are rare, varied, and often unlabelled.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-anomaly-detection-002",
+          "q": "What are the three learning settings for anomaly detection?",
+          "a": "Supervised (labels for both classes, really imbalanced classification), semi-supervised or one-class (train on normal data only), and unsupervised (no labels, assume anomalies are rare).",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-anomaly-detection-003",
+          "q": "What is the difference between a point, contextual and collective anomaly?",
+          "a": "A point anomaly is odd on its own; a contextual one is odd only in its context, like high heating use in July; a collective one is a group of points whose pattern is abnormal.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-anomaly-detection-004",
+          "q": "What statistical methods detect outliers?",
+          "a": "Z-score beyond about 3 for roughly normal data, the IQR rule (`Q1 - 1.5*IQR`, `Q3 + 1.5*IQR`) for skewed data, and Mahalanobis distance when features are correlated.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-anomaly-detection-005",
+          "q": "What is an Isolation Forest?",
+          "a": "An ensemble of random trees that split on random features at random thresholds. The anomaly score is the average path length to isolate a point - anomalies separate in few splits.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-anomaly-detection-006",
+          "q": "What is a One-Class SVM?",
+          "a": "An SVM fitted on normal data only, learning a boundary that encloses most of it. Points outside are anomalies. It is sensitive to `nu` and the kernel width and scales poorly.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-anomaly-detection-007",
+          "q": "What is Local Outlier Factor?",
+          "a": "It compares a point's local density with its neighbours' density. A much lower local density means an outlier, which catches anomalies that are only odd relative to their own cluster.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-anomaly-detection-008",
+          "q": "How can a reconstruction model detect anomalies?",
+          "a": "Train an autoencoder or PCA projection on normal data; anomalies reconstruct badly, so a high reconstruction error flags them. The threshold comes from the error distribution on normal data.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-anomaly-detection-009",
+          "q": "How do you evaluate an anomaly detector when labels are scarce?",
+          "a": "Use ranking metrics on whatever labels exist - PR-AUC, precision@k - and set the threshold from the alert budget analysts can actually review. Accuracy is meaningless here.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "ml-anomaly-detection-010",
+          "q": "Why does Isolation Forest isolate points instead of profiling normality?",
+          "a": "Isolating is cheaper and directly targets what makes anomalies anomalous: being few and different. No density or distance estimate is needed, so it stays linear in samples and works in higher dimensions.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "ml-anomaly-detection-011",
+          "q": "What is concept drift and why does it hurt anomaly detection badly?",
+          "a": "The definition of \"normal\" shifts over time, so a fixed model raises false alarms on legitimate new behaviour. You need rolling retraining, drift monitoring and periodically re-set thresholds.",
+          "difficulty": "hard",
           "known": false
         }
       ]
