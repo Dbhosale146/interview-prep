@@ -1,0 +1,28 @@
+{
+  "id": "agentic",
+  "name": "Agentic AI",
+  "icon": "Bot",
+  "color": "sky",
+  "subtopics": [
+    {
+      "id": "what-is-agent",
+      "name": "What is an AI Agent",
+      "questions": [
+        {
+          "id": "agentic-what-is-agent-001",
+          "q": "Placeholder question one for What is an AI Agent?",
+          "a": "Placeholder answer with `inline code`.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-002",
+          "q": "Placeholder question two for What is an AI Agent?",
+          "a": "Placeholder answer.\n\n```python\nprint(1)\n```",
+          "difficulty": "medium",
+          "known": false
+        }
+      ]
+    }
+  ]
+}

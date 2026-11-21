@@ -1,0 +1,28 @@
+{
+  "id": "python",
+  "name": "Python",
+  "icon": "Code2",
+  "color": "amber",
+  "subtopics": [
+    {
+      "id": "basics",
+      "name": "Basics & Data Types",
+      "questions": [
+        {
+          "id": "python-basics-001",
+          "q": "Placeholder question one for Basics & Data Types?",
+          "a": "Placeholder answer with `inline code`.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "python-basics-002",
+          "q": "Placeholder question two for Basics & Data Types?",
+          "a": "Placeholder answer.\n\n```python\nprint(1)\n```",
+          "difficulty": "medium",
+          "known": false
+        }
+      ]
+    }
+  ]
+}

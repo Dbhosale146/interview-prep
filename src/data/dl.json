@@ -1,0 +1,28 @@
+{
+  "id": "dl",
+  "name": "Deep Learning",
+  "icon": "Brain",
+  "color": "violet",
+  "subtopics": [
+    {
+      "id": "nn-basics",
+      "name": "Neural Network Basics",
+      "questions": [
+        {
+          "id": "dl-nn-basics-001",
+          "q": "Placeholder question one for Neural Network Basics?",
+          "a": "Placeholder answer with `inline code`.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "dl-nn-basics-002",
+          "q": "Placeholder question two for Neural Network Basics?",
+          "a": "Placeholder answer.\n\n```python\nprint(1)\n```",
+          "difficulty": "medium",
+          "known": false
+        }
+      ]
+    }
+  ]
+}

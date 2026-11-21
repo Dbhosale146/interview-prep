@@ -1,0 +1,28 @@
+{
+  "id": "ml",
+  "name": "Machine Learning",
+  "icon": "LineChart",
+  "color": "emerald",
+  "subtopics": [
+    {
+      "id": "fundamentals",
+      "name": "ML Fundamentals",
+      "questions": [
+        {
+          "id": "ml-fundamentals-001",
+          "q": "Placeholder question one for ML Fundamentals?",
+          "a": "Placeholder answer with `inline code`.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "ml-fundamentals-002",
+          "q": "Placeholder question two for ML Fundamentals?",
+          "a": "Placeholder answer.\n\n```python\nprint(1)\n```",
+          "difficulty": "medium",
+          "known": false
+        }
+      ]
+    }
+  ]
+}
