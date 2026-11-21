@@ -54,21 +54,21 @@
           "id": "genai-llm-fundamentals-007",
           "q": "What is in-context learning?",
           "a": "The model adapting to a task purely from examples in the prompt, with no weight updates. It is why few-shot prompting works at all.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "genai-llm-fundamentals-008",
           "q": "What is the difference between a base model and an instruct model?",
           "a": "A base model only continues text, so it rambles or repeats the question. An instruct model has been fine-tuned and aligned to follow instructions and hold a conversation.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "genai-llm-fundamentals-009",
           "q": "What is a context window?",
           "a": "The maximum number of tokens the model can attend to at once, covering prompt plus generated output. Exceeding it means truncation or an error, not graceful degradation.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -82,7 +82,7 @@
           "id": "genai-llm-fundamentals-011",
           "q": "What is a knowledge cutoff?",
           "a": "The date of the newest data in pretraining. Anything later is unknown to the weights, which is a core reason to add retrieval or tools rather than trusting recall.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -130,21 +130,21 @@
           "id": "genai-tokenization-embeddings-004",
           "q": "What is Byte-Pair Encoding?",
           "a": "A subword algorithm that starts from characters (or bytes) and repeatedly merges the most frequent adjacent pair until the vocabulary is full. Common words become one token, rare ones split.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "genai-tokenization-embeddings-005",
           "q": "How do WordPiece and SentencePiece Unigram differ from BPE?",
           "a": "WordPiece merges by likelihood gain rather than raw frequency. SentencePiece's Unigram starts from a large vocabulary and prunes it probabilistically, and it tokenises raw text without pre-splitting on whitespace.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
           "id": "genai-tokenization-embeddings-006",
           "q": "Why use subword tokenization instead of words or characters?",
           "a": "Word vocabularies explode and cannot handle unseen words; character sequences are far too long. Subwords give a fixed vocabulary with no out-of-vocabulary failures and manageable sequence lengths.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -165,7 +165,7 @@
           "id": "genai-tokenization-embeddings-009",
           "q": "How do you measure similarity between two embeddings?",
           "a": "Cosine similarity, which compares direction and ignores magnitude. With L2-normalised vectors it is just the dot product, and ranks identically to Euclidean distance.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -234,7 +234,7 @@
           "id": "genai-transformer-llm-006",
           "q": "What is Rotary Position Embedding (RoPE)?",
           "a": "Position injected by rotating query and key vectors by an angle proportional to position, so their dot product depends only on relative distance. It needs no learned position table.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -262,14 +262,14 @@
           "id": "genai-transformer-llm-010",
           "q": "What is a mixture-of-experts layer?",
           "a": "The feedforward block is replaced by many expert networks with a router activating only a couple per token. Total parameters grow a lot while compute per token stays nearly flat.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
           "id": "genai-transformer-llm-011",
           "q": "Why do modern LLMs use RMSNorm and SwiGLU instead of LayerNorm and ReLU?",
           "a": "RMSNorm drops the mean-centring step, so it is cheaper with equal quality. SwiGLU's gated feedforward gives better loss at the same parameter count. Both are small wins kept for scale.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -317,14 +317,14 @@
           "id": "genai-bert-gpt-t5-004",
           "q": "What is masked language modelling?",
           "a": "Randomly masking about 15% of tokens and training the model to recover them from both sides of the context. It yields strong representations but no way to generate text left to right.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "genai-bert-gpt-t5-005",
           "q": "What is causal language modelling?",
           "a": "Training every position to predict its next token under a causal mask, so each position is a training signal. It matches inference exactly, which is why it scales so well.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -338,7 +338,7 @@
           "id": "genai-bert-gpt-t5-007",
           "q": "What is T5's span-corruption objective?",
           "a": "Contiguous spans are replaced by a single sentinel token and the decoder reconstructs just the missing spans. It is more efficient than masking individual tokens and fits the encoder-decoder shape.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -407,7 +407,7 @@
           "id": "genai-pretraining-sft-005",
           "q": "What data goes into pretraining?",
           "a": "Filtered web crawl, books, code, Wikipedia, academic papers and increasingly synthetic data. Quality filtering, deduplication and mixture weights matter as much as raw volume.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -435,7 +435,7 @@
           "id": "genai-pretraining-sft-009",
           "q": "Why is loss usually computed only on the completion during SFT?",
           "a": "Training on the prompt teaches the model to generate prompts, which wastes capacity and can make it echo instructions. Masking prompt tokens focuses all gradient on the response.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -497,14 +497,14 @@
           "id": "genai-peft-004",
           "q": "What do LoRA's `r` and `alpha` control?",
           "a": "`r` is the bottleneck rank, so it sets capacity - 8 to 64 is typical. `alpha` scales the update by `alpha/r`, so raising it strengthens the adaptation's effect.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "genai-peft-005",
           "q": "What is QLoRA?",
           "a": "LoRA on top of a base model quantised to 4-bit NF4, with paged optimisers and double quantisation. It makes fine-tuning a 65B model on a single 48 GB GPU possible with near-full-precision quality.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -539,7 +539,7 @@
           "id": "genai-peft-010",
           "q": "How do you serve many LoRA adapters efficiently?",
           "a": "Keep one copy of the base model in memory and load adapters separately, batching requests for different adapters together. vLLM and similar servers support this multi-LoRA serving directly.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -594,7 +594,7 @@
           "id": "genai-alignment-005",
           "q": "What are the three stages of RLHF?",
           "a": "Supervised fine-tuning on demonstrations, reward-model training on preference comparisons, and policy optimisation of the SFT model against the reward with a KL constraint.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -615,7 +615,7 @@
           "id": "genai-alignment-008",
           "q": "What is DPO?",
           "a": "Direct Preference Optimisation: a closed-form classification-style loss on preference pairs that optimises the same objective as RLHF without a reward model or an RL loop.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -629,7 +629,7 @@
           "id": "genai-alignment-010",
           "q": "What is reward hacking?",
           "a": "The policy exploiting flaws in the reward model instead of genuinely improving - padding answers, excessive hedging, flattery. It is why reward models must be refreshed and outputs human-audited.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -691,7 +691,7 @@
           "id": "genai-prompt-engineering-005",
           "q": "What is chain-of-thought prompting?",
           "a": "Asking the model to work through intermediate steps before answering. The visible reasoning tokens give it space to compute, which substantially improves multi-step arithmetic and logic.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -705,7 +705,7 @@
           "id": "genai-prompt-engineering-007",
           "q": "How do you get reliably parseable JSON out of an LLM?",
           "a": "Use the provider's structured-output or tool-schema mode, which constrains decoding to a grammar. Failing that, give an exact schema and example, then validate and retry on parse failure.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -726,7 +726,7 @@
           "id": "genai-prompt-engineering-010",
           "q": "What is prompt chaining?",
           "a": "Splitting a complex task into several focused calls whose outputs feed the next - extract, then classify, then write. Each step is easier to test, debug and constrain than one giant prompt.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -802,14 +802,14 @@
           "id": "genai-inference-params-007",
           "q": "What do frequency and presence penalties do?",
           "a": "Both subtract from the logits of tokens already produced: frequency scales with how often a token appeared, presence applies once it has appeared at all. They curb loops and repetition.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "genai-inference-params-008",
           "q": "What is a stop sequence?",
           "a": "A string that ends generation as soon as it is produced, and which is excluded from the output. Useful for cutting off a model that would otherwise continue into a new turn.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -885,7 +885,7 @@
           "id": "genai-rag-fundamentals-006",
           "q": "What are the main failure modes of a RAG system?",
           "a": "Retrieval misses the right chunk, retrieves it but the generator ignores it, chunks are split so context is lost, conflicting sources are merged, or stale documents are never reindexed.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -968,14 +968,14 @@
           "id": "genai-chunking-vectordb-004",
           "q": "How large should a chunk be?",
           "a": "Usually 200-500 tokens for precise question answering and 800-1500 when answers need more surrounding context. Tune it against retrieval recall on real queries rather than guessing.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "genai-chunking-vectordb-005",
           "q": "What is chunk overlap and why use it?",
           "a": "Repeating the last 10-20% of a chunk at the start of the next, so a fact split across a boundary still appears whole somewhere. The cost is a larger index and some duplicate hits.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1003,7 +1003,7 @@
           "id": "genai-chunking-vectordb-009",
           "q": "What do IVF and product quantisation do?",
           "a": "IVF clusters vectors and searches only the nearest few cells. PQ compresses each vector into short codes, cutting memory many-fold at some accuracy cost. They are usually combined.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -1072,7 +1072,7 @@
           "id": "genai-retrieval-techniques-005",
           "q": "What is a reranker?",
           "a": "A second-stage model that scores each candidate against the query jointly and reorders them. It turns a high-recall shortlist into a high-precision top-5, usually the single biggest RAG quality win.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1259,7 +1259,7 @@
           "id": "genai-llm-evaluation-005",
           "q": "What is LLM-as-judge?",
           "a": "Using a strong model with a rubric to score or compare outputs. It correlates reasonably with human judgement, scales cheaply, and is now the backbone of most generation evaluation.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1273,7 +1273,7 @@
           "id": "genai-llm-evaluation-007",
           "q": "How do you make LLM-as-judge more reliable?",
           "a": "Use pairwise comparisons with a concrete rubric, swap the order and average, force a short justification before the verdict, allow ties, and calibrate against a few hundred human labels.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -1391,14 +1391,14 @@
           "id": "genai-quantization-inference-010",
           "q": "What is speculative decoding?",
           "a": "A small draft model proposes several tokens and the large model verifies them in one parallel pass, accepting the agreed prefix. Output is identical in distribution, with typically 2-3x faster decoding.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "genai-quantization-inference-011",
           "q": "What is KV cache quantization and why does it matter at long context?",
           "a": "Storing cached keys and values at 8 or 4 bits. At long context the cache can exceed the weights, so quantizing it is often what makes a long-context batch fit at all.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {

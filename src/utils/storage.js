@@ -239,8 +239,11 @@ export function mergeSeed(stored, seed, tombstones = EMPTY_TOMBSTONES) {
  * Returns `{ dataset, status, added }` where status is one of
  * `seeded` (first run), `recovered` (stored data was corrupt),
  * `upgraded` (new seed version merged in) or `stored`.
+ *
+ * Async because the seed files are a lazily loaded chunk; on a normal start
+ * with valid stored content they are never fetched at all.
  */
-export function loadDataset() {
+export async function loadDataset() {
   // "Nothing stored yet" and "stored but unreadable" need different handling:
   // the first is a normal first run, the second is worth telling the user about.
   let stored = null;
@@ -256,8 +259,8 @@ export function loadDataset() {
     raw = undefined;
   }
 
-  const reseed = (status, errors) => {
-    const dataset = normalizeDataset(getSeedDataset());
+  const reseed = async (status, errors) => {
+    const dataset = normalizeDataset(await getSeedDataset());
     writeJSON(CONTENT_KEY, dataset);
     return { dataset, status, added: 0, errors };
   };
@@ -270,7 +273,8 @@ export function loadDataset() {
   stored = normalizeDataset(raw);
 
   if (stored.version < SEED_VERSION) {
-    const { dataset, added } = mergeSeed(stored, normalizeDataset(getSeedDataset()), readTombstones());
+    const seed = normalizeDataset(await getSeedDataset());
+    const { dataset, added } = mergeSeed(stored, seed, readTombstones());
     writeJSON(CONTENT_KEY, dataset);
     return { dataset, status: 'upgraded', added };
   }
@@ -283,8 +287,8 @@ export function saveDataset(dataset) {
 }
 
 /** Throws away stored content and progress, returning the bundled seed. */
-export function resetToSeed() {
-  const dataset = normalizeDataset(getSeedDataset());
+export async function resetToSeed() {
+  const dataset = normalizeDataset(await getSeedDataset());
   clearTombstones();
   writeJSON(CONTENT_KEY, dataset);
   return dataset;

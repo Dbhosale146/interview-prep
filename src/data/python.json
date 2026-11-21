@@ -68,7 +68,7 @@
           "id": "python-basics-009",
           "q": "What is the difference between `type()` and `isinstance()`?",
           "a": "`type(x) is C` demands the exact class; `isinstance(x, C)` also accepts subclasses and tuples of classes. Prefer `isinstance` so subclasses keep working.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -241,7 +241,7 @@
           "id": "python-strings-008",
           "q": "What is the difference between `str.find()` and `str.index()`?",
           "a": "Both return the position of the first match, but `find()` returns `-1` when absent while `index()` raises `ValueError`. Use `find` when a miss is normal.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -317,7 +317,7 @@
           "id": "python-collections-006",
           "q": "What is the difference between `append()` and `extend()`?",
           "a": "`append(x)` adds `x` as one element; `extend(iterable)` adds each item of the iterable.\n\n```python\na = [1]; a.append([2, 3])  # [1, [2, 3]]\nb = [1]; b.extend([2, 3])  # [1, 2, 3]\n```",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -338,14 +338,14 @@
           "id": "python-collections-009",
           "q": "What is the difference between `remove()`, `pop()` and `del` on a list?",
           "a": "`remove(value)` deletes the first matching value, `pop(index)` removes and returns the item at an index (last by default), and `del lst[i]` or `del lst[i:j]` deletes by position or slice.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "python-collections-010",
           "q": "What is the difference between `set` and `frozenset`?",
           "a": "`set` is mutable and unhashable; `frozenset` is immutable and hashable, so it can be a dict key or an element of another set.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -622,7 +622,7 @@
           "id": "python-decorators-generators-008",
           "q": "What is a class-based decorator?",
           "a": "A class whose `__init__` stores the wrapped function and whose `__call__` runs the extra behaviour. Useful when the decorator needs mutable state such as a call count.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -698,14 +698,14 @@
           "id": "python-files-context-005",
           "q": "What is the difference between `read()`, `readline()` and `readlines()`?",
           "a": "`read()` returns the whole file as one string, `readline()` returns the next single line, and `readlines()` returns a list of all lines. Only `readline` keeps memory low.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "python-files-context-006",
           "q": "What is a context manager?",
           "a": "An object implementing `__enter__` and `__exit__` so it can be used with `with`. It guarantees setup and teardown around a block - files, locks, transactions.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -795,14 +795,14 @@
           "id": "python-exceptions-006",
           "q": "Why is a bare `except:` a bad idea?",
           "a": "It also swallows `KeyboardInterrupt` and `SystemExit`, so you cannot stop the program. Catch `Exception` at the widest, and preferably something specific.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "python-exceptions-007",
           "q": "How do you define a custom exception?",
           "a": "Subclass `Exception` (never `BaseException`) and give it a clear name.\n\n```python\nclass RetryLimitError(Exception):\n    pass\n```",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -878,7 +878,7 @@
           "id": "python-modules-packages-005",
           "q": "What is the difference between `import x` and `from x import y`?",
           "a": "`import x` binds the module, so you write `x.y` and keep the namespace visible. `from x import y` binds the object directly, which is shorter but hides where it came from.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -996,7 +996,7 @@
           "id": "python-oop-classes-009",
           "q": "What is the difference between a bound and an unbound method?",
           "a": "Accessing a method on an instance gives a bound method that already carries `self`; accessing it on the class gives a plain function, so you must pass the instance yourself.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -1058,7 +1058,7 @@
           "id": "python-oop-inheritance-005",
           "q": "What does `super()` do?",
           "a": "It returns a proxy that dispatches to the next class in the MRO, not necessarily the direct parent. That is what makes cooperative multiple inheritance work.\n\n```python\nsuper().__init__(*args, **kwargs)\n```",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1072,14 +1072,14 @@
           "id": "python-oop-inheritance-007",
           "q": "What is method overriding?",
           "a": "A subclass redefining a method it inherited, so instances of the subclass use the new version. Call `super()` inside it to extend rather than replace the parent behaviour.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "python-oop-inheritance-008",
           "q": "What is duck typing?",
           "a": "Relying on the methods an object actually has rather than its class - \"if it quacks, it is a duck\". It is why Python code accepts any file-like or iterable object.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1169,7 +1169,7 @@
           "id": "python-oop-encapsulation-008",
           "q": "What is the difference between an ABC and a `Protocol`?",
           "a": "An ABC needs explicit inheritance (nominal typing); a `typing.Protocol` matches any class with the right methods (structural typing), which fits duck typing better.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -1266,7 +1266,7 @@
           "id": "python-dunder-methods-010",
           "q": "Can an object be iterable without `__iter__`?",
           "a": "Yes. If only `__getitem__` exists, Python's legacy protocol calls it with 0, 1, 2 ... until `IndexError`. Defining `__iter__` is clearer and preferred.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -1321,7 +1321,7 @@
           "id": "python-method-types-005",
           "q": "What does `@property` do?",
           "a": "It turns a method into a computed, read-only attribute, so callers write `obj.area` instead of `obj.area()`.\n\n```python\n@property\ndef area(self):\n    return self.w * self.h\n```",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1349,7 +1349,7 @@
           "id": "python-method-types-009",
           "q": "Can a subclass override a staticmethod?",
           "a": "Yes - it is a normal class attribute, so redefining the name in the subclass replaces it. But because no `cls` is passed, code inside the parent that calls it by class name will not pick up the override.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -1439,7 +1439,7 @@
           "id": "python-memory-gil-concurrency-010",
           "q": "What does Python's cyclic garbage collector do?",
           "a": "It tracks container objects in three generations and periodically looks for groups that reference only each other, then frees them. Inspect or tune it with the `gc` module.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -1515,7 +1515,7 @@
           "id": "python-numpy-pandas-007",
           "q": "What is the difference between a view and a copy in NumPy?",
           "a": "Basic slicing returns a view sharing the same buffer, so writes propagate; fancy or boolean indexing returns a copy. Check with `arr.base is not None`.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {

@@ -10,16 +10,1547 @@
       "questions": [
         {
           "id": "agentic-what-is-agent-001",
-          "q": "Placeholder question one for What is an AI Agent?",
-          "a": "Placeholder answer with `inline code`.",
+          "q": "What is an AI agent?",
+          "a": "A system where an LLM decides what to do next in a loop, calls tools to act, observes the results, and keeps going until the goal is met or a limit is hit.",
           "difficulty": "easy",
           "known": false
         },
         {
           "id": "agentic-what-is-agent-002",
-          "q": "Placeholder question two for What is an AI Agent?",
-          "a": "Placeholder answer.\n\n```python\nprint(1)\n```",
+          "q": "How does an agent differ from a chatbot?",
+          "a": "A chatbot answers in text and ends its turn. An agent takes actions in the world through tools, loops on the results, and is judged on whether a task got done.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-003",
+          "q": "What is the agent loop?",
+          "a": "Observe state, decide the next action, execute it, append the result to context, repeat. Termination comes from the model declaring completion or from a step, time or cost limit.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-004",
+          "q": "What is the difference between a workflow and an agent?",
+          "a": "A workflow has control flow you wrote, with LLM calls at fixed points. An agent lets the model choose the path at runtime. Workflows are predictable; agents are flexible.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-005",
+          "q": "When should you not build an agent?",
+          "a": "When the steps are known in advance, when every path must be auditable, when latency or cost budgets are tight, or when a wrong action is expensive. Write a workflow instead.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-006",
+          "q": "What makes a task well suited to an agent?",
+          "a": "The path is not knowable up front, the number of steps varies by input, progress is verifiable at each step, and mistakes are cheap and recoverable.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-007",
+          "q": "What are the levels of autonomy in agentic systems?",
+          "a": "From a single LLM call, to a chain, to a router choosing branches, to a tool-using loop, to an agent that plans its own subgoals, to multi-agent systems. Use the lowest level that works.",
           "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-008",
+          "q": "Is a single LLM call with tools already an agent?",
+          "a": "Not really - that is tool use. It becomes an agent when results feed back into another decision, so the model controls how many steps happen and what they are.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-009",
+          "q": "What is an agent's environment?",
+          "a": "Everything it can observe and affect through its tools - a filesystem, a browser, APIs, a database, a ticketing system. The environment defines both its capability and its blast radius.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-010",
+          "q": "What distinguishes a reactive agent from a deliberative one?",
+          "a": "A reactive agent picks the next action from the current observation only. A deliberative one builds an explicit plan first and executes against it, which helps on long tasks but costs more.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-011",
+          "q": "Why does reliability fall sharply as the number of steps grows?",
+          "a": "Step successes compound multiplicatively: 95% per step is 60% over ten steps. That is why verification at each step and short loops matter more than a cleverer prompt.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-what-is-agent-012",
+          "q": "What is the most common reason agent projects fail in production?",
+          "a": "Reliability and observability, not intelligence. Without step-level verification, retries, state you can inspect, cost ceilings and human checkpoints, demo-quality agents fail unpredictably on real traffic.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "agent-architecture",
+      "name": "Agent Architecture",
+      "questions": [
+        {
+          "id": "agentic-agent-architecture-001",
+          "q": "What are the core components of an agent?",
+          "a": "Perception (how it reads state), planning (what to do next), memory (what it retains), tools (how it acts), and the control loop tying them together with its stopping rules.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-002",
+          "q": "What role does the LLM play in an agent?",
+          "a": "It is the policy: given context, choose the next action. Everything else - tools, memory, retries, limits - is ordinary software around that decision.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-003",
+          "q": "What is a tool in an agent system?",
+          "a": "A function the model may invoke, described by a name, a purpose and a typed argument schema. Your code executes it and returns the result into the agent's context.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-004",
+          "q": "What is the observation step?",
+          "a": "Turning the result of an action - API response, file contents, error - into text the model can read. How you format and truncate observations strongly affects whether the next decision is right.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-005",
+          "q": "What is the difference between state and memory in an agent?",
+          "a": "State is the current task's structured data - the plan, step index, intermediate results - which your code owns. Memory is retained knowledge, often across sessions, which must be retrieved into context.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-006",
+          "q": "What belongs in an agent's system prompt?",
+          "a": "Role and objective, the rules and constraints, how to use the tools, the output and stopping conventions, and what to do when stuck. Durable policy only - not task data.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-007",
+          "q": "What is the agent scratchpad?",
+          "a": "The running transcript of thoughts, actions and observations passed back each turn. It is the agent's working memory, and it is also what grows the token cost of every step.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-008",
+          "q": "Why separate a planner from an executor?",
+          "a": "Planning needs breadth and reasoning; execution needs precision and cheapness. Splitting them lets you use a strong model to plan and a small one to execute, and makes the plan inspectable.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-009",
+          "q": "How should an agent loop terminate?",
+          "a": "On an explicit completion signal, plus hard ceilings on steps, wall-clock time and token spend, and a no-progress detector for repeated identical actions. Never rely on the model to stop itself.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-010",
+          "q": "What is context engineering for agents?",
+          "a": "Deciding what goes into each step's context: the task, relevant state, recent observations, retrieved facts, and only the tools that matter now. It is the highest-leverage thing you control.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-011",
+          "q": "Why does an agent's context grow unboundedly, and what do you do about it?",
+          "a": "Every observation is appended, so cost and latency climb while the signal dilutes. Fixes are summarising older turns, keeping results in external state and passing references, and truncating large tool outputs.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-agent-architecture-012",
+          "q": "How do you make an agent's execution resumable?",
+          "a": "Persist state outside the model after every step - plan, completed steps, tool results, cursor - keyed by a run id, and make each step idempotent. Then a crash or an approval pause resumes instead of restarting.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "react-planning-patterns",
+      "name": "ReAct, Plan-and-Execute & Reflection",
+      "questions": [
+        {
+          "id": "agentic-react-planning-patterns-001",
+          "q": "What is ReAct?",
+          "a": "A prompting pattern interleaving reasoning and acting: the model writes a Thought, chooses an Action, reads the Observation, and repeats. Reasoning informs the next tool call rather than happening all up front.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-002",
+          "q": "What is Plan-and-Execute?",
+          "a": "The agent first produces a full step list, then executes each step - often with a cheaper model - replanning only when a step fails. Fewer expensive reasoning calls and a plan you can review.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-003",
+          "q": "What is reflection in an agent?",
+          "a": "Having the agent critique its own output or trajectory against the goal and criteria, then revise. It catches format errors and obvious mistakes cheaply.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-004",
+          "q": "What is the Thought-Action-Observation cycle?",
+          "a": "Thought is the model's private reasoning about what to do, Action is the structured tool call, Observation is the returned result. The triple is appended to the scratchpad each iteration.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-005",
+          "q": "What are the trade-offs between ReAct and Plan-and-Execute?",
+          "a": "ReAct adapts after every observation but makes a full reasoning call per step and can wander. Plan-and-Execute is cheaper and auditable but follows a plan built with less information.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-006",
+          "q": "What is Reflexion?",
+          "a": "A pattern where failure feedback is turned into a written lesson stored in memory and prepended on the next attempt, so the agent improves across trials without any weight updates.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-007",
+          "q": "What is Tree of Thoughts?",
+          "a": "Exploring several reasoning branches at each step, scoring partial states, and searching with breadth-first or beam search. Much stronger on puzzle-like problems, and far more expensive.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-008",
+          "q": "When should an agent replan?",
+          "a": "When a step fails, when an observation contradicts an assumption in the plan, when the same action repeats without progress, or when a step budget fraction is spent. Not after every step.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-009",
+          "q": "What makes reflection actually useful rather than theatre?",
+          "a": "Grounding it in external signal - test results, schema validation, a verifier call - instead of asking the model whether it is happy. Self-assessment without evidence mostly produces confident agreement.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-010",
+          "q": "What is the difference between chain-of-thought and ReAct?",
+          "a": "Chain-of-thought reasons in one pass with no external input. ReAct alternates reasoning with real tool calls, so facts come from the environment rather than from the model's memory.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-011",
+          "q": "Why can reflection loops fail to converge?",
+          "a": "The critic and the actor share the same blind spots, so the agent oscillates between two wrong answers or talks itself out of a correct one. Cap the iterations and require an external check to accept a revision.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-react-planning-patterns-012",
+          "q": "When is an explicit planning step worth its cost?",
+          "a": "On long multi-step tasks where a wrong early move is expensive, where a human should approve the approach, or where steps can be parallelised. For short tasks the plan is overhead and often wrong anyway.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "tool-calling",
+      "name": "Tool / Function Calling",
+      "questions": [
+        {
+          "id": "agentic-tool-calling-001",
+          "q": "What is function (tool) calling?",
+          "a": "The model is given tool schemas and, instead of answering in prose, emits a structured call with arguments. The provider constrains decoding so the call matches the schema.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-002",
+          "q": "Who actually executes a tool call?",
+          "a": "Your application. The model only emits a name and arguments; you validate, authorise and run it, then return the result. The model never touches your systems directly.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-003",
+          "q": "What does a tool definition contain?",
+          "a": "A name, a description of when to use it, and a JSON Schema for its parameters with types, required fields and enums. The description is what drives selection.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-004",
+          "q": "What makes a good tool description?",
+          "a": "State what it does, when to use it, when not to, what it returns, and any units or formats. Written for a reader with no other context - it is prompt text, not API documentation.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-005",
+          "q": "How does the model decide which tool to call?",
+          "a": "It matches the request against the tool names, descriptions and schemas in context. Overlapping or vaguely described tools are the usual cause of wrong selection.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-006",
+          "q": "What is parallel tool calling?",
+          "a": "The model emitting several independent calls in one turn, which you execute concurrently and return together. It cuts latency sharply when steps do not depend on each other.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-007",
+          "q": "How should you return a tool error to the model?",
+          "a": "As a structured, actionable observation - what failed, why, and what to try - not a stack trace. Distinguish retryable from permanent failures so the agent does not loop on a hopeless call.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-008",
+          "q": "What happens when an agent has too many tools?",
+          "a": "Selection accuracy drops and the schemas eat context. Beyond roughly 10-20, group them behind higher-level tools or retrieve a relevant subset per step.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-009",
+          "q": "Why must you validate tool arguments server-side?",
+          "a": "Schema-constrained decoding guarantees shape, not sanity or authorisation - the model can still pass a valid-looking wrong id or an out-of-scope path. Treat every call as untrusted input.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-010",
+          "q": "What is the difference between tool calling and structured output?",
+          "a": "Structured output shapes the final answer for your code to consume. Tool calling is a request for you to perform an action and hand the result back so the loop continues.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-011",
+          "q": "How should tool results be formatted for the model?",
+          "a": "Compact and relevant: the fields that matter, truncated with an explicit note, large payloads replaced by a reference plus a summary. Dumping raw JSON wastes context and buries the signal.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-012",
+          "q": "Why is tool selection accuracy the main bottleneck in agent quality?",
+          "a": "One wrong tool or argument derails every later step, and the agent rarely recognises it. Fixing descriptions, narrowing schemas and reducing tool count usually beats upgrading the model.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-tool-calling-013",
+          "q": "How do you make tool calls safe to retry?",
+          "a": "Make them idempotent: client-supplied idempotency keys on writes, upserts rather than inserts, and a dedupe check on the call signature. Agents retry, and a non-idempotent write means duplicate side effects.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "name": "Memory (Short-term, Long-term, Vector)",
+      "questions": [
+        {
+          "id": "agentic-memory-001",
+          "q": "What is the difference between short-term and long-term memory in an agent?",
+          "a": "Short-term memory is the current context window - the task and recent turns. Long-term memory is external storage retrieved when relevant, surviving across sessions.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-002",
+          "q": "What is working memory in an agent?",
+          "a": "What is in context right now: system prompt, task, plan, recent observations. It is bounded by the context window, so deciding what to keep is a constant trade-off.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-003",
+          "q": "What is vector memory?",
+          "a": "Storing past interactions or extracted facts as embeddings and retrieving the most similar ones for the current step. It gives recall beyond the context window at the cost of retrieval errors.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-004",
+          "q": "What is the difference between episodic and semantic memory?",
+          "a": "Episodic memory stores specific events - what happened in a past session. Semantic memory stores distilled facts and preferences. Episodic is a log; semantic is knowledge extracted from it.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-005",
+          "q": "How do you implement long-term memory in practice?",
+          "a": "Extract durable facts after each session with an LLM pass, store them with timestamps and source ids in a database or vector store, and retrieve a small relevant set into the system prompt.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-006",
+          "q": "What is conversation summarisation and when do you trigger it?",
+          "a": "Compressing older turns into a running summary when context use crosses a threshold, keeping the last few turns verbatim. Summarise facts and decisions, not pleasantries.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-007",
+          "q": "How do you decide what is worth remembering?",
+          "a": "Store stable, reusable, non-derivable things: preferences, constraints, identifiers, decisions and their reasons. Do not store what you can re-fetch from a system of record.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-008",
+          "q": "How do you keep memories from going stale?",
+          "a": "Timestamp every memory, prefer the newest on conflict, re-verify against the source system when it matters, and expire or decay anything that has not been confirmed or used.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-009",
+          "q": "Should memory retrieval be semantic, structured, or both?",
+          "a": "Both. Use structured lookups for identity and entity-keyed facts, where exactness matters, and semantic search for open-ended recall. Vector search alone misses exact-match needs.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-010",
+          "q": "How do you stop retrieved memory from hijacking behaviour?",
+          "a": "Label it clearly as background that may be outdated, keep it small, never let it override the current instruction, and treat remembered text as data - memories can carry injected instructions.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-011",
+          "q": "Why is \"store every message in a vector database\" a poor memory design?",
+          "a": "Chat turns embed badly, retrieval returns topically similar but useless fragments, contradictions accumulate with no resolution, and the store grows forever. Extract structured facts instead of archiving transcripts.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-memory-012",
+          "q": "How do you handle conflicting or superseded memories?",
+          "a": "Treat memory as an event log with versions rather than overwrites: write a new fact that supersedes the old, keep provenance, and resolve at read time by recency and source trust. Keep an audit trail.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "planning-reasoning",
+      "name": "Planning & Reasoning",
+      "questions": [
+        {
+          "id": "agentic-planning-reasoning-001",
+          "q": "What is task decomposition?",
+          "a": "Breaking a goal into smaller subtasks an agent can attempt one at a time. It shortens each reasoning hop and gives you a place to verify progress.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-planning-reasoning-002",
+          "q": "What is a reasoning model?",
+          "a": "A model trained to spend extra inference-time compute on internal deliberation before answering. It is stronger on multi-step problems and slower and dearer per call.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-planning-reasoning-003",
+          "q": "What is the difference between planning and reasoning?",
+          "a": "Reasoning is working out what is true or what follows; planning is choosing an ordered sequence of actions to reach a goal. Planning needs reasoning plus a model of what the tools do.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-planning-reasoning-004",
+          "q": "How should you decompose a complex task in practice?",
+          "a": "Split along verifiable boundaries, so each subtask has a checkable output and clear inputs. Decomposing by topic rather than by checkable result gives steps you cannot validate.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-planning-reasoning-005",
+          "q": "What is least-to-most prompting?",
+          "a": "Ask the model to list subproblems from simplest to hardest, then solve them in order, feeding each answer into the next. It beats one-shot chain-of-thought on compositional problems.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-planning-reasoning-006",
+          "q": "What is dependency-aware planning?",
+          "a": "Representing steps as a DAG rather than a list, so independent branches run in parallel and dependent ones wait. It cuts wall-clock time and makes failure isolation obvious.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-planning-reasoning-007",
+          "q": "How do you validate a plan before executing it?",
+          "a": "Check it mechanically: do all referenced tools exist, are required inputs produced by earlier steps, are there cycles, is the step count within budget. Then optionally have a human or a second model review it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-planning-reasoning-008",
+          "q": "When should you use a reasoning model instead of chain-of-thought prompting?",
+          "a": "When the task genuinely needs multi-step deduction, planning or hard debugging and the latency is acceptable. For extraction, routing and formatting it is wasted cost.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-planning-reasoning-009",
+          "q": "How do you give an agent a sense of progress?",
+          "a": "Keep explicit state: the plan, which steps are done, what each produced, and what remains. Re-stating that each turn stops the agent repeating work or losing the thread.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-planning-reasoning-010",
+          "q": "Why do LLMs struggle with long-horizon planning?",
+          "a": "They have no persistent world model and cannot cheaply simulate outcomes, so they cannot tell which early action pays off ten steps later. Errors also compound, and context dilutes the original goal.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-planning-reasoning-011",
+          "q": "What does adding explicit search to LLM planning buy you?",
+          "a": "The model proposes candidate actions and a scorer or verifier evaluates states, so search - beam, MCTS - explores alternatives instead of committing to the first guess. The gain depends entirely on having a reliable evaluator.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "multi-agent",
+      "name": "Multi-Agent Systems & Patterns",
+      "questions": [
+        {
+          "id": "agentic-multi-agent-001",
+          "q": "What is a multi-agent system?",
+          "a": "Several agents, each with its own prompt, tools and often its own model, collaborating on a task by passing work and results between them.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-002",
+          "q": "What is the supervisor pattern?",
+          "a": "One orchestrator agent owns the goal and routes subtasks to specialist workers, collecting their results. The workers never talk to each other, so control stays in one place.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-003",
+          "q": "What is a specialist agent?",
+          "a": "An agent scoped to one domain with only the tools and instructions for it - a SQL agent, a code-review agent. Narrow scope means a shorter prompt and better tool selection.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-004",
+          "q": "What is hierarchical delegation?",
+          "a": "Supervisors of supervisors: a top agent splits work among mid-level agents that each manage their own workers. It scales organisationally but multiplies latency and failure points.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-005",
+          "q": "What is the swarm (handoff) pattern?",
+          "a": "Peer agents with no central orchestrator, each able to hand the conversation to a better-suited peer. Flexible, but harder to bound - handoffs can cycle.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-006",
+          "q": "What is the debate pattern?",
+          "a": "Two or more agents argue opposing positions and a judge decides. It improves factuality on contested questions, at several times the cost of one call.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-007",
+          "q": "How do agents actually communicate?",
+          "a": "Usually by structured messages written into shared state, or as tool calls where a sub-agent is just a tool the parent invokes. Free-form natural-language chatter between agents is the least reliable option.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-008",
+          "q": "What is the difference between shared and private agent state?",
+          "a": "Shared state - a scratchpad or blackboard all agents read and write - keeps everyone aligned but leaks noise. Private state keeps each agent focused but risks inconsistent assumptions.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-009",
+          "q": "When is a multi-agent design actually worth it?",
+          "a": "When subtasks need genuinely different tools or permissions, when they can run in parallel, or when one prompt has grown too large to be reliable. Not merely because the task feels complicated.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-010",
+          "q": "What does multi-agent cost you?",
+          "a": "Tokens multiply because context is re-sent per agent, latency becomes the sum of serial hops, debugging spans several traces, and information is lost at every handoff.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-011",
+          "q": "How do you decide the boundary between two agents?",
+          "a": "Along tool and permission lines, and where the handoff can be a small typed payload. If two agents need to share most of their context, they should be one agent.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-012",
+          "q": "Why does a multi-agent system often underperform one well-built agent?",
+          "a": "Each handoff loses context and adds a chance to misread the goal, so errors compound across agents. Unless the split buys real parallelism or isolation, a single agent with good tools wins.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-multi-agent-013",
+          "q": "How do you prevent infinite handoff loops?",
+          "a": "Track the handoff path in state, forbid revisiting an agent without new information, cap total hops and spend, and make one agent the only one allowed to finish the task.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "frameworks",
+      "name": "Frameworks (LangChain, LangGraph, CrewAI, AutoGen, LlamaIndex)",
+      "questions": [
+        {
+          "id": "agentic-frameworks-001",
+          "q": "What is LangChain?",
+          "a": "A library of composable building blocks for LLM applications - model wrappers, prompts, tools, retrievers, output parsers - plus integrations with many providers and stores.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-002",
+          "q": "What is LangGraph?",
+          "a": "A graph runtime for agents: you define nodes and edges over an explicit state object. It adds persistence, resumability, human-in-the-loop interrupts and streaming to a stateful loop.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-003",
+          "q": "What is CrewAI?",
+          "a": "A framework built around role-playing agents with assigned goals, backstories and tasks, organised sequentially or hierarchically. Fast to express a team of specialists.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-004",
+          "q": "What is AutoGen?",
+          "a": "A Microsoft framework modelling agents as conversational participants, including an executor agent that can run code. Strong for multi-agent conversation and code-execution loops.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-005",
+          "q": "What does LlamaIndex specialise in?",
+          "a": "The data side: ingestion connectors, parsing, chunking, indexing and query engines over your documents. It is retrieval-first, with agents layered on top.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-006",
+          "q": "What is the difference between LangChain and LangGraph?",
+          "a": "LangChain gives you components and linear chains; LangGraph gives you an explicit state machine with cycles, checkpointing and interrupts. Use LangGraph when the loop needs durability and control.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-007",
+          "q": "What does a graph-based agent runtime give you that a plain loop does not?",
+          "a": "Persisted state at every node, so runs resume after a crash or an approval pause; deterministic replay for debugging; and explicit control over branching and termination.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-008",
+          "q": "Do you need a framework to build an agent?",
+          "a": "No - a loop calling an API with tool schemas is about fifty lines. Frameworks pay off for state persistence, streaming, many integrations and observability, not for the loop itself.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-009",
+          "q": "How do you choose between these frameworks?",
+          "a": "Match the shape of the problem: document retrieval leans LlamaIndex, durable stateful workflows LangGraph, a team of role-based agents CrewAI, conversational multi-agent with code execution AutoGen.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-010",
+          "q": "What should you keep outside the framework?",
+          "a": "Prompts, tool implementations, evaluation and your domain logic. Keeping those as plain code and data means swapping or dropping the framework is a refactor, not a rewrite.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-011",
+          "q": "How do frameworks handle observability?",
+          "a": "Most emit structured traces of every model call, tool call and state transition, with hooks into tracing platforms. That built-in instrumentation is often the strongest reason to adopt one.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-012",
+          "q": "What are the real risks of framework lock-in here?",
+          "a": "Abstractions hide the actual prompt sent, making debugging hard; breaking changes land often in a fast-moving space; and provider features can arrive before the wrapper supports them.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-frameworks-013",
+          "q": "Why do experienced teams often end up writing their own agent loop?",
+          "a": "Reliability work - retries, budgets, verification, context trimming, approval gates - is domain-specific, and generic abstractions obscure the prompt you must tune. They keep the framework for integrations and tracing.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "mcp",
+      "name": "Model Context Protocol (MCP)",
+      "questions": [
+        {
+          "id": "agentic-mcp-001",
+          "q": "What is the Model Context Protocol?",
+          "a": "An open protocol, introduced by Anthropic in late 2024, that standardises how LLM applications connect to external tools and data sources through a client-server interface.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-002",
+          "q": "What problem does MCP solve?",
+          "a": "Every application previously wrote bespoke glue for every tool. MCP turns that N-times-M integration problem into one server per system that any MCP-capable client can use.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-003",
+          "q": "What are MCP's main primitives?",
+          "a": "Tools (actions the model can invoke), resources (data the client can read), and prompts (reusable templates the server offers). Servers may expose any combination.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-004",
+          "q": "What are the host, client and server in MCP?",
+          "a": "The host is the application containing the LLM, the client is the connector inside it that speaks the protocol, and the server is the process exposing one system's tools and resources.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-005",
+          "q": "What transports does MCP use?",
+          "a": "JSON-RPC messages over stdio for a local subprocess, or over HTTP for a remote server. Local stdio suits developer tools; HTTP suits shared and hosted servers.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-006",
+          "q": "What is the difference between a tool and a resource in MCP?",
+          "a": "A tool is model-invoked and may have side effects; a resource is application-controlled read-only context the host decides to include. The distinction keeps reads out of the model's action budget.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-007",
+          "q": "How does MCP differ from plain function calling?",
+          "a": "Function calling is the model-side mechanism for emitting a call. MCP is the transport and discovery layer that supplies those tools dynamically from separate processes - they are complements, not alternatives.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-008",
+          "q": "How would you expose an internal API over MCP?",
+          "a": "Wrap it in a server whose tools are task-shaped rather than endpoint-shaped, with tight schemas and clear descriptions, enforcing authorisation inside the server rather than trusting the caller.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-009",
+          "q": "What security considerations come with MCP servers?",
+          "a": "A server runs with its own credentials, so scope them minimally. Tool descriptions and returned content enter the prompt, so a malicious server can attempt injection - and a local server runs as your user.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-010",
+          "q": "How does a client discover what a server can do?",
+          "a": "It handshakes on connection and lists available tools, resources and prompts with their schemas. Because that happens at runtime, capabilities can change without the host being rebuilt.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-011",
+          "q": "What are the trust boundaries when using third-party MCP servers?",
+          "a": "The server sees every argument you send and controls everything it returns, which lands in your context. Treat it like an untrusted dependency with network access: review it, scope credentials, and sandbox it.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-mcp-012",
+          "q": "What are the practical limits of MCP today?",
+          "a": "Tool schemas still consume context, so a dozen servers can crowd out the task. Authorisation, auditing and multi-tenant credential handling largely remain the host's responsibility.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "a2a",
+      "name": "Agent-to-Agent (A2A) Protocol",
+      "questions": [
+        {
+          "id": "agentic-a2a-001",
+          "q": "What is the A2A protocol?",
+          "a": "Agent2Agent, an open protocol announced by Google in 2025 and now under the Linux Foundation, that lets independent agents discover each other and exchange tasks over HTTP.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-a2a-002",
+          "q": "What problem does A2A address?",
+          "a": "Agents built by different teams on different stacks cannot collaborate without bespoke integration. A2A gives them a common way to advertise capabilities and delegate work.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-a2a-003",
+          "q": "How is A2A different from MCP?",
+          "a": "MCP connects one agent to tools and data; A2A connects agents to each other as peers. MCP is vertical integration, A2A is horizontal - and they are designed to be used together.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-a2a-004",
+          "q": "What is an Agent Card?",
+          "a": "A machine-readable descriptor published by an agent listing its identity, skills, endpoint and authentication requirements. It is how another agent decides whether to delegate to it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-a2a-005",
+          "q": "What is a task in A2A?",
+          "a": "The unit of delegated work, with an id and a lifecycle - submitted, working, input-required, completed or failed - and artifacts as its output. It is explicitly designed for work that outlives one request.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-a2a-006",
+          "q": "How do A2A agents discover each other?",
+          "a": "By fetching Agent Cards from a well-known URL on the agent's domain or from a registry, then matching the requested capability against the advertised skills.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-a2a-007",
+          "q": "How does A2A handle long-running work and streaming?",
+          "a": "Tasks are asynchronous: the client polls or subscribes for updates via server-sent events, and agents can push notifications. That is why task state is first-class in the protocol.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-a2a-008",
+          "q": "Where does authentication fit in A2A?",
+          "a": "The Agent Card declares the schemes it requires and the protocol relies on standard HTTP authentication, so existing enterprise identity and authorisation infrastructure applies rather than a new scheme.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-a2a-009",
+          "q": "What is an opaque agent in the A2A model?",
+          "a": "Agents collaborate without exposing their internal tools, prompts or memory - only the task interface. That is what makes cross-organisation delegation possible without sharing implementation.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-a2a-010",
+          "q": "Why is agent interoperability hard beyond the transport layer?",
+          "a": "The hard parts are semantic: shared vocabulary for capabilities, trust and accountability for actions taken on your behalf, cost attribution, and error semantics. A wire format solves none of those.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-a2a-011",
+          "q": "When is an agent protocol overkill compared to a plain API call?",
+          "a": "Whenever the remote capability is deterministic and you know exactly what you want - then call the API. Protocols earn their complexity when the remote side must interpret an open-ended task.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "rag",
+      "name": "Agentic RAG",
+      "questions": [
+        {
+          "id": "agentic-rag-001",
+          "q": "What is agentic RAG?",
+          "a": "Retrieval driven by an agent loop: the model decides whether to search, what to search for, when to search again, and when it has enough evidence to answer.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-002",
+          "q": "How does agentic RAG differ from classic RAG?",
+          "a": "Classic RAG always retrieves once with a fixed pipeline. Agentic RAG makes retrieval a tool, so the number of searches and the sources used vary per question.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-003",
+          "q": "What does exposing retrieval as a tool change?",
+          "a": "The model can skip retrieval when it is unnecessary, reformulate after a bad result, and combine several queries - but you lose the predictable single-call latency and cost.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-004",
+          "q": "What is multi-hop retrieval?",
+          "a": "Using the result of one search to form the next, for questions whose answer is not in any single passage - find the entity first, then look up its attribute.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-005",
+          "q": "What is corrective or self-reflective RAG?",
+          "a": "The agent grades retrieved chunks for relevance before answering, and on a poor grade it rewrites the query, falls back to another source, or declines rather than answering from noise.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-006",
+          "q": "What is query routing across sources?",
+          "a": "Choosing which store to query per question - documentation, a SQL warehouse, a ticket system, the web - either by a classifier or by exposing each as its own retrieval tool.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-007",
+          "q": "How do you bound an agentic retrieval loop?",
+          "a": "Cap the number of searches, require each new query to differ meaningfully from the last, and force an answer or an explicit \"not found\" when the budget runs out.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-008",
+          "q": "When is agentic RAG worth the extra latency?",
+          "a": "For research-style questions needing several sources or hops, and for ambiguous queries that need clarification first. For straightforward lookups the single-shot pipeline is faster and just as accurate.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-009",
+          "q": "How do you combine SQL and document retrieval in one agent?",
+          "a": "Give it a text-to-SQL tool over a constrained read-only schema plus a document search tool, and tell it which kinds of questions each answers. Aggregates go to SQL; explanations go to documents.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-010",
+          "q": "How should retrieved evidence be tracked across multiple hops?",
+          "a": "Accumulate it in structured state with the query and source that produced each item, rather than letting raw chunks pile up in the transcript. Then the final answer can cite precisely and context stays small.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-011",
+          "q": "What failure modes are specific to agentic RAG?",
+          "a": "Search loops that rephrase the same query forever, drifting away from the original question across hops, and confidently answering from the one weakly relevant chunk it eventually found.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-rag-012",
+          "q": "How do you evaluate an agentic RAG system?",
+          "a": "Score the end answer for faithfulness and correctness, and separately score the trajectory: was retrieval invoked when needed, were the queries sensible, how many hops, and did it stop appropriately.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "human-in-the-loop",
+      "name": "Human-in-the-Loop",
+      "questions": [
+        {
+          "id": "agentic-human-in-the-loop-001",
+          "q": "What is human-in-the-loop in an agent system?",
+          "a": "Pausing the agent at defined points so a person approves, edits or rejects an action before it takes effect. The agent proposes; the human decides.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-human-in-the-loop-002",
+          "q": "Which actions should always require approval?",
+          "a": "Anything irreversible, externally visible or costly: sending messages, moving money, deleting data, deploying, and granting access. Read-only steps should not interrupt anyone.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-human-in-the-loop-003",
+          "q": "What is a dry run in an agent workflow?",
+          "a": "Executing the plan against a simulation or with writes disabled, so the human sees exactly what would change before authorising it. The cheapest way to build trust in a new agent.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-human-in-the-loop-004",
+          "q": "What is the difference between human-in-the-loop and human-on-the-loop?",
+          "a": "In-the-loop means the human must act before the agent continues. On-the-loop means the agent proceeds while a human monitors and can intervene - higher throughput, higher risk.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-human-in-the-loop-005",
+          "q": "How do you implement a pause for approval technically?",
+          "a": "Persist the run state, emit the proposed action for review, and exit. On approval, load the state and resume at that step. This is why durable, resumable state is a prerequisite.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-human-in-the-loop-006",
+          "q": "How should a proposed action be presented for review?",
+          "a": "Show the concrete effect, not the reasoning: the exact request, the records affected, a diff where possible, and what is irreversible. Reviewers approve consequences, not chains of thought.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-human-in-the-loop-007",
+          "q": "How should an agent escalate when it is uncertain?",
+          "a": "Define explicit escalation triggers - low retrieval confidence, repeated failures, out-of-policy requests - and have it hand over with a summary of what it tried and the specific question it needs answered.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-human-in-the-loop-008",
+          "q": "How do you turn human corrections into improvement?",
+          "a": "Log every edit and rejection with the full input context, then mine them for eval cases, prompt fixes and tool constraints. Rejections are the highest-value labelled data you will get.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-human-in-the-loop-009",
+          "q": "What should happen when nobody responds to an approval request?",
+          "a": "It must time out to a safe default - abandon the run, never proceed. Also decide whether partial work is rolled back or left, and make that visible to the next reviewer.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-human-in-the-loop-010",
+          "q": "How do you avoid approval fatigue?",
+          "a": "Gate on risk rather than on every step: auto-approve reversible low-value actions, batch similar requests, and raise thresholds as measured accuracy improves. A reviewer who approves everything adds no safety.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-human-in-the-loop-011",
+          "q": "How do you decide the autonomy level for a given action?",
+          "a": "Score reversibility, blast radius and the agent's measured accuracy on that action. High accuracy plus easy rollback earns autonomy; anything irreversible stays gated regardless of measured accuracy.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "guardrails-safety",
+      "name": "Guardrails, Safety & Prompt Injection",
+      "questions": [
+        {
+          "id": "agentic-guardrails-safety-001",
+          "q": "Why are agents a bigger security risk than chatbots?",
+          "a": "A chatbot's worst output is bad text. An agent holds credentials and takes actions, so a successful manipulation becomes a real change in your systems.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-002",
+          "q": "What does least privilege mean for an agent?",
+          "a": "Each tool gets the narrowest credential and scope that still works - read-only where possible, one tenant, one table, one directory - so a compromised step cannot reach everything.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-003",
+          "q": "What is sandboxing in an agent context?",
+          "a": "Running generated code or risky tools in an isolated environment - a container or VM with no credentials, a restricted filesystem and no outbound network unless explicitly needed.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-004",
+          "q": "How do you scope tool permissions in practice?",
+          "a": "Per-tool credentials rather than one service account, parameters constrained by schema and server-side checks, and authorisation evaluated against the end user's rights, not the agent's.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-005",
+          "q": "What is the confused deputy problem for agents?",
+          "a": "The agent has broader authority than the requester, so a user or injected instruction gets it to act beyond their own permissions. Fix it by executing tools under the caller's identity.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-006",
+          "q": "How do you prevent data exfiltration through an agent's tools?",
+          "a": "Allow-list outbound destinations, forbid untrusted URLs in requests the agent constructs, strip secrets from tool arguments, and require approval for anything that sends data outside the boundary.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-007",
+          "q": "What is the lethal trifecta for agent security?",
+          "a": "An agent that simultaneously has access to private data, ingests untrusted content, and can communicate externally. Any two are usually survivable; all three make exfiltration achievable by injection alone.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-008",
+          "q": "How should agent actions be audited?",
+          "a": "Log every tool call with arguments, identity, authorisation decision, result and the run id, in append-only storage. You need to be able to answer \"what did it do and on whose behalf\" months later.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-009",
+          "q": "What is an allow-list approach for agent targets?",
+          "a": "Enumerating the permitted domains, repositories, tables or recipients rather than blocking known-bad ones. Deny-by-default is the only approach that survives a creative attacker or a confused model.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-010",
+          "q": "How do you keep tool output from acting as instructions?",
+          "a": "Wrap it in clear delimiters, label it untrusted data in the prompt, strip or escape instruction-like patterns, and gate side-effecting actions on policy checks rather than on what the text asked for.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-011",
+          "q": "Why does giving an agent both browsing and write tools create an attack chain?",
+          "a": "Fetched content can carry instructions, and a write tool turns them into effects - read a poisoned page, then file a ticket or push a commit the attacker dictated. The two capabilities together are the vulnerability.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-guardrails-safety-012",
+          "q": "How do you break the private-data, untrusted-content, external-communication combination?",
+          "a": "Remove one leg per run: separate agents for trusted and untrusted content, no credentials in the browsing path, or an egress allow-list. Design the capability split rather than trying to filter every injection.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "evaluation-observability",
+      "name": "Evaluation & Observability",
+      "questions": [
+        {
+          "id": "agentic-evaluation-observability-001",
+          "q": "What should you measure for an agent?",
+          "a": "Task success rate first, then steps per task, tool-call error rate, cost and latency per task, escalation rate and the share of runs hitting a budget limit.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-002",
+          "q": "What does a trace of an agent run contain?",
+          "a": "The whole tree for one run id: every model call with its prompt and output, every tool call with arguments and result, state transitions, tokens, latency and cost per span.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-003",
+          "q": "What is task success rate?",
+          "a": "The fraction of runs that achieved the goal, judged by a programmatic check where possible. It is the only metric that matters to the user, and the hardest to define well.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-004",
+          "q": "What is LangSmith used for?",
+          "a": "Tracing LLM and agent runs, storing datasets, running evaluations against them, and comparing prompt or model versions. It is the observability and eval layer rather than a runtime.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-005",
+          "q": "What is trajectory evaluation?",
+          "a": "Scoring the path, not just the answer: were the right tools chosen in a sensible order, with valid arguments, and no redundant or destructive steps.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-006",
+          "q": "How do you evaluate tool selection specifically?",
+          "a": "Build a labelled set of requests with the expected tool and arguments, then measure selection accuracy and argument exactness per tool. It isolates the most common cause of agent failure.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-007",
+          "q": "What is the difference between step-level and end-to-end evaluation?",
+          "a": "Step-level scores each decision in isolation, so you learn where it breaks. End-to-end scores only the outcome, so you learn whether it works. You need both.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-008",
+          "q": "How do you build an agent evaluation set?",
+          "a": "Harvest real runs, including failures, into cases with the input, environment fixtures and a success check. Mock the tools so runs are deterministic and repeatable.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-009",
+          "q": "How do you make agent evaluation deterministic?",
+          "a": "Replay recorded tool responses instead of calling live systems, pin model versions, fix seeds and temperature, and freeze the clock. Otherwise you cannot tell a regression from noise.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-010",
+          "q": "What should trigger an alert on a production agent?",
+          "a": "A drop in success rate, a rise in steps or cost per task, more budget-limit terminations, a spike in tool errors or guardrail blocks, and growth in human escalations.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-011",
+          "q": "Why is end-to-end evaluation alone insufficient for agents?",
+          "a": "It tells you the run failed but not where, and an agent can reach the right answer through a dangerous or wasteful path. Without step-level signal you cannot debug or improve anything.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-evaluation-observability-012",
+          "q": "How do you evaluate a task with many valid trajectories?",
+          "a": "Score outcomes and invariants rather than an exact path: was the goal state reached, were forbidden actions avoided, was the step budget respected. Reserve path matching for steps that genuinely must happen.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "failure-cost-latency",
+      "name": "Failure Modes, Cost & Latency",
+      "questions": [
+        {
+          "id": "agentic-failure-cost-latency-001",
+          "q": "What are the most common agent failure modes?",
+          "a": "Looping on the same action, picking the wrong tool, losing the goal as context grows, accepting a bad tool result as fact, and stopping early while claiming success.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-002",
+          "q": "What drives an agent's cost?",
+          "a": "Tokens per step times the number of steps - and because the scratchpad is resent each step, cost grows roughly quadratically with trajectory length.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-003",
+          "q": "What drives an agent's latency?",
+          "a": "The serial chain: each step is a model call plus a tool call, so latency is roughly steps times (decode time + tool time). Step count matters more than raw model speed.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-004",
+          "q": "How do you detect that an agent is looping?",
+          "a": "Hash each (tool, arguments) pair and track repeats, and watch for state that has not changed over the last few steps. On detection, force a replan or stop.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-005",
+          "q": "How do you cut token cost in an agent loop?",
+          "a": "Trim and summarise the scratchpad, truncate tool outputs and keep large results in external state, show only the tools relevant to the current step, and use prompt caching for the stable prefix.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-006",
+          "q": "How do you reduce agent latency?",
+          "a": "Fewer steps first - plan once, then batch and parallelise independent tool calls. Then stream output, use a small model for routine steps, and cache repeated retrievals.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-007",
+          "q": "How does model routing work inside an agent?",
+          "a": "Use a strong model for planning and ambiguous decisions and a small fast one for mechanical steps like formatting, extraction and summarising observations. Most steps do not need frontier reasoning.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-008",
+          "q": "What is a step and cost budget, and how do you enforce it?",
+          "a": "Hard per-run ceilings on steps, tokens, wall-clock time and currency, checked before every model and tool call. On breach, stop and report partial results rather than continuing.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-009",
+          "q": "How should an agent handle a failure halfway through a task?",
+          "a": "Persist what succeeded, classify the error as retryable or terminal, retry with backoff only the failed step, and if it is terminal either compensate the earlier writes or escalate with the partial state.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-010",
+          "q": "Where does caching help most in an agent?",
+          "a": "Provider prompt caching on the stable prefix, a result cache keyed by tool and arguments for pure reads, and an embedding cache. Never cache calls with side effects.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-011",
+          "q": "What is goal drift and how do you prevent it?",
+          "a": "The agent gradually optimises for a subgoal and forgets the original request as observations crowd out the task. Restate the goal and success criteria in every step's context.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-012",
+          "q": "When should you spend on a bigger model rather than more steps?",
+          "a": "When failures come from bad decisions - wrong tool, flawed plan - a stronger model fixes more than extra iterations. When failures come from missing information, more retrieval steps are the answer.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-failure-cost-latency-013",
+          "q": "Why can an agent report success while having failed?",
+          "a": "Nothing verifies its claim - it is generating the most plausible closing message, not checking the world. The fix is a programmatic post-condition per task, not a better prompt.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "production-deployment",
+      "name": "Production Deployment & Workflow Automation",
+      "questions": [
+        {
+          "id": "agentic-production-deployment-001",
+          "q": "What does it take to run an agent in production?",
+          "a": "Durable resumable state, budgets and timeouts, idempotent tools, scoped credentials, tracing and metrics, an eval suite in CI, approval gates, and a rollback path.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-002",
+          "q": "What is a run id and why does it matter?",
+          "a": "A unique identifier for one agent execution, attached to every log line, trace span, tool call and stored state. Without it you cannot reconstruct what happened.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-003",
+          "q": "Why does an agent need idempotency?",
+          "a": "Agents retry, resume and sometimes repeat themselves, so the same write can be attempted twice. Idempotency keys turn a duplicate attempt into a no-op instead of a duplicate order.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-004",
+          "q": "What does a typical deployment architecture look like?",
+          "a": "An API accepts a task and enqueues it, stateless workers run the loop and checkpoint state to a database, long tool calls go through the same queue, and clients stream progress by run id.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-005",
+          "q": "Why run agents as background jobs rather than synchronous requests?",
+          "a": "Runs take minutes, may pause for approval, and must survive a deploy. A queue plus durable state gives you retries, backpressure and resumption that an HTTP request cannot.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-006",
+          "q": "What does a durable workflow engine add?",
+          "a": "Persisted execution history, so a worker crash resumes mid-task, plus built-in retries, timers, timeouts and compensation. It handles the distributed-systems problems so the agent code stays simple.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-007",
+          "q": "How do you manage secrets for agent tools?",
+          "a": "Keep them in a secrets manager, inject at tool-execution time, never place them in prompts or state, scope one credential per tool, and rotate them. The model must never see a secret.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-008",
+          "q": "How do you handle rate limits and concurrency across many runs?",
+          "a": "Centralise provider calls behind a limiter with per-tenant quotas, queue rather than drop, retry with jittered backoff, and cap concurrent runs so one tenant cannot starve the rest.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-009",
+          "q": "How do you roll out an agent change safely?",
+          "a": "Pass the eval suite, shadow on real traffic without acting, canary a small share with tighter approval gates, watch success rate and cost, and keep one-switch rollback of prompt and model versions.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-010",
+          "q": "How do you phase an enterprise workflow automation rollout?",
+          "a": "Start read-only and suggestion-only, then act with approval on every step, then auto-approve the low-risk actions once accuracy is measured, keeping the human gate on irreversible ones.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-011",
+          "q": "What SLAs can you realistically offer for an agent feature?",
+          "a": "Availability and time-to-first-token are controllable; end-to-end task latency is variable because step count varies. Commit to percentiles plus a hard timeout and a defined fallback, not an average.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-012",
+          "q": "How do you scope an enterprise workflow for an agent?",
+          "a": "Pick a process with high volume, a verifiable outcome, tolerable error cost and existing APIs. Automate the long tail of exceptions last - the happy path is usually better served by a workflow.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-production-deployment-013",
+          "q": "What do compliance and auditability require from an agent system?",
+          "a": "Immutable logs of every action with identity and authorisation decision, data-residency control over where prompts travel, retention and deletion handling, documented human oversight, and the ability to replay any decision.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "system-design",
+      "name": "System Design Questions for Agents",
+      "questions": [
+        {
+          "id": "agentic-system-design-001",
+          "q": "How should you structure an answer to an agent system design question?",
+          "a": "Clarify the goal and constraints, state whether a workflow or an agent fits, then cover tools, state and memory, control loop and limits, guardrails, evaluation, and cost and latency.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-002",
+          "q": "What should you clarify before designing an agent?",
+          "a": "What counts as success, what volume and latency budget, which actions are irreversible, what data it may touch, who reviews its actions, and whether the steps are actually unknown in advance.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-003",
+          "q": "What is the single most important early decision in an agent design?",
+          "a": "Whether the task needs an agent at all. If the path is knowable, a workflow with LLM steps is cheaper, faster and far easier to make reliable.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-004",
+          "q": "How would you design a customer support agent?",
+          "a": "```\nintent router -> RAG over help docs\n            -> account tools (read)\n            -> refund/cancel (approval)\nescalate on low confidence or 2 failed turns\n```\n\nMost paths are known, so keep it a workflow and reserve the agent loop for open-ended troubleshooting.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-005",
+          "q": "How would you design a coding agent?",
+          "a": "```\nread repo -> plan -> edit -> run tests -> loop\n```\n\nThe test suite is the verifier, which is what makes the loop work. Sandbox execution, limit iterations, diff for review, and never push without approval.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-006",
+          "q": "How would you design a document-processing agent?",
+          "a": "```\nclassify -> extract (schema) -> validate -> route\n```\n\nUse a VLM for extraction into a strict schema, validate with business rules, auto-accept above a confidence threshold and queue the rest for human review.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-007",
+          "q": "How would you design an internal data-question agent?",
+          "a": "Text-to-SQL over a curated read-only view with a semantic layer of approved metrics, validate the SQL before running, cap rows and runtime, and show the query with the answer so users can check it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-008",
+          "q": "How would you design a research agent?",
+          "a": "Plan subquestions, search and read in parallel, accumulate evidence with sources in structured state, then synthesise with citations. Cap hops and total spend, and have it report gaps rather than filling them.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-009",
+          "q": "How do you decide between one agent and several in a design?",
+          "a": "Split only where tools or permissions genuinely differ, or where branches can run in parallel. If the parts would share most of their context, one agent with more tools is more reliable.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-010",
+          "q": "What belongs in the data layer of an agent design?",
+          "a": "The vector and keyword indexes, the systems of record reached through tools, durable run state and checkpoints, long-term memory, and the trace and audit store. Name the store for each.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-011",
+          "q": "How do you present the evaluation plan in a design answer?",
+          "a": "Name the success check per task type, a seeded eval set with mocked tools in CI, step-level metrics for tool selection, and the production signals - success rate, cost, escalations - you would alert on.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-012",
+          "q": "How do you design an agent to hit a reliability target?",
+          "a": "Work backwards from compounding: at 95% per step, ten steps give 60%. So shorten the loop, verify each step programmatically, retry narrowly, and gate the rest behind a human.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "agentic-system-design-013",
+          "q": "Which trade-offs should you volunteer unprompted in an agent design?",
+          "a": "Autonomy against reliability, latency against step count, cost against model size, flexibility against auditability, and one agent against many. Naming them shows you know where the system will hurt.",
+          "difficulty": "hard",
           "known": false
         }
       ]

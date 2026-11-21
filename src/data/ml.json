@@ -61,28 +61,28 @@
           "id": "ml-fundamentals-008",
           "q": "What is the bias-variance tradeoff?",
           "a": "Expected error splits into bias (systematic error from a too-simple model), variance (sensitivity to the training sample) and irreducible noise. Reducing one usually raises the other.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "ml-fundamentals-009",
           "q": "How do you detect and reduce overfitting?",
           "a": "Detect it from a widening train-validation gap. Reduce it with more data, regularisation, fewer features, a simpler model, early stopping or ensembling.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "ml-fundamentals-010",
           "q": "Why split data into train, validation and test sets?",
           "a": "Train fits parameters, validation selects hyperparameters and model choices, and test gives one unbiased final estimate. Tuning on the test set leaks it and inflates your reported score.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "ml-fundamentals-011",
           "q": "What is the curse of dimensionality?",
           "a": "As dimensions grow, data becomes sparse and distances concentrate, so neighbourhood-based methods lose meaning and the data needed for the same coverage grows exponentially.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -151,7 +151,7 @@
           "id": "ml-preprocessing-006",
           "q": "What is target encoding and what is its main risk?",
           "a": "Replacing a category with the mean target for that category. It leaks the label, so it must be computed inside cross-validation folds with smoothing for rare categories.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -165,7 +165,7 @@
           "id": "ml-preprocessing-008",
           "q": "What is data leakage?",
           "a": "Information from outside the training fold - or from the future - reaching the model, giving great validation scores and poor production results. Scaling on the full dataset is the classic case.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -241,7 +241,7 @@
           "id": "ml-linear-regression-006",
           "q": "What is R-squared and what are its limits?",
           "a": "The share of target variance the model explains. It never decreases when you add features, says nothing about causality, and can look high for a badly misspecified model.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -262,7 +262,7 @@
           "id": "ml-linear-regression-009",
           "q": "What is heteroscedasticity and why does it matter?",
           "a": "Error variance that changes with the fitted value, often a funnel shape in a residual plot. Coefficients stay unbiased but standard errors and confidence intervals become wrong.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -324,7 +324,7 @@
           "id": "ml-logistic-regression-005",
           "q": "What is binary cross-entropy (log loss)?",
           "a": "The negative log-likelihood of the observed labels.\n\n```\nL = -(1/n) * sum [ y*log(p) + (1-y)*log(1-p) ]\n```\n\nIt punishes confident wrong predictions very heavily.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -407,7 +407,7 @@
           "id": "ml-regularization-004",
           "q": "What is the difference between L1 and L2 regularization?",
           "a": "L1 produces sparse models and selects features; L2 shrinks all weights and handles correlated features more gracefully by sharing weight between them.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -428,7 +428,7 @@
           "id": "ml-regularization-007",
           "q": "What does the regularization strength `lambda` control?",
           "a": "How much complexity costs. Large `lambda` shrinks weights hard toward underfitting; `lambda` near zero recovers the unregularised fit. Choose it by cross-validation.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -497,14 +497,14 @@
           "id": "ml-gradient-descent-005",
           "q": "What is the difference between batch, mini-batch and stochastic gradient descent?",
           "a": "Batch uses the whole dataset per update (stable, slow), stochastic uses one sample (noisy, fast), mini-batch uses 32-512 samples and is the practical default - stable enough and GPU-friendly.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "ml-gradient-descent-006",
           "q": "What happens if the learning rate is too high or too low?",
           "a": "Too high: the loss oscillates or diverges to NaN. Too low: training is slow and can stall in a flat region. A schedule or a short LR sweep fixes both.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -580,14 +580,14 @@
           "id": "ml-knn-004",
           "q": "How do you choose `k` in KNN?",
           "a": "By cross-validation. Small `k` means low bias and high variance (noisy boundary); large `k` smooths the boundary and raises bias. Odd `k` avoids ties in binary problems.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "ml-knn-005",
           "q": "Why is feature scaling essential for KNN?",
           "a": "Distance is dominated by whichever feature has the largest numeric range, so an unscaled salary column drowns out an age column entirely.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -601,7 +601,7 @@
           "id": "ml-knn-007",
           "q": "Can KNN be used for regression?",
           "a": "Yes - predict the mean or median of the `k` neighbours' targets, optionally weighted by inverse distance. It produces a piecewise-constant surface.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -663,7 +663,7 @@
           "id": "ml-naive-bayes-004",
           "q": "What are the main Naive Bayes variants?",
           "a": "Gaussian for continuous features, Multinomial for counts such as word frequencies, Bernoulli for binary presence/absence, and Complement for imbalanced text.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -677,7 +677,7 @@
           "id": "ml-naive-bayes-006",
           "q": "What is Laplace (add-one) smoothing?",
           "a": "Adding a small count `alpha` to every feature-class tally so unseen combinations do not get probability zero.\n\n```\nP(w|c) = (count + alpha) / (total + alpha * V)\n```",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -698,7 +698,7 @@
           "id": "ml-naive-bayes-009",
           "q": "Are Naive Bayes probability estimates well calibrated?",
           "a": "No - multiplying correlated likelihoods pushes outputs toward 0 or 1, so it is overconfident. Rankings are often fine; recalibrate with isotonic regression or Platt scaling if you need the numbers.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -753,21 +753,21 @@
           "id": "ml-svm-005",
           "q": "What does the `C` parameter control in an SVM?",
           "a": "The penalty for margin violations. Large `C` fits the training data tightly with a narrow margin (overfit risk); small `C` allows more violations for a wider, smoother margin.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "ml-svm-006",
           "q": "What is the kernel trick?",
           "a": "Replacing inner products with a kernel function that equals a dot product in a higher-dimensional space, so you get non-linear boundaries without ever computing that mapping.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "ml-svm-007",
           "q": "What are the common SVM kernels?",
           "a": "Linear for high-dimensional sparse data like text, polynomial for interaction effects, and RBF (Gaussian) as the general-purpose default. Sigmoid exists but is rarely competitive.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -836,14 +836,14 @@
           "id": "ml-decision-trees-004",
           "q": "What is Gini impurity?",
           "a": "The probability of mislabelling a random sample if you label it by the node's class distribution.\n\n```\nGini = 1 - sum(p_i^2)\n```\n\nZero means a pure node.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "ml-decision-trees-005",
           "q": "What are entropy and information gain?",
           "a": "Entropy `-sum(p_i * log2 p_i)` measures node impurity in bits. Information gain is the parent's entropy minus the weighted average entropy of the children - the split that gains most is chosen.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -947,7 +947,7 @@
           "id": "ml-random-forest-007",
           "q": "What is the difference between bagging and boosting?",
           "a": "Bagging trains independent models in parallel on resampled data to cut variance; boosting trains models sequentially, each correcting the previous one's errors, to cut bias.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1030,7 +1030,7 @@
           "id": "ml-boosting-006",
           "q": "What does the learning rate (shrinkage) do in gradient boosting?",
           "a": "It scales each tree's contribution. Smaller values need more trees but generalise better, so the usual recipe is a low learning rate plus early stopping.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1120,7 +1120,7 @@
           "id": "ml-kmeans-004",
           "q": "How do you choose the number of clusters `k`?",
           "a": "The elbow of the inertia curve, the silhouette score, or the gap statistic - and above all domain knowledge. These are heuristics, not a definitive answer.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1314,7 +1314,7 @@
           "id": "ml-dimensionality-reduction-008",
           "q": "What is the difference between PCA and Linear Discriminant Analysis?",
           "a": "PCA is unsupervised and maximises total variance; LDA uses labels and maximises between-class separation relative to within-class scatter, giving at most `classes - 1` components.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -1390,7 +1390,7 @@
           "id": "ml-evaluation-metrics-005",
           "q": "What is the F1 score and when should you use it?",
           "a": "The harmonic mean of precision and recall, `2PR/(P+R)`. Use it when you need one number balancing both and the positive class is rare; the harmonic mean punishes a weak side.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1404,7 +1404,7 @@
           "id": "ml-evaluation-metrics-007",
           "q": "What is ROC-AUC?",
           "a": "The area under the true-positive-rate versus false-positive-rate curve across all thresholds. It equals the probability that a random positive scores above a random negative; 0.5 is chance.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1418,7 +1418,7 @@
           "id": "ml-evaluation-metrics-009",
           "q": "What is the difference between MAE, MSE and RMSE?",
           "a": "MAE averages absolute errors, MSE averages squared errors (so it punishes large ones), and RMSE is the square root of MSE, bringing it back to the target's units.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1439,7 +1439,7 @@
           "id": "ml-evaluation-metrics-012",
           "q": "What is the difference between macro, micro and weighted averaging?",
           "a": "Macro averages the per-class metric equally, so rare classes count as much as common ones. Micro pools all counts first, so it tracks the majority. Weighted averages by class support.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -1487,7 +1487,7 @@
           "id": "ml-cross-validation-004",
           "q": "What is stratified k-fold and when do you need it?",
           "a": "Folds that keep each class's proportion intact. Use it for classification, especially with imbalance, so no fold ends up with too few positives to score meaningfully.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1508,7 +1508,7 @@
           "id": "ml-cross-validation-007",
           "q": "What is Bayesian hyperparameter optimisation?",
           "a": "It fits a probabilistic surrogate of the score surface and picks the next trial by an acquisition function balancing exploration and exploitation. Far fewer trials than random search, used by Optuna and Hyperopt.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -1577,14 +1577,14 @@
           "id": "ml-imbalanced-data-004",
           "q": "What is SMOTE?",
           "a": "Synthetic Minority Over-sampling: for a minority point, pick one of its `k` minority neighbours and create a new sample at a random position on the line between them.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "ml-imbalanced-data-005",
           "q": "What are class weights?",
           "a": "A per-class multiplier on the loss, so minority mistakes cost more. `class_weight='balanced'` sets them inversely proportional to frequency - no resampling and no synthetic data.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -1674,7 +1674,7 @@
           "id": "ml-time-series-006",
           "q": "What are ACF and PACF used for?",
           "a": "The autocorrelation function shows correlation with each lag; the partial version removes the effect of shorter lags. PACF suggests the AR order `p`, ACF the MA order `q`.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {

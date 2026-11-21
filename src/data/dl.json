@@ -68,7 +68,7 @@
           "id": "dl-nn-basics-009",
           "q": "What does the universal approximation theorem say?",
           "a": "A feedforward network with one hidden layer and a non-polynomial activation can approximate any continuous function on a compact set arbitrarily well - given enough units. It says nothing about how to find those weights.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -144,14 +144,14 @@
           "id": "dl-activations-007",
           "q": "Why is ReLU preferred over sigmoid in hidden layers?",
           "a": "Sigmoid's gradient is at most 0.25 and vanishes when saturated, so deep stacks stop learning. ReLU's gradient is exactly 1 for positive inputs, which keeps signal flowing.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "dl-activations-008",
           "q": "What is the dying ReLU problem?",
           "a": "A unit whose pre-activation stays negative for all inputs outputs zero and receives zero gradient forever, so it is permanently dead. Causes are a too-high learning rate or a large negative bias.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -220,7 +220,7 @@
           "id": "dl-loss-functions-005",
           "q": "What is the difference between binary and categorical cross-entropy?",
           "a": "Binary pairs with sigmoid and treats each output independently, so it suits multi-label problems. Categorical pairs with softmax over mutually exclusive classes.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -234,7 +234,7 @@
           "id": "dl-loss-functions-007",
           "q": "What is Huber loss?",
           "a": "Quadratic for small errors and linear beyond a threshold `delta`, so it is differentiable at zero like MSE but robust to outliers like MAE. Widely used in regression and RL.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -248,7 +248,7 @@
           "id": "dl-loss-functions-009",
           "q": "What is KL divergence and where is it used as a loss?",
           "a": "It measures how far one distribution is from another, `sum p * log(p/q)`. It appears in VAEs, knowledge distillation and in PPO-style policy constraints. It is not symmetric.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -310,21 +310,21 @@
           "id": "dl-backpropagation-005",
           "q": "What is the vanishing gradient problem?",
           "a": "Gradients shrink multiplicatively layer by layer, so early layers get almost no signal and stop learning. Saturating activations and deep stacks without skip connections cause it.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "dl-backpropagation-006",
           "q": "What is the exploding gradient problem?",
           "a": "Gradients grow multiplicatively until updates overshoot and the loss becomes NaN. It is most common in RNNs over long sequences and with poor initialisation.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "dl-backpropagation-007",
           "q": "What is gradient clipping?",
           "a": "Rescaling the gradient when its norm exceeds a threshold, so the direction is kept but the step size is bounded. It is the standard fix for exploding gradients.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -400,14 +400,14 @@
           "id": "dl-optimizers-005",
           "q": "What is RMSprop?",
           "a": "It divides each gradient by the running root-mean-square of its recent magnitudes, giving every parameter its own effective step size. Good for non-stationary objectives like RNNs.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "dl-optimizers-006",
           "q": "What is Adam?",
           "a": "It combines momentum (first moment) with RMSprop's per-parameter scaling (second moment), plus bias correction for the early steps. It is robust across tasks with little tuning.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -504,14 +504,14 @@
           "id": "dl-regularization-006",
           "q": "What is batch normalisation?",
           "a": "Normalising each feature across the batch to zero mean and unit variance, then applying learned scale and shift. It stabilises the distribution each layer sees, so training is faster and less init-sensitive.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
           "id": "dl-regularization-007",
           "q": "What is layer normalisation?",
           "a": "Normalising across the features of each individual sample rather than across the batch, so it is independent of batch size and identical at training and inference.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -532,14 +532,14 @@
           "id": "dl-regularization-010",
           "q": "Where should batch norm sit relative to the activation?",
           "a": "The original paper puts it before the activation (conv, BN, ReLU), and that remains the common convention. Since BN has its own bias, the preceding layer's bias can be dropped.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
           "id": "dl-regularization-011",
           "q": "What is stochastic depth (DropPath)?",
           "a": "Randomly dropping whole residual branches during training so the block becomes the identity. It shortens the effective depth, regularises hard, and is standard in deep vision transformers.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -601,7 +601,7 @@
           "id": "dl-cnn-006",
           "q": "What do stride and padding control?",
           "a": "Stride is how far the kernel moves per step, so stride 2 halves the output size. Padding adds a border; `same` padding keeps the spatial size, `valid` shrinks it.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -615,7 +615,7 @@
           "id": "dl-cnn-008",
           "q": "What is the receptive field?",
           "a": "The region of the original input that influences one activation. It grows with depth, kernel size, stride and dilation - deep units see context, shallow units see texture.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -691,7 +691,7 @@
           "id": "dl-rnn-004",
           "q": "What is backpropagation through time?",
           "a": "Unrolling the recurrence into a deep feedforward graph - one layer per timestep sharing weights - and running ordinary backprop over it, summing each weight's gradient across all steps.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -726,7 +726,7 @@
           "id": "dl-rnn-009",
           "q": "What is exposure bias in sequence generation?",
           "a": "The model is trained on ground-truth prefixes but must consume its own outputs at inference, so one early mistake compounds. Scheduled sampling and sequence-level training reduce it.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -774,7 +774,7 @@
           "id": "dl-lstm-gru-004",
           "q": "What are the three gates of an LSTM?",
           "a": "The forget gate decides what to drop from the cell state, the input gate what new information to write, and the output gate how much of the cell state to expose as the hidden state.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {
@@ -802,7 +802,7 @@
           "id": "dl-lstm-gru-008",
           "q": "Why is initialising the forget gate bias to 1 a common trick?",
           "a": "A positive bias starts the gate near \"remember everything\", so the cell state persists from the first steps and gradients flow. With a zero bias the cell forgets by default and learns slowly.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -878,7 +878,7 @@
           "id": "dl-seq2seq-attention-006",
           "q": "What is the difference between Bahdanau and Luong attention?",
           "a": "Bahdanau (additive) scores with a small feedforward network and computes attention before the decoder step; Luong (multiplicative) uses a dot product and applies it after, which is cheaper.",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "known": false
         },
         {
@@ -899,7 +899,7 @@
           "id": "dl-seq2seq-attention-009",
           "q": "What is beam search?",
           "a": "Decoding that keeps the `k` highest-scoring partial sequences at each step instead of only the best token. It finds better overall sequences than greedy decoding at `k` times the cost.",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "known": false
         },
         {

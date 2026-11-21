@@ -106,18 +106,35 @@ export default function App() {
    * First load: seed or merge, with a brief skeleton on a cold start
    * ----------------------------------------------------------- */
   useEffect(() => {
-    const result = loadDataset();
-    setDataset(result.dataset);
+    let cancelled = false;
+    let settle;
 
-    const settle = setTimeout(() => setBooting(false), result.status === 'seeded' ? 420 : 0);
+    loadDataset()
+      .then((result) => {
+        if (cancelled) return;
+        setDataset(result.dataset);
+        settle = setTimeout(() => setBooting(false), result.status === 'seeded' ? 420 : 0);
 
-    if (result.status === 'recovered') {
-      toast('error', 'Stored data was unreadable', 'Loaded the bundled questions instead.');
-    } else if (result.status === 'upgraded' && result.added > 0) {
-      toast('success', 'New questions added', `${result.added} new seed question${result.added === 1 ? '' : 's'} merged in. Your edits were kept.`);
-    }
+        if (result.status === 'recovered') {
+          toast('error', 'Stored data was unreadable', 'Loaded the bundled questions instead.');
+        } else if (result.status === 'upgraded' && result.added > 0) {
+          toast(
+            'success',
+            'New questions added',
+            `${result.added} new seed question${result.added === 1 ? '' : 's'} merged in. Your edits were kept.`,
+          );
+        }
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setBooting(false);
+        toast('error', 'Could not load questions', 'Reload the page to try again.');
+      });
 
-    return () => clearTimeout(settle);
+    return () => {
+      cancelled = true;
+      clearTimeout(settle);
+    };
   }, [toast]);
 
   /* ----------------------------------------------------------- *
@@ -521,14 +538,18 @@ export default function App() {
       message:
         'Your edits, added questions and known progress will be deleted and the bundled seed content reloaded. Export a backup first if you want to keep them.',
       confirmLabel: 'Reset everything',
-      onConfirm: () => {
-        const fresh = resetToSeed();
-        setDataset(fresh);
-        setOpenIds(new Set());
-        setQuery('');
-        setSettings({ ...DEFAULT_SETTINGS, expanded: fresh.topics.slice(0, 1).map((t) => t.id) });
+      onConfirm: async () => {
         setConfirm(null);
-        toast('success', 'Reset', 'Bundled questions reloaded.');
+        try {
+          const fresh = await resetToSeed();
+          setDataset(fresh);
+          setOpenIds(new Set());
+          setQuery('');
+          setSettings({ ...DEFAULT_SETTINGS, expanded: fresh.topics.slice(0, 1).map((t) => t.id) });
+          toast('success', 'Reset', 'Bundled questions reloaded.');
+        } catch {
+          toast('error', 'Reset failed', 'The bundled questions could not be loaded.');
+        }
       },
     });
   }, [setSettings, toast]);
