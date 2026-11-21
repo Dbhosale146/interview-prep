@@ -10,16 +10,1686 @@
       "questions": [
         {
           "id": "genai-llm-fundamentals-001",
-          "q": "Placeholder question one for LLM Fundamentals?",
-          "a": "Placeholder answer with `inline code`.",
+          "q": "What is a large language model?",
+          "a": "A transformer with billions of parameters trained on huge text corpora to predict the next token. That single objective yields translation, summarisation, coding and dialogue without task-specific training.",
           "difficulty": "easy",
           "known": false
         },
         {
           "id": "genai-llm-fundamentals-002",
-          "q": "Placeholder question two for LLM Fundamentals?",
-          "a": "Placeholder answer.\n\n```python\nprint(1)\n```",
+          "q": "What is next-token prediction?",
+          "a": "The training objective: given a prefix, output a probability distribution over the vocabulary for the following token, scored with cross-entropy against the real one.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-003",
+          "q": "What is autoregressive generation?",
+          "a": "Producing text one token at a time, appending each sampled token to the prompt and feeding it back. This is why output latency grows linearly with response length.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-004",
+          "q": "What does a model's parameter count tell you?",
+          "a": "Its capacity and roughly its memory footprint - about 2 bytes per parameter in bf16, so a 7B model needs ~14 GB just for weights. It says nothing about quality on its own.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-005",
+          "q": "What is a foundation model?",
+          "a": "A large model pretrained on broad data that serves as a base for many downstream tasks through prompting or fine-tuning, rather than being built for one application.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-006",
+          "q": "What are scaling laws?",
+          "a": "Empirical power-law relationships showing that loss falls predictably as parameters, data and compute grow. They are what justify spending more compute before changing the architecture.",
           "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-007",
+          "q": "What is in-context learning?",
+          "a": "The model adapting to a task purely from examples in the prompt, with no weight updates. It is why few-shot prompting works at all.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-008",
+          "q": "What is the difference between a base model and an instruct model?",
+          "a": "A base model only continues text, so it rambles or repeats the question. An instruct model has been fine-tuned and aligned to follow instructions and hold a conversation.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-009",
+          "q": "What is a context window?",
+          "a": "The maximum number of tokens the model can attend to at once, covering prompt plus generated output. Exceeding it means truncation or an error, not graceful degradation.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-010",
+          "q": "What are emergent abilities, and what is the main criticism?",
+          "a": "Capabilities that appear only above a certain scale, such as multi-step arithmetic. Critics argue the sharp jumps are artefacts of discontinuous metrics - smooth metrics show gradual improvement.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-011",
+          "q": "What is a knowledge cutoff?",
+          "a": "The date of the newest data in pretraining. Anything later is unknown to the weights, which is a core reason to add retrieval or tools rather than trusting recall.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-012",
+          "q": "What did the Chinchilla result change about how models are trained?",
+          "a": "It showed earlier models were badly undertrained: for a fixed compute budget, parameters and training tokens should scale together, roughly 20 tokens per parameter. Smaller models trained on far more data win.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-llm-fundamentals-013",
+          "q": "Why does next-token prediction produce reasoning-like behaviour?",
+          "a": "Predicting text well requires modelling whatever produced it - syntax, facts, arithmetic, argument structure. Compression of a large enough corpus forces internal representations that generalise beyond memorisation.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "tokenization-embeddings",
+      "name": "Tokenization & Embeddings",
+      "questions": [
+        {
+          "id": "genai-tokenization-embeddings-001",
+          "q": "What is tokenization?",
+          "a": "Splitting text into the discrete units a model actually consumes, then mapping each to an integer id. Models never see characters or words directly.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-002",
+          "q": "Roughly how much text is one token?",
+          "a": "About 4 characters, or ~0.75 words, for English. Code, non-Latin scripts and rare words use many more tokens per character, which raises both cost and context usage.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-003",
+          "q": "What is an embedding?",
+          "a": "A dense vector representing a token, sentence or document, where geometric closeness means semantic similarity. It is the input representation and the basis of vector search.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-004",
+          "q": "What is Byte-Pair Encoding?",
+          "a": "A subword algorithm that starts from characters (or bytes) and repeatedly merges the most frequent adjacent pair until the vocabulary is full. Common words become one token, rare ones split.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-005",
+          "q": "How do WordPiece and SentencePiece Unigram differ from BPE?",
+          "a": "WordPiece merges by likelihood gain rather than raw frequency. SentencePiece's Unigram starts from a large vocabulary and prunes it probabilistically, and it tokenises raw text without pre-splitting on whitespace.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-006",
+          "q": "Why use subword tokenization instead of words or characters?",
+          "a": "Word vocabularies explode and cannot handle unseen words; character sequences are far too long. Subwords give a fixed vocabulary with no out-of-vocabulary failures and manageable sequence lengths.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-007",
+          "q": "What is the trade-off in vocabulary size?",
+          "a": "A bigger vocabulary shortens sequences and speeds attention, but enlarges the embedding and output-projection matrices and gives rare tokens too few training examples. Typical range is 32k-256k.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-008",
+          "q": "What are special tokens?",
+          "a": "Reserved ids with structural meaning - beginning of sequence, end of sequence, padding, and chat-role markers. Mismatching them between training and inference quietly breaks a fine-tuned model.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-009",
+          "q": "How do you measure similarity between two embeddings?",
+          "a": "Cosine similarity, which compares direction and ignores magnitude. With L2-normalised vectors it is just the dot product, and ranks identically to Euclidean distance.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-010",
+          "q": "What is the difference between a token embedding and a sentence embedding?",
+          "a": "A token embedding represents one unit inside the model; a sentence embedding is a single fixed-size vector for a whole passage, produced by pooling or by a model trained for retrieval.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-011",
+          "q": "Why is tokenization behind many LLM arithmetic and spelling failures?",
+          "a": "Numbers and words split inconsistently - `1234` may become two tokens while `1235` becomes three - so digit position is not a stable feature, and letters are invisible inside a multi-character token.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-tokenization-embeddings-012",
+          "q": "What is the difference between static and contextual embeddings?",
+          "a": "Static embeddings (word2vec, GloVe) give one vector per word regardless of use. Contextual embeddings from a transformer differ per occurrence, so \"bank\" in a river sentence differs from a finance one.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "transformer-llm",
+      "name": "Transformer Architecture for LLMs",
+      "questions": [
+        {
+          "id": "genai-transformer-llm-001",
+          "q": "What is a decoder-only transformer?",
+          "a": "A stack of causally masked self-attention and feedforward blocks with no encoder, trained to predict the next token. It is the architecture behind essentially all modern generative LLMs.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-002",
+          "q": "What is the KV cache?",
+          "a": "The stored key and value tensors for every token already processed, kept so each new token only computes its own K and V instead of recomputing the whole prefix.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-003",
+          "q": "What is a logit?",
+          "a": "The raw unnormalised score the model assigns each vocabulary token before softmax. Sampling parameters such as temperature and top-p operate on logits or the resulting probabilities.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-004",
+          "q": "What is the difference between the prefill and decode phases?",
+          "a": "Prefill processes the whole prompt in one parallel pass and is compute-bound; decode generates one token at a time and is memory-bandwidth-bound. They have completely different performance profiles.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-005",
+          "q": "How much does the KV cache cost in memory?",
+          "a": "`2 * layers * heads * head_dim * tokens * bytes` per sequence - gigabytes at long context and large batch. It often outweighs the weights and is the main limit on serving throughput.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-006",
+          "q": "What is Rotary Position Embedding (RoPE)?",
+          "a": "Position injected by rotating query and key vectors by an angle proportional to position, so their dot product depends only on relative distance. It needs no learned position table.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-007",
+          "q": "What is the difference between absolute and relative positional encoding?",
+          "a": "Absolute adds a per-position vector, so behaviour degrades beyond trained lengths. Relative schemes (RoPE, ALiBi, T5 buckets) encode distance between tokens, which generalises far better to longer sequences.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-008",
+          "q": "What are multi-query and grouped-query attention?",
+          "a": "Multi-query shares one K/V head across all query heads; grouped-query shares one per group. Both shrink the KV cache several-fold with little quality loss, and GQA is now standard.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-009",
+          "q": "What does FlashAttention do?",
+          "a": "It computes exact attention in tiles inside fast on-chip SRAM, never writing the n-by-n matrix to GPU memory. Same result, far less memory traffic, so it is both faster and lower-memory.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-010",
+          "q": "What is a mixture-of-experts layer?",
+          "a": "The feedforward block is replaced by many expert networks with a router activating only a couple per token. Total parameters grow a lot while compute per token stays nearly flat.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-011",
+          "q": "Why do modern LLMs use RMSNorm and SwiGLU instead of LayerNorm and ReLU?",
+          "a": "RMSNorm drops the mean-centring step, so it is cheaper with equal quality. SwiGLU's gated feedforward gives better loss at the same parameter count. Both are small wins kept for scale.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-012",
+          "q": "How does RoPE make context-length extension possible?",
+          "a": "Because it encodes relative angles, you can rescale or interpolate the frequencies - NTK-aware scaling, YaRN - so a model trained at 4k attends sensibly at 32k+ after brief fine-tuning.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-transformer-llm-013",
+          "q": "Why is token-by-token decoding memory-bandwidth bound?",
+          "a": "Generating one token needs every weight read from HBM but performs only one token's worth of arithmetic, so arithmetic intensity is terrible. That is why batching and speculative decoding help so much.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "bert-gpt-t5",
+      "name": "BERT vs GPT vs T5",
+      "questions": [
+        {
+          "id": "genai-bert-gpt-t5-001",
+          "q": "What is BERT?",
+          "a": "An encoder-only transformer pretrained with masked language modelling, so every token sees both directions. It produces representations for classification and retrieval, not text generation.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-bert-gpt-t5-002",
+          "q": "What is GPT in architectural terms?",
+          "a": "A decoder-only transformer trained with causal language modelling: predict the next token from the left context only. That makes it naturally generative.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-bert-gpt-t5-003",
+          "q": "What is T5?",
+          "a": "An encoder-decoder model that casts every task as text-to-text, with a task prefix in the input. Translation, classification and summarisation all share one objective and one format.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-bert-gpt-t5-004",
+          "q": "What is masked language modelling?",
+          "a": "Randomly masking about 15% of tokens and training the model to recover them from both sides of the context. It yields strong representations but no way to generate text left to right.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-bert-gpt-t5-005",
+          "q": "What is causal language modelling?",
+          "a": "Training every position to predict its next token under a causal mask, so each position is a training signal. It matches inference exactly, which is why it scales so well.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-bert-gpt-t5-006",
+          "q": "When should you choose encoder-only, decoder-only or encoder-decoder?",
+          "a": "Encoder-only for classification, NER and embeddings; decoder-only for open-ended generation and chat; encoder-decoder for fixed input-to-output transformations like translation.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-bert-gpt-t5-007",
+          "q": "What is T5's span-corruption objective?",
+          "a": "Contiguous spans are replaced by a single sentinel token and the decoder reconstructs just the missing spans. It is more efficient than masking individual tokens and fits the encoder-decoder shape.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-bert-gpt-t5-008",
+          "q": "What was next-sentence prediction and why was it dropped?",
+          "a": "BERT's second objective: decide whether sentence B follows sentence A. RoBERTa showed removing it and training longer on more data improved results, so it was too easy to be useful.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-bert-gpt-t5-009",
+          "q": "Why would you still use a BERT-style model today?",
+          "a": "For high-volume classification or embedding work: a 100M-parameter encoder is orders of magnitude cheaper and faster than an LLM, runs on CPU, and is often more accurate after fine-tuning.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-bert-gpt-t5-010",
+          "q": "Why did decoder-only architectures win for generative LLMs?",
+          "a": "Causal LM supervises every token position, so it is the most sample-efficient objective; one stack is simpler to scale; and prompting makes a separate encoder unnecessary for conditioning.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-bert-gpt-t5-011",
+          "q": "What does bidirectional context buy that causal context cannot?",
+          "a": "Richer per-token representations, because a token is encoded knowing what follows - valuable for tagging, extraction and retrieval. It is impossible for generation, where the future does not exist yet.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "pretraining-sft",
+      "name": "Pretraining, SFT & Instruction Tuning",
+      "questions": [
+        {
+          "id": "genai-pretraining-sft-001",
+          "q": "What is pretraining?",
+          "a": "The first and by far most expensive stage: self-supervised next-token training on trillions of tokens of general text, producing a base model with broad knowledge and no instruction-following.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-002",
+          "q": "What is supervised fine-tuning?",
+          "a": "Training the base model on curated prompt-response pairs with the same next-token loss, so it learns the format and behaviour of a helpful assistant.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-003",
+          "q": "What is instruction tuning?",
+          "a": "SFT on a wide mixture of tasks phrased as instructions, which generalises to instructions never seen in training. It is what turns a text continuer into something usable.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-004",
+          "q": "What are the stages of a modern LLM training pipeline?",
+          "a": "Pretraining on web-scale text, supervised fine-tuning on instruction data, then preference alignment with RLHF or DPO. Many pipelines add a mid-training or continued-pretraining stage for domain data.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-005",
+          "q": "What data goes into pretraining?",
+          "a": "Filtered web crawl, books, code, Wikipedia, academic papers and increasingly synthetic data. Quality filtering, deduplication and mixture weights matter as much as raw volume.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-006",
+          "q": "What is the difference between SFT and continued pretraining?",
+          "a": "Continued pretraining keeps the self-supervised objective on large raw domain text to add knowledge. SFT uses smaller labelled prompt-response pairs to change behaviour and format.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-007",
+          "q": "How much data does SFT need?",
+          "a": "Far less than people expect - a few thousand high-quality, diverse examples often beats hundreds of thousands of noisy ones. Diversity and correctness dominate volume.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-008",
+          "q": "What is a chat template and why does it matter?",
+          "a": "The exact special-token format wrapping system, user and assistant turns. Inference must use the same template as training; a mismatch degrades the model badly and silently.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-009",
+          "q": "Why is loss usually computed only on the completion during SFT?",
+          "a": "Training on the prompt teaches the model to generate prompts, which wastes capacity and can make it echo instructions. Masking prompt tokens focuses all gradient on the response.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-010",
+          "q": "Why is deduplication important in pretraining data?",
+          "a": "Duplicated passages get memorised, which wastes compute, inflates benchmark scores through contamination, and raises the risk of regurgitating training text verbatim.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-011",
+          "q": "What is benchmark contamination?",
+          "a": "Test items leaking into pretraining data, so reported scores reflect memorisation. It is detected with n-gram overlap checks against the corpus and by comparing against freshly built held-out sets.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-012",
+          "q": "Why does fine-tuning on narrow data degrade general ability, and how do you detect it?",
+          "a": "Gradients on a narrow distribution overwrite shared representations. Mix in a slice of general instruction data, keep learning rates low, and run a broad regression suite before and after - not just the target metric.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-pretraining-sft-013",
+          "q": "What is model collapse from synthetic data?",
+          "a": "Training repeatedly on model-generated text narrows the distribution: tails disappear and diversity shrinks with each generation. Mitigations are anchoring on real data and filtering synthetic output for quality.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "peft",
+      "name": "PEFT (LoRA, QLoRA, Adapters)",
+      "questions": [
+        {
+          "id": "genai-peft-001",
+          "q": "What is parameter-efficient fine-tuning?",
+          "a": "Adapting a frozen pretrained model by training only a small set of extra or selected parameters - typically under 1% of the total - instead of updating every weight.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-peft-002",
+          "q": "What is LoRA?",
+          "a": "Low-Rank Adaptation: freeze the original weight `W` and learn two small matrices whose product is added to it.\n\n```\nh = W x + (B A) x,  rank(BA) = r\n```",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-peft-003",
+          "q": "Why use PEFT instead of full fine-tuning?",
+          "a": "It cuts trainable parameters and optimiser memory by orders of magnitude, so a 7B model fits on one consumer GPU, and each task's adapter is a few megabytes you can swap at serve time.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-peft-004",
+          "q": "What do LoRA's `r` and `alpha` control?",
+          "a": "`r` is the bottleneck rank, so it sets capacity - 8 to 64 is typical. `alpha` scales the update by `alpha/r`, so raising it strengthens the adaptation's effect.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-peft-005",
+          "q": "What is QLoRA?",
+          "a": "LoRA on top of a base model quantised to 4-bit NF4, with paged optimisers and double quantisation. It makes fine-tuning a 65B model on a single 48 GB GPU possible with near-full-precision quality.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-peft-006",
+          "q": "Which modules should LoRA be applied to?",
+          "a": "At minimum the attention projections `q_proj` and `v_proj`. Including all four attention projections plus the MLP matrices gives better results at modest extra cost, and is now common practice.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-peft-007",
+          "q": "What is an adapter layer?",
+          "a": "A small bottleneck module (down-project, non-linearity, up-project) inserted inside each transformer block while the rest stays frozen. Unlike LoRA it cannot be merged away, so it adds inference latency.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-peft-008",
+          "q": "What is prompt tuning and prefix tuning?",
+          "a": "Learning continuous vectors prepended to the input (prompt tuning) or to the keys and values at every layer (prefix tuning), with the model fully frozen. Very few parameters, but usually weaker than LoRA.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-peft-009",
+          "q": "Can LoRA weights be merged into the base model?",
+          "a": "Yes - add `B A` into `W` after training, giving zero extra inference latency. The cost is losing the ability to hot-swap adapters, and you cannot merge into a quantised base without dequantising.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-peft-010",
+          "q": "How do you serve many LoRA adapters efficiently?",
+          "a": "Keep one copy of the base model in memory and load adapters separately, batching requests for different adapters together. vLLM and similar servers support this multi-LoRA serving directly.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-peft-011",
+          "q": "Why does low-rank adaptation work at all?",
+          "a": "The weight change needed to adapt a pretrained model has low intrinsic rank - fine-tuning mostly reweights existing features rather than learning new ones. A rank-8 update captures most of that.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-peft-012",
+          "q": "When does LoRA fall short of full fine-tuning?",
+          "a": "When you must add substantial new knowledge or a new language rather than change behaviour, the low-rank constraint binds. Raising `r`, adapting more modules, or continued pretraining is then necessary.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "alignment",
+      "name": "RLHF, DPO & Alignment",
+      "questions": [
+        {
+          "id": "genai-alignment-001",
+          "q": "What is alignment in the context of LLMs?",
+          "a": "Making a model's behaviour match human intent and norms - helpful, honest and harmless - beyond what next-token accuracy alone produces.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-002",
+          "q": "What is RLHF?",
+          "a": "Reinforcement Learning from Human Feedback: train a reward model on human preference comparisons, then optimise the language model against that reward with a policy-gradient method.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-003",
+          "q": "What is a reward model?",
+          "a": "A model, usually the LLM with a scalar head, trained to score a response so that preferred responses score higher. It stands in for a human rater during optimisation.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-004",
+          "q": "What is a preference pair?",
+          "a": "One prompt with two responses, one marked better by a human or a judge model. Comparisons are far more reliable to collect than absolute quality scores.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-005",
+          "q": "What are the three stages of RLHF?",
+          "a": "Supervised fine-tuning on demonstrations, reward-model training on preference comparisons, and policy optimisation of the SFT model against the reward with a KL constraint.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-006",
+          "q": "What role does PPO play in RLHF?",
+          "a": "It is the policy-gradient algorithm that updates the model from reward signal while clipping how far each update moves the policy, which keeps the unstable text-generation RL loop from diverging.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-007",
+          "q": "Why does RLHF include a KL penalty against the reference model?",
+          "a": "Without it the policy drifts into degenerate text that scores high on the reward model but is gibberish. The penalty anchors it near the SFT model, trading reward for fidelity.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-008",
+          "q": "What is DPO?",
+          "a": "Direct Preference Optimisation: a closed-form classification-style loss on preference pairs that optimises the same objective as RLHF without a reward model or an RL loop.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-009",
+          "q": "What is the practical difference between RLHF and DPO?",
+          "a": "DPO is far simpler and cheaper - one training run, no sampling loop, stable. RLHF can keep improving from fresh on-policy samples, so it still tends to win at the frontier.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-010",
+          "q": "What is reward hacking?",
+          "a": "The policy exploiting flaws in the reward model instead of genuinely improving - padding answers, excessive hedging, flattery. It is why reward models must be refreshed and outputs human-audited.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-011",
+          "q": "What are Constitutional AI and RLAIF?",
+          "a": "Replacing most human labels with model-generated feedback: the model critiques and revises its own outputs against a written set of principles, then preferences are derived from that. It scales far cheaper than human raters.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-012",
+          "q": "Why can DPO skip the reward model entirely?",
+          "a": "Under the Bradley-Terry preference model, the optimal KL-constrained policy has a closed-form relation to the reward, so the reward can be substituted out and preferences optimised directly on log-probability ratios.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-alignment-013",
+          "q": "What is the alignment tax?",
+          "a": "The capability loss alignment can cause - more refusals, hedged answers, weaker raw benchmark scores. Mixing pretraining-style data into alignment and careful reward design reduce it.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "prompt-engineering",
+      "name": "Prompt Engineering",
+      "questions": [
+        {
+          "id": "genai-prompt-engineering-001",
+          "q": "What is prompt engineering?",
+          "a": "Designing the input - instructions, context, examples, output format - so a frozen model produces the behaviour you want. It is the cheapest and fastest lever before any training.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-002",
+          "q": "What is the difference between zero-shot and few-shot prompting?",
+          "a": "Zero-shot gives only the instruction; few-shot adds a handful of worked examples. Few-shot mainly pins down format and edge-case handling rather than teaching new knowledge.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-003",
+          "q": "What is a system prompt?",
+          "a": "A privileged instruction block setting persona, rules and constraints for the whole conversation. Models weight it above user turns, so durable policy belongs there.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-004",
+          "q": "What makes a prompt clear in practice?",
+          "a": "An explicit task, delimited input, a stated output format, and the constraints that matter. Say what to do rather than what not to do, and show one example of the exact shape you want.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-005",
+          "q": "What is chain-of-thought prompting?",
+          "a": "Asking the model to work through intermediate steps before answering. The visible reasoning tokens give it space to compute, which substantially improves multi-step arithmetic and logic.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-006",
+          "q": "What is self-consistency?",
+          "a": "Sample several chains of thought at a non-zero temperature and take the majority final answer. It beats a single greedy chain because independent errors rarely agree.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-007",
+          "q": "How do you get reliably parseable JSON out of an LLM?",
+          "a": "Use the provider's structured-output or tool-schema mode, which constrains decoding to a grammar. Failing that, give an exact schema and example, then validate and retry on parse failure.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-008",
+          "q": "Why use delimiters around input text?",
+          "a": "They mark exactly where untrusted content starts and ends, so instructions inside it are less likely to be followed and the model does not confuse data with directives.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-009",
+          "q": "Does role prompting (\"you are an expert...\") actually help?",
+          "a": "Modestly, and mostly for tone and vocabulary rather than accuracy. Concrete task instructions and examples matter far more than an assigned persona.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-010",
+          "q": "What is prompt chaining?",
+          "a": "Splitting a complex task into several focused calls whose outputs feed the next - extract, then classify, then write. Each step is easier to test, debug and constrain than one giant prompt.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-011",
+          "q": "How should few-shot examples be chosen and ordered?",
+          "a": "Pick examples that cover the real distribution, including hard and edge cases, and keep label balance even. Order matters - models are biased toward the last examples - so vary it when testing.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-012",
+          "q": "When does chain-of-thought hurt rather than help?",
+          "a": "On simple pattern-matching tasks it adds latency and lets the model talk itself out of a correct intuition. It can also produce plausible reasoning that rationalises a wrong answer.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-prompt-engineering-013",
+          "q": "When should you stop prompting and fine-tune instead?",
+          "a": "When the prompt has grown long and brittle, when you need a consistent format or style at scale, or when latency and cost from huge few-shot prompts dominate. Fine-tuning teaches behaviour; retrieval supplies knowledge.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "inference-params",
+      "name": "Inference Parameters",
+      "questions": [
+        {
+          "id": "genai-inference-params-001",
+          "q": "What does temperature do?",
+          "a": "It divides the logits before softmax. Below 1 sharpens the distribution toward the likeliest tokens; above 1 flattens it for more variety; 0 makes decoding greedy.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-002",
+          "q": "What do top-k and top-p sampling do?",
+          "a": "Top-k keeps only the `k` highest-probability tokens; top-p (nucleus) keeps the smallest set whose cumulative probability reaches `p`. Top-p adapts to how peaked the distribution is, so it is usually preferred.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-003",
+          "q": "What does `max_tokens` control?",
+          "a": "The cap on generated tokens, not on the prompt. Hitting it truncates mid-sentence, so it must be large enough for the expected answer and is also your runaway-cost guard.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-004",
+          "q": "What is greedy decoding?",
+          "a": "Always taking the single highest-probability token. It is reproducible and fine for extraction or classification, but tends to be repetitive and bland for open-ended writing.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-005",
+          "q": "Should you tune temperature or top-p?",
+          "a": "One at a time, not both - they interact confusingly. A common practice is to fix top-p around 0.9-1.0 and adjust temperature for the task.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-006",
+          "q": "What settings suit extraction versus creative writing?",
+          "a": "Extraction, classification and code: temperature 0 to 0.2 for consistency. Brainstorming and prose: 0.7 to 1.0 for variety. Always pin the low setting for anything you will parse.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-007",
+          "q": "What do frequency and presence penalties do?",
+          "a": "Both subtract from the logits of tokens already produced: frequency scales with how often a token appeared, presence applies once it has appeared at all. They curb loops and repetition.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-008",
+          "q": "What is a stop sequence?",
+          "a": "A string that ends generation as soon as it is produced, and which is excluded from the output. Useful for cutting off a model that would otherwise continue into a new turn.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-009",
+          "q": "How do prompt and output length affect cost and latency?",
+          "a": "Input tokens are cheaper and processed in parallel, so prompt size mainly affects cost and time-to-first-token. Output tokens are generated serially, so they dominate end-to-end latency.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-010",
+          "q": "What does `logprobs` give you and what is it good for?",
+          "a": "The log probability of each chosen token and sometimes its alternatives. It is the cheapest confidence signal available - useful for flagging uncertain extractions or routing to a stronger model.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-011",
+          "q": "Why does temperature 0 not guarantee identical outputs in production?",
+          "a": "Floating-point reductions on GPUs are non-deterministic in order, batching changes those orders, and mixture-of-experts routing depends on batch composition. Providers also update model versions silently.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-inference-params-012",
+          "q": "What is min-p sampling?",
+          "a": "Keep tokens whose probability is at least `p` times the top token's probability. The threshold scales with model confidence, so it prunes harder when the model is certain - often better than top-p at high temperature.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "rag-fundamentals",
+      "name": "RAG Fundamentals",
+      "questions": [
+        {
+          "id": "genai-rag-fundamentals-001",
+          "q": "What is RAG?",
+          "a": "Retrieval-Augmented Generation: fetch relevant passages from an external store at query time and put them in the prompt, so the model answers from supplied evidence rather than memory.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-002",
+          "q": "What are the steps of a RAG pipeline?",
+          "a": "Offline: load, chunk, embed and index documents. Online: embed the query, retrieve the top-k chunks, optionally rerank, assemble the prompt, generate, and return an answer with citations.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-003",
+          "q": "Why choose RAG over fine-tuning for a knowledge problem?",
+          "a": "Knowledge updates by reindexing instead of retraining, answers can cite sources, access control stays at the document level, and it is far cheaper. Fine-tuning changes behaviour, not facts.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-004",
+          "q": "What problems does RAG solve?",
+          "a": "Stale knowledge after the training cutoff, private data the model never saw, hallucination on specifics, and the need for citations and auditability.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-005",
+          "q": "What should the RAG prompt actually say?",
+          "a": "Supply the retrieved chunks with their ids, instruct the model to answer only from them, require citations, and tell it explicitly to say it does not know when the context lacks the answer.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-006",
+          "q": "What are the main failure modes of a RAG system?",
+          "a": "Retrieval misses the right chunk, retrieves it but the generator ignores it, chunks are split so context is lost, conflicting sources are merged, or stale documents are never reindexed.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-007",
+          "q": "How do you debug a wrong RAG answer?",
+          "a": "Check retrieval first: were the right chunks in the top-k at all? If yes, the problem is the prompt or the generator; if no, it is chunking, embeddings or the query. Never tune both at once.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-008",
+          "q": "How do you make a RAG answer citable?",
+          "a": "Carry a stable id and source metadata on every chunk, pass them into the prompt, require inline references in the output, and validate that each cited id was actually retrieved.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-009",
+          "q": "When does RAG not help?",
+          "a": "When the task needs reasoning over a whole corpus rather than a few passages, when the answer requires aggregation or counting, or when the issue is style and format - fine-tuning territory.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-010",
+          "q": "Does a long context window make RAG obsolete?",
+          "a": "No. Stuffing a corpus into context costs far more per query, adds latency, loses citations and access control, and accuracy still degrades with distractors. Long context complements retrieval rather than replacing it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-011",
+          "q": "How many chunks should you retrieve?",
+          "a": "Retrieve generously - 20 to 50 - then rerank down to the 3 to 8 that fit the prompt budget. Recall is the retriever's job; precision is the reranker's.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-012",
+          "q": "How do you evaluate retrieval separately from generation?",
+          "a": "Score retrieval with Recall@k, MRR and NDCG against labelled query-chunk pairs. Score generation on faithfulness to the supplied context and answer relevance, holding retrieval fixed.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-rag-fundamentals-013",
+          "q": "What is the lost-in-the-middle effect?",
+          "a": "Models attend most reliably to the start and end of a long context, so evidence buried in the middle is often missed. Put the strongest chunks at the edges and keep the context short.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "chunking-vectordb",
+      "name": "Chunking, Embeddings & Vector Databases",
+      "questions": [
+        {
+          "id": "genai-chunking-vectordb-001",
+          "q": "What is chunking and why is it needed?",
+          "a": "Splitting documents into passages small enough to embed meaningfully and to fit the prompt budget. A whole document embeds into one blurred vector that matches nothing precisely.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-002",
+          "q": "What is a vector database?",
+          "a": "A store that indexes high-dimensional embeddings for fast approximate nearest-neighbour search, usually with metadata filtering and CRUD on top.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-003",
+          "q": "What is an embedding model and how does it differ from an LLM?",
+          "a": "A smaller encoder trained with contrastive objectives to map text to one vector for similarity search. It does not generate - it only represents.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-004",
+          "q": "How large should a chunk be?",
+          "a": "Usually 200-500 tokens for precise question answering and 800-1500 when answers need more surrounding context. Tune it against retrieval recall on real queries rather than guessing.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-005",
+          "q": "What is chunk overlap and why use it?",
+          "a": "Repeating the last 10-20% of a chunk at the start of the next, so a fact split across a boundary still appears whole somewhere. The cost is a larger index and some duplicate hits.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-006",
+          "q": "What is the difference between fixed-size and structure-aware chunking?",
+          "a": "Fixed-size splits by token count and cuts mid-sentence. Structure-aware splits on headings, paragraphs or code blocks, so each chunk is self-contained - almost always the better default.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-007",
+          "q": "Why is approximate nearest-neighbour search used instead of exact?",
+          "a": "Exact search is linear in the number of vectors, which is too slow past a few hundred thousand. ANN trades a small recall loss for sub-linear latency.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-008",
+          "q": "How does HNSW work?",
+          "a": "It builds a multi-layer proximity graph: search starts on a sparse top layer for a coarse jump, then descends to denser layers for refinement. Excellent recall and latency, at high memory cost.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-009",
+          "q": "What do IVF and product quantisation do?",
+          "a": "IVF clusters vectors and searches only the nearest few cells. PQ compresses each vector into short codes, cutting memory many-fold at some accuracy cost. They are usually combined.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-010",
+          "q": "Why is metadata filtering important in a vector store?",
+          "a": "It enforces tenancy and permissions and narrows the search to the right date range, source or language. Pre-filtering is also what keeps multi-tenant retrieval both correct and fast.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-011",
+          "q": "How do FAISS, Pinecone, Chroma and pgvector differ?",
+          "a": "FAISS is an in-process library with no server. Chroma is a lightweight embedded/local store. pgvector adds vectors to Postgres so they join your SQL data. Pinecone is a managed, horizontally scaled service.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-012",
+          "q": "What happens if you switch embedding models?",
+          "a": "The vector spaces are unrelated, so old and new vectors are incomparable - you must re-embed and rebuild the entire index. Record the model name and version alongside every vector.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-chunking-vectordb-013",
+          "q": "Why does embedding normalisation matter for the index metric?",
+          "a": "With L2-normalised vectors, inner product, cosine and Euclidean distance all rank identically. Unnormalised vectors make inner-product search favour long vectors, so the metric and the normalisation must match.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "retrieval-techniques",
+      "name": "Retrieval Techniques",
+      "questions": [
+        {
+          "id": "genai-retrieval-techniques-001",
+          "q": "What is the difference between dense and sparse retrieval?",
+          "a": "Dense retrieval matches embeddings, so it captures meaning but can miss exact terms. Sparse retrieval matches keywords, so it nails identifiers and rare words but misses paraphrase.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-002",
+          "q": "What is BM25?",
+          "a": "A keyword ranking function scoring term overlap with term-frequency saturation and document-length normalisation. It is a very strong baseline that dense retrieval often fails to beat alone.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-003",
+          "q": "What is hybrid search?",
+          "a": "Running sparse and dense retrieval together and merging their results, so you get keyword precision and semantic recall. It is the default choice for production RAG.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-004",
+          "q": "How do you combine two retrievers' results?",
+          "a": "Reciprocal Rank Fusion is the robust default: each document scores `sum 1/(k + rank)` across lists, so no score calibration is needed. Weighted score blending works only after normalising scales.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-005",
+          "q": "What is a reranker?",
+          "a": "A second-stage model that scores each candidate against the query jointly and reorders them. It turns a high-recall shortlist into a high-precision top-5, usually the single biggest RAG quality win.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-006",
+          "q": "What is the difference between a bi-encoder and a cross-encoder?",
+          "a": "A bi-encoder embeds query and document separately, so documents can be indexed offline. A cross-encoder reads the pair together, which is far more accurate but must run per candidate at query time.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-007",
+          "q": "What is HyDE?",
+          "a": "Hypothetical Document Embeddings: ask the LLM to draft a plausible answer, then retrieve using that draft's embedding. It bridges the vocabulary gap between short questions and long documents.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-008",
+          "q": "What is query rewriting and multi-query retrieval?",
+          "a": "Using the LLM to resolve pronouns and conversational context into a standalone query, or to fan one question into several phrasings whose results are merged. It fixes most follow-up-question retrieval failures.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-009",
+          "q": "What is small-to-big (parent document) retrieval?",
+          "a": "Index small precise chunks for matching, but return the larger parent section to the model. You get retrieval precision with enough context for a good answer.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-010",
+          "q": "What is contextual chunk enrichment?",
+          "a": "Prepending document title, section path or an LLM-written one-line summary to each chunk before embedding, so an isolated passage still carries the context needed to match a query.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-011",
+          "q": "What is Maximal Marginal Relevance?",
+          "a": "A selection rule balancing relevance against novelty, so the top-k are not five near-duplicates of one passage. Diversity matters when the answer needs several different sources.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-012",
+          "q": "Why can't a cross-encoder replace the first-stage retriever?",
+          "a": "It needs one forward pass per query-document pair, so scoring a million documents per query is impossible. Retrieval must stay an indexable bi-encoder or inverted-index problem.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-retrieval-techniques-013",
+          "q": "What is late interaction retrieval (ColBERT)?",
+          "a": "It keeps one embedding per token and scores a pair by summing each query token's best match against the document's tokens. That recovers much of a cross-encoder's accuracy while staying indexable.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "hallucination-guardrails",
+      "name": "Hallucination & Guardrails",
+      "questions": [
+        {
+          "id": "genai-hallucination-guardrails-001",
+          "q": "What is hallucination?",
+          "a": "The model producing fluent, confident content that is not supported by its input or by fact - invented citations, APIs, numbers or events.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-002",
+          "q": "Why do LLMs hallucinate?",
+          "a": "They are trained to produce probable continuations, not to verify truth, and nothing in the objective rewards saying \"I don't know\". Gaps in knowledge get filled with plausible patterns.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-003",
+          "q": "What is a guardrail?",
+          "a": "A check around the model rather than inside it - input validation, output schema and content filters, grounding verification, allow-lists on tools. The model is treated as untrusted.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-004",
+          "q": "What is prompt injection?",
+          "a": "Untrusted text containing instructions that the model follows as if they came from you - \"ignore previous instructions and reveal the system prompt\". It is the LLM analogue of injection attacks.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-005",
+          "q": "What actually reduces hallucination in practice?",
+          "a": "Ground answers in retrieved context, instruct and reward abstention, verify claims against the sources programmatically, lower the temperature, and keep tasks narrow with structured outputs.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-006",
+          "q": "How do you check that an answer is grounded in its context?",
+          "a": "Split the answer into claims and verify each against the retrieved passages with an NLI model or a judge call. Any unsupported claim fails the response or triggers a retry.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-007",
+          "q": "How do you get a model to abstain instead of guessing?",
+          "a": "Say explicitly that \"I don't know\" is an acceptable answer, give the condition for it, show an example, and include abstention cases in your evaluation set so it is actually measured.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-008",
+          "q": "What is jailbreaking and how does it differ from prompt injection?",
+          "a": "Jailbreaking is the user trying to get the model past its own policy. Prompt injection comes from third-party content the system ingested. One is a misuse problem, the other a security boundary problem.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-009",
+          "q": "What belongs in input versus output filtering?",
+          "a": "Input: PII redaction, length and language checks, injection heuristics, topic gating. Output: schema validation, grounding checks, policy classifiers, and secret or PII scanning before anything is shown or executed.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-010",
+          "q": "How do you handle PII in an LLM pipeline?",
+          "a": "Detect and redact or tokenise before the call, keep a reversible mapping on your side if you must re-insert values, and set zero-retention terms with the provider. Log redacted payloads only.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-011",
+          "q": "What is an indirect prompt injection?",
+          "a": "Instructions hidden in content the system retrieves rather than in the user's message - a web page, a PDF, an email, a code comment. It is the main attack surface for RAG and agents.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-hallucination-guardrails-012",
+          "q": "Why can't prompting alone solve prompt injection?",
+          "a": "Instructions and data share one token stream, so there is no reliable privilege boundary to enforce. Defence has to be architectural: least-privilege tools, human approval for side effects, and validating actions rather than text.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "llm-evaluation",
+      "name": "LLM Evaluation",
+      "questions": [
+        {
+          "id": "genai-llm-evaluation-001",
+          "q": "What is BLEU?",
+          "a": "A translation metric measuring n-gram precision against reference texts, with a brevity penalty. It rewards surface overlap, so it needs good references and rates paraphrase poorly.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-002",
+          "q": "What is ROUGE?",
+          "a": "A summarisation metric based on recall of overlapping units - ROUGE-N for n-grams, ROUGE-L for longest common subsequence. It measures how much of the reference was covered.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-003",
+          "q": "What is perplexity?",
+          "a": "The exponential of average cross-entropy per token - roughly how many options the model was choosing between. Lower is better, but it is only comparable between models sharing a tokenizer.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-004",
+          "q": "Why are BLEU and ROUGE weak for open-ended generation?",
+          "a": "They reward lexical overlap with one reference, so a correct answer worded differently scores low and a fluent wrong answer reusing reference words scores high. Most useful tasks have many valid outputs.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-005",
+          "q": "What is LLM-as-judge?",
+          "a": "Using a strong model with a rubric to score or compare outputs. It correlates reasonably with human judgement, scales cheaply, and is now the backbone of most generation evaluation.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-006",
+          "q": "What biases does an LLM judge have?",
+          "a": "Position bias toward one slot, verbosity bias toward longer answers, self-preference for its own family's style, and sycophancy toward assertive wording. All need explicit controls.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-007",
+          "q": "How do you make LLM-as-judge more reliable?",
+          "a": "Use pairwise comparisons with a concrete rubric, swap the order and average, force a short justification before the verdict, allow ties, and calibrate against a few hundred human labels.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-008",
+          "q": "What is an Elo or arena-style ranking?",
+          "a": "Aggregating many pairwise win/loss comparisons into a single rating per model. It handles the fact that absolute scores are unstable while relative preferences are consistent.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-009",
+          "q": "What does RAGAS measure?",
+          "a": "RAG-specific, mostly reference-free metrics: faithfulness of the answer to the context, answer relevance to the question, and context precision and recall for the retriever.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-010",
+          "q": "What is a golden dataset and how do you build one?",
+          "a": "A curated set of inputs with accepted outputs or rubrics, covering typical cases, known failures and edge cases. Start from real production traffic, label it by hand, and version it like code.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-011",
+          "q": "How do you run LLM evaluation in CI?",
+          "a": "Pin model and prompt versions, run a fixed eval set on every change, assert on aggregate thresholds rather than exact strings, and treat a drop as a failing build. Keep a fast subset for pull requests.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-012",
+          "q": "What is the difference between offline evaluation and online A/B testing here?",
+          "a": "Offline evaluation is fast, cheap and repeatable but measures a proxy. Online tests measure real user outcomes - task completion, escalation, retention - which often disagree with the offline score.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-llm-evaluation-013",
+          "q": "Why do public benchmark scores often fail to predict production quality?",
+          "a": "Benchmarks are multiple-choice or narrow, may be contaminated, and do not reflect your prompts, data distribution or latency budget. Only your own eval set on your own traffic predicts your results.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "quantization-inference",
+      "name": "Quantization & Inference Optimization",
+      "questions": [
+        {
+          "id": "genai-quantization-inference-001",
+          "q": "What is quantization?",
+          "a": "Storing and computing with lower-precision numbers than the model was trained in - bf16 weights down to 8 or 4 bits - using a scale and zero-point per group to map ranges.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-002",
+          "q": "Why quantize a model?",
+          "a": "Memory. A 70B model needs ~140 GB in bf16 but ~35 GB at 4-bit, which fits on one GPU. Less memory traffic also makes token generation faster.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-003",
+          "q": "What is the practical difference between 8-bit and 4-bit quantization?",
+          "a": "8-bit is near-lossless for most tasks and a safe default. 4-bit halves memory again with a small but measurable quality drop, concentrated on reasoning and long-context tasks.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-004",
+          "q": "What is the difference between post-training quantization and quantization-aware training?",
+          "a": "PTQ converts an already-trained model, optionally with a small calibration set - cheap and the norm for LLMs. QAT simulates quantization during training for better low-bit quality, at full training cost.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-005",
+          "q": "What is GPTQ?",
+          "a": "A one-shot post-training method that quantizes weights layer by layer, using second-order information on calibration data to choose values that minimise output error. Strong 4-bit quality.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-006",
+          "q": "What is AWQ?",
+          "a": "Activation-aware Weight Quantization: it identifies the small fraction of weight channels that matter most, judged by activation magnitude, and protects them by scaling. Faster to apply than GPTQ with comparable quality.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-007",
+          "q": "What is GGUF?",
+          "a": "The single-file quantized model format used by llama.cpp, carrying weights and metadata together. It is the standard for CPU and Apple-silicon local inference across many quantization levels.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-008",
+          "q": "What is PagedAttention?",
+          "a": "vLLM's KV cache manager that stores the cache in fixed-size blocks like OS virtual memory pages. It removes the fragmentation of pre-allocating per-sequence buffers, so far more sequences fit at once.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-009",
+          "q": "What is continuous batching?",
+          "a": "Adding and removing sequences from the running batch every decode step instead of waiting for a whole batch to finish. It raises GPU utilisation several-fold under mixed-length traffic.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-010",
+          "q": "What is speculative decoding?",
+          "a": "A small draft model proposes several tokens and the large model verifies them in one parallel pass, accepting the agreed prefix. Output is identical in distribution, with typically 2-3x faster decoding.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-011",
+          "q": "What is KV cache quantization and why does it matter at long context?",
+          "a": "Storing cached keys and values at 8 or 4 bits. At long context the cache can exceed the weights, so quantizing it is often what makes a long-context batch fit at all.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-012",
+          "q": "Why does weight-only quantization speed up decoding so much?",
+          "a": "Decoding is memory-bandwidth bound: each token reads all weights but does little arithmetic. Halving the bytes read nearly halves the time, even though compute happens in higher precision after dequantisation.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-quantization-inference-013",
+          "q": "Why do outlier activations make LLM quantization hard?",
+          "a": "A few channels have magnitudes orders larger than the rest, so a shared scale wastes resolution on them and crushes everything else. LLM.int8(), SmoothQuant and AWQ all exist to handle those outliers.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "multimodal-diffusion",
+      "name": "Multimodal & Diffusion Models",
+      "questions": [
+        {
+          "id": "genai-multimodal-diffusion-001",
+          "q": "What is a multimodal model?",
+          "a": "One that handles more than one modality - text with images, audio or video - in a shared representation, so it can caption an image or answer questions about a chart.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-002",
+          "q": "What is CLIP?",
+          "a": "A pair of image and text encoders trained so matching pairs land close together in one embedding space. It enables zero-shot classification and is the text conditioner for many image generators.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-003",
+          "q": "What is a vision-language model?",
+          "a": "An LLM that also accepts images, usually by turning them into tokens the language model consumes. It reads documents, screenshots, diagrams and photos alongside text.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-004",
+          "q": "How is an image actually fed into an LLM?",
+          "a": "A vision encoder splits it into patches and produces embeddings, a learned projector maps them into the language model's embedding space, and they are inserted as tokens in the sequence.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-005",
+          "q": "How is CLIP trained?",
+          "a": "Contrastively on hundreds of millions of image-caption pairs: for each batch, maximise similarity for the true pairs and minimise it for all mismatched combinations. No class labels are needed.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-006",
+          "q": "What are images worth in tokens, and why does it matter?",
+          "a": "A single image typically costs hundreds to a couple of thousand tokens depending on resolution and tiling. High-resolution document pages can dominate your context budget and cost.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-007",
+          "q": "What is ControlNet?",
+          "a": "A trainable copy of a diffusion model's encoder that takes a structural input - edges, depth, pose - and injects it into generation, so you control composition rather than only describing it in words.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-008",
+          "q": "How does inpainting work with a diffusion model?",
+          "a": "Supply a mask; at every denoising step the unmasked region is replaced with the noised original, so only the masked area is generated while the rest stays pixel-identical.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-009",
+          "q": "What are VLMs genuinely good at in production?",
+          "a": "Document understanding and OCR-like extraction, screenshot and UI comprehension, chart reading, image captioning and moderation. They replace brittle OCR-plus-rules pipelines for semi-structured documents.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-010",
+          "q": "How do you reduce the cost of a document-understanding VLM pipeline?",
+          "a": "Downscale to the lowest resolution that still reads, crop to the region of interest, cache per-page results, and route only hard pages to the large model after a cheap classifier triages them.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-011",
+          "q": "Why is cross-modal alignment hard?",
+          "a": "Images and text carry different information at different granularity, and web captions are noisy and underspecify what is in the picture. The projector must map a dense spatial signal into a space trained only on language.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-multimodal-diffusion-012",
+          "q": "Where do current VLMs still fail?",
+          "a": "Precise counting, exact spatial relations and coordinates, dense small text, and anything needing fine geometric reasoning. Patch tokenisation discards much of the detail those tasks require.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "llmops",
+      "name": "LLMOps & Deployment",
+      "questions": [
+        {
+          "id": "genai-llmops-001",
+          "q": "What is LLMOps?",
+          "a": "The practices for running LLM features in production: prompt and model versioning, evaluation, tracing, cost and latency control, guardrails, and safe rollout.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-002",
+          "q": "Why version prompts?",
+          "a": "A prompt is behaviour-defining code. Without versions tied to eval results you cannot explain a quality change, roll back, or A/B test - so prompts belong in the repository, not a dashboard field.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-003",
+          "q": "What is tracing in an LLM application?",
+          "a": "Recording the whole request tree - prompts, retrieved chunks, tool calls, token counts, latency, final output - as one linked trace, so a bad answer can be reconstructed exactly.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-004",
+          "q": "What should you log for every LLM request?",
+          "a": "Prompt and model versions, parameters, input and output token counts, latency, cost, finish reason, guardrail verdicts, and a trace id. Log redacted payloads when the content is sensitive.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-005",
+          "q": "Which latency metrics matter for a streaming LLM feature?",
+          "a": "Time to first token, which users perceive as responsiveness, and time per output token, which sets how fast the answer streams. End-to-end latency alone hides both.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-006",
+          "q": "How do you control LLM cost in production?",
+          "a": "Route easy requests to a smaller model, shorten prompts and cap output length, use prompt caching for stable prefixes, cache repeated answers, and batch offline work.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-007",
+          "q": "What is semantic caching?",
+          "a": "Caching by embedding similarity rather than exact string match, so a paraphrased question hits the stored answer. It needs a tight similarity threshold or it returns confidently wrong cached results.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-008",
+          "q": "What is prompt caching and when does it pay off?",
+          "a": "The provider caches the attention state of a long stable prefix - system prompt, tools, documents - so repeated calls skip recomputing it, cutting input cost and time to first token. Put the volatile part last.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-009",
+          "q": "How should you handle rate limits and transient failures?",
+          "a": "Exponential backoff with jitter, a bounded retry budget, idempotency keys on anything with side effects, a circuit breaker, and a fallback model or a degraded non-LLM path.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-010",
+          "q": "What is a model router?",
+          "a": "A layer that picks the model per request - by task type, a difficulty classifier, or cost and latency budget - and falls back on failure. Most traffic is easy, so routing saves a lot of money.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-011",
+          "q": "How do you roll out a prompt or model change safely?",
+          "a": "Run it offline against the eval set, then shadow it on live traffic without serving the output, then canary a small percentage with guardrail and quality monitoring, and keep instant rollback.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-012",
+          "q": "How do you prepare for a provider deprecating a model version?",
+          "a": "Pin explicit versions rather than floating aliases, keep the provider behind an abstraction layer, maintain a portable eval suite, and periodically re-qualify a second model so switching is a config change.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-llmops-013",
+          "q": "How do you detect quality regressions in production without labels?",
+          "a": "Monitor proxies: guardrail and schema failure rates, retry and abstention rates, retrieval-score distributions, output length drift, user edits, thumbs-down and escalation rates. Then sample traces for a judge or human review.",
+          "difficulty": "hard",
+          "known": false
+        }
+      ]
+    },
+    {
+      "id": "open-vs-closed",
+      "name": "Open vs Closed Models",
+      "questions": [
+        {
+          "id": "genai-open-vs-closed-001",
+          "q": "What is an open-weight model?",
+          "a": "One whose trained parameters are downloadable, so you can run, inspect and fine-tune it yourself. The training data and code usually are not published.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-002",
+          "q": "What is a closed (API) model?",
+          "a": "A model you only reach through a provider's endpoint. You get frontier quality and no infrastructure work, but no weights, limited control and a dependency on their roadmap and pricing.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-003",
+          "q": "What is the difference between open weights and open source?",
+          "a": "Open weights means the parameters are available, often under a licence with use restrictions. Open source in the strict sense would also require the data and training code under an OSI-approved licence, which is rare.",
+          "difficulty": "easy",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-004",
+          "q": "When is self-hosting the right call?",
+          "a": "When data cannot leave your environment, when volume is high and steady enough to amortise GPUs, when you need deep customisation, or when you require strict latency and version stability.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-005",
+          "q": "What licence issues should you check on an open-weight model?",
+          "a": "Whether commercial use is allowed, acceptable-use restrictions, attribution requirements, user-count or revenue thresholds, and whether outputs may be used to train other models. Several popular licences are not OSI-approved.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-006",
+          "q": "What privacy and compliance factors drive the choice?",
+          "a": "Data residency, retention and training-on-your-data terms, sub-processor lists, and certifications. Enterprise API tiers usually offer zero retention, which closes much of the gap with self-hosting.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-007",
+          "q": "How do the cost structures differ?",
+          "a": "APIs are pure variable cost per token with no idle spend. Self-hosting is mostly fixed GPU cost, so unit cost falls with utilisation but you pay for idle capacity and for the engineers running it.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-008",
+          "q": "How does customisation differ between the two?",
+          "a": "Open weights allow LoRA or full fine-tuning, quantization, custom decoding and logit access. Closed models offer only what the API exposes - typically prompts, tools, and a managed fine-tuning option.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-009",
+          "q": "What operational burden comes with self-hosting?",
+          "a": "GPU capacity planning, an inference server to tune, autoscaling, upgrades and security patching, your own evaluation and safety layers, and on-call for a stateful GPU service.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-010",
+          "q": "What is a sensible default strategy for a new product?",
+          "a": "Start on an API to find product-market fit fast, keep the provider behind an abstraction, build a portable eval suite, then move the high-volume narrow paths to a fine-tuned open model once the shape is known.",
+          "difficulty": "medium",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-011",
+          "q": "How do you estimate the break-even point for self-hosting?",
+          "a": "Compare API spend per month against GPU cost divided by realistic utilisation, plus engineering time. Work out tokens per second per GPU from benchmarks, then the tokens per month you must actually sustain.",
+          "difficulty": "hard",
+          "known": false
+        },
+        {
+          "id": "genai-open-vs-closed-012",
+          "q": "How should the open-versus-closed capability gap affect architecture decisions?",
+          "a": "Open models lag the frontier but keep closing on common tasks, so assume today's hardest step may be cheap on open weights later. Build so the model is swappable per task rather than betting the system on one.",
+          "difficulty": "hard",
           "known": false
         }
       ]
