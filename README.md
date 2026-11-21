@@ -26,6 +26,24 @@ npm run dev      # http://localhost:5173
 Once built, the app is fully static and works with no network: fonts are bundled locally and
 all data is in `localStorage`.
 
+### Deploying to GitHub Pages
+
+[.github/workflows/deploy.yml](.github/workflows/deploy.yml) builds and publishes the app on
+every push to `main`. To turn it on once the repo is on GitHub:
+
+1. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
+2. Push to `main` (or run the workflow manually from the **Actions** tab).
+
+The site lands at `https://<your-user>.github.io/<repo>/`. The workflow runs
+`npm ci`, `npm run validate-data` and `npm run build`, so a schema error or a duplicate
+question id fails the deploy instead of shipping broken data.
+
+No path configuration is needed: `vite.config.js` sets `base: './'`, so the build works at any
+sub-path. The app has no client-side router, so no SPA 404 fallback is required either.
+
+> GitHub Pages on a free account only serves **public** repositories. A private repo needs
+> GitHub Pro or an organisation plan.
+
 ### Stack
 
 React 18 + Vite · Tailwind CSS v4 (`@tailwindcss/vite`) · framer-motion · lucide-react ·
